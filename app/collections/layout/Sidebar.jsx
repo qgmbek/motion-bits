@@ -1,29 +1,36 @@
-import { X } from 'lucide-react';
-import { ANIMATIONS_DATA } from '../../constants/animations';
+import { ANIMATIONS_DATA } from "../../constants/animations";
+import styles from "./Sidebar.module.css";
 
-export const Sidebar = ({ currentSlug, onNavigate, isOpen, onClose }) => (
-  <aside className={`sidebar ${isOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-    <div className="sidebar-header">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
-        <div style={{ width: '32px', height: '32px', backgroundColor: '#eab308', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000' }}>B</div>
-        <span>MOTION BITS</span>
-      </div>
-      <button onClick={onClose} className="lg-hide-btn"> <X size={20} /> </button>
+export const Sidebar = ({ currentSlug, onNavigate }) => (
+  <aside className={styles.sidebar}>
+    <div className={styles.sidebarHeader}>
+      <div className={styles.sidebarLogo}>M/B</div>
+      <span>MOTION BITS</span>
     </div>
-    <nav className="nav-section">
+
+    <nav>
       {Object.entries(ANIMATIONS_DATA).map(([key, cat]) => (
-        <div key={key} style={{ marginBottom: '2rem' }}>
-          <div className="category-label">{cat.icon} {cat.title}</div>
-          {cat.items.map(item => (
-            <button 
-              key={item.id} 
-              className={`nav-item ${currentSlug === item.id ? 'active' : ''}`}
+        <div key={key} style={{ marginBottom: "2rem" }}>
+
+          <div className={styles.categoryLabel}>
+            {cat.icon} {cat.title}
+          </div>
+
+          {cat.items.map((item) => (
+            <button
+              key={item.id}
+              className={`${styles.navItem} ${
+                currentSlug === item.id ? styles.active : ""
+              }`}
               onClick={() => onNavigate(item.id)}
             >
               {item.name}
-              {currentSlug === item.id && <div style={{ width: '4px', height: '4px', background: '#eab308', borderRadius: '50%' }} />}
+              {currentSlug === item.id && (
+                <div className={styles.navItemCircle} />
+              )}
             </button>
           ))}
+          
         </div>
       ))}
     </nav>

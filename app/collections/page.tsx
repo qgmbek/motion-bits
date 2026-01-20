@@ -3,12 +3,11 @@
 import { useState, useMemo } from 'react';
 import { Sidebar } from './layout/Sidebar';
 
-import {ANIMATIONS_DATA} from ".././constants/animations"
+import {ANIMATIONS_DATA} from "../constants/animations";
 import './collections.css';
 
 export default function CollectionsPage() {
   const [currentSlug, setCurrentSlug] = useState('blur-text');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const activeItem = useMemo(() => {
     const allItems = Object.values(ANIMATIONS_DATA).flatMap(cat => cat.items);
@@ -19,14 +18,11 @@ export default function CollectionsPage() {
     <div className="app-container">
       <Sidebar 
         currentSlug={currentSlug} 
-        onNavigate={setCurrentSlug} 
-        isOpen={sidebarOpen} 
-        onClose={() => setSidebarOpen(false)} 
+        onNavigate={setCurrentSlug}  
       />
       
       <main className="main-viewport">
         <header className="top-bar">
-          <button onClick={() => setSidebarOpen(true)} className="mobile-menu-btn">Menu</button>
           <div className="breadcrumb">Collections / {activeItem.name}</div>
           <button className="pro-btn">Get Pro</button>
         </header>
