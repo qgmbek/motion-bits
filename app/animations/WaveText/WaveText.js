@@ -8,12 +8,7 @@ export default function WaveText() {
   return (
     <div
       style={{
-        padding: 40,
-        fontSize: 48,
-        fontWeight: 600,
         letterSpacing: "-0.02em",
-        display: "flex",
-        justifyContent: "center",
       }}
     >
       {text.split("").map((char, i) => (
@@ -24,8 +19,8 @@ export default function WaveText() {
             whiteSpace: "pre",
           }}
           animate={{
-            y: [0, -18, 0],
-            rotate: [0, -2, 0],
+            y: [0, -20, 0],
+            rotate: [0, -4, 0],
             opacity: [0.7, 1, 0.7],
           }}
           transition={{

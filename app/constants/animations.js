@@ -5,11 +5,9 @@ export const ANIMATIONS_DATA = {
     title: "Text Animations",
     icon: <Type size={18} />,
     items: [
-      {
-        id: "blur-text",
-        name: "Blur Text",
-      },
+      { id: "blur-text", name: "Blur Text" },
       { id: "wave-text", name: "Wave Text" },
+      { id: "elastic-text", name: "Elastic Text" },
     ],
   },
   components: {

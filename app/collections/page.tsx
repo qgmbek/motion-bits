@@ -16,6 +16,7 @@ export default function CollectionsPage() {
   }, [currentSlug]);
 
   const ActiveDemo = DEMO_COMPONENTS[activeItem.id];
+  // const ActiveDemo = (DEMO_COMPONENTS as {[key: string]: any})[activeItem.id];
 
   return (
     <div className={styles.collectionContainer}>
