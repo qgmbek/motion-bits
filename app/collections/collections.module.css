@@ -26,7 +26,7 @@
 .demo {
   width: 640px;
   height: 480px;
-  border-radius: 1.5rem;
+  border-radius: 24px;
   border: 1px solid #27272a;
   background-color: #0d0d0d;
   background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
@@ -39,4 +39,55 @@
   color: "#ffffff";
   font-size: 56px;
   font-weight: 600;
+  position: relative;
+}
+
+/* .code {
+  width: 640px;
+  height: 480px;
+  border-radius: 1.5rem;
+  border: 1px solid #27272a;
+  background-color: #0d0d0d;
+  overflow: hidden;
+} */
+
+.replayButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 10px;
+  border-radius: 30px;
+
+  position: absolute;
+  right: 6;
+  top: 6;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: inherit;
+
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease;
+}
+
+.replayButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.replayButton:active {
+  transform: scale(0.96);
+}
+
+.replayButton svg {
+  transition: transform 0.4s ease;
+}
+
+.replayButton:hover svg {
+  transform: rotate(-180deg);
+}
+.replayButton:active svg {
+  transform: rotate(-360deg);
 }
