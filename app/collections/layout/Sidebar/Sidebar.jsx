@@ -1,12 +1,9 @@
-import { ANIMATIONS_DATA } from "../../constants/animations";
+import { ANIMATIONS_DATA } from "../../../constants/animations";
 import styles from "./Sidebar.module.css";
 
 export const Sidebar = ({ currentSlug, onNavigate }) => (
   <aside className={styles.sidebar}>
-    <div className={styles.sidebarHeader}>
-      <div className={styles.sidebarLogo}>M/B</div>
-      <span>MOTION BITS</span>
-    </div>
+    
 
     <nav>
       {Object.entries(ANIMATIONS_DATA).map(([key, cat]) => (

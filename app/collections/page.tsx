@@ -3,7 +3,8 @@
 import { useState, useMemo } from "react";
 import { RotateCcw } from "lucide-react";
 
-import { Sidebar } from "./layout/Sidebar";
+import Header from "./layout/Header/Header";
+import { Sidebar } from "./layout/Sidebar/Sidebar";
 import CodeBlock from "../components/CodeBlock/CodeBlock";
 
 import { ANIMATIONS_DATA } from "../constants/animations";
@@ -25,39 +26,51 @@ export default function CollectionsPage() {
   const activeCode = activeEntry?.code;
 
   return (
-    <div className={styles.collectionContainer}>
-      <Sidebar currentSlug={currentSlug} onNavigate={setCurrentSlug} />
+    <>
+      {" "}
+      <Header />
+      <div className={styles.collectionContainer}>
+        <Sidebar currentSlug={currentSlug} onNavigate={setCurrentSlug} />
 
-      <div className={styles.collectionWrapper}>
-        <h1 className={styles.collectionName}>{activeItem.name}</h1>
-        <button onClick={() => setTab("demo")}>Demo</button>
-        <button onClick={() => setTab("code")}>Code</button>
+        <div className={styles.collectionWrapper}>
+          <h1 className={styles.collectionName}>{activeItem.name}</h1>
+          <button onClick={() => setTab("demo")}>Demo</button>
+          <button onClick={() => setTab("code")}>Code</button>
 
-        {tab === "demo" && (
-          <>
-            <div className={styles.demo}>
-              {ActiveDemo && (
-                <>
-                  <ActiveDemo key={replayKey} />
-                  <button
-                    onClick={() => setReplayKey((k) => k + 1)}
-                    className={styles.replayButton}
-                  >
-                    <RotateCcw size={16} />
-                    <span>Replay</span>
-                  </button>
-                </>
-              )}
+          {tab === "demo" && (
+            <>
+              <div className={styles.demo}>
+                {ActiveDemo && (
+                  <>
+                    <ActiveDemo key={replayKey} />
+                    <button
+                      onClick={() => setReplayKey((k) => k + 1)}
+                      className={styles.replayButton}
+                    >
+                      <RotateCcw size={16} />
+                      <span>Replay</span>
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+
+          {tab === "code" && (
+            <div className={styles.code}>
+              <CodeBlock code={activeCode} language={activeEntry.language} />
             </div>
-          </>
-        )}
+          )}
 
-        {tab === "code" && (
-          <div className={styles.code}>
-            <CodeBlock code={activeCode} language={activeEntry.language} />
+          <div className={styles.fadingBorderTop} />
+          <div className={styles.footerContent}>
+            Created with <span className={styles.heartIcon}>💜</span> by
+            <a href="https://github.com/qgmbek" className={styles.userLink}>
+              qgmbek
+            </a>
           </div>
-        )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

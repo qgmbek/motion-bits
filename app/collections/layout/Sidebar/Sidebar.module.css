@@ -2,27 +2,6 @@
   margin: 12px;
 }
 
-.sidebarHeader {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 10px;
-  margin-top: 20px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #27272a;
-  font-weight: bold;
-}
-
-.sidebarLogo {
-  width: 32px;
-  height: 32px;
-  background-color: var(--primary-color);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .categoryLabel {
   width: fit-content;
   display: flex;
