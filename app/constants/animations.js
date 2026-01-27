@@ -6,6 +6,7 @@ export const ANIMATIONS_DATA = {
     icon: <Type size={18} />,
     items: [
       { id: "blur-text", name: "Blur Text" },
+      { id: "per-letter-blur", name: "Per Letter Blur" },
       { id: "wave-text", name: "Wave Text" },
       { id: "elastic-text", name: "Elastic Text" },
     ],
