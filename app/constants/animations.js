@@ -7,6 +7,7 @@ export const ANIMATIONS_DATA = {
     items: [
       { id: "blur-text", name: "Blur Text" },
       { id: "per-letter-blur", name: "Per Letter Blur" },
+      { id: "cursor-reactive-blu", name: "Cursor Reactive Blur" },
       { id: "wave-text", name: "Wave Text" },
       { id: "elastic-text", name: "Elastic Text" },
     ],
