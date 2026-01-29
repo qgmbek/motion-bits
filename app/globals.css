@@ -1,5 +1,6 @@
 :root {
   --primary-color: #eab308;
+  --bg-color: #060606;
 }
 
 html,
@@ -14,7 +15,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #060606;
+  background-color: var(--bg-color);
 }
 
 * {
@@ -34,3 +35,6 @@ button {
   padding: 4px;
 }
 
+button:hover {
+  cursor: pointer;
+}

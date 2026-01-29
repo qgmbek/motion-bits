@@ -1,19 +1,33 @@
-/* .shiki {
+.codeblock-container {
+  width: 640px;
+  /* height: 480px; */
+  height: auto;
+  margin: 10px;
+}
+
+.shiki {
+  width: 100%;
+  height: auto;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: 24px;
   overflow-x: auto;
   font-size: 14px;
   line-height: 1.6;
+  background-color: #0d0d0d !important;
+  background-image: radial-gradient(#1a1a1a 1px, transparent 1px) !important;
+  background-size: 24px 24px !important;
+  border: 1px solid #27272a;
 }
 
 .shiki .line {
-  display: block;
-  padding-left: 3.5em;
+  display: inline-block;
+  width: 100%;
+  padding-left: 5px;
   position: relative;
 }
 
 .shiki .line:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .shiki .lineNumber {
@@ -25,7 +39,7 @@
   color: rgba(255, 255, 255, 0.35);
   user-select: none;
   font-variant-numeric: tabular-nums;
-} */
+}
 
 .codeblock-container {
   position: relative;
@@ -33,29 +47,30 @@
 
 .copy-button {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 6px;
+  right: 6px;
   z-index: 10;
 
   display: flex;
   align-items: center;
   gap: 6px;
 
-  padding: 6px 10px;
-  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 30px;
 
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
 
   cursor: pointer;
   backdrop-filter: blur(6px);
-  transition: all 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease;
 }
 
 .copy-button:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .copy-button:active {

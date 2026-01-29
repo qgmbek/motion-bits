@@ -27,15 +27,20 @@ export default function CollectionsPage() {
 
   return (
     <>
-      {" "}
       <Header />
       <div className={styles.collectionContainer}>
         <Sidebar currentSlug={currentSlug} onNavigate={setCurrentSlug} />
 
         <div className={styles.collectionWrapper}>
           <h1 className={styles.collectionName}>{activeItem.name}</h1>
-          <button onClick={() => setTab("demo")}>Demo</button>
-          <button onClick={() => setTab("code")}>Code</button>
+          <div className={styles.tab}>
+            <button onClick={() => setTab("demo")} className={styles.tabButton}>
+              Demo
+            </button>
+            <button onClick={() => setTab("code")} className={styles.tabButton}>
+              Code
+            </button>
+          </div>
 
           {tab === "demo" && (
             <>

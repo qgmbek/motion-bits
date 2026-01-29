@@ -1,8 +1,8 @@
 .collectionContainer {
   display: flex;
-  width: 100%;
+  width: fit-content;
   height: fit-content;
-  background-color: #060606;
+  background-color: hsl(0, 0%, 2%);
   color: #f4f4f5;
   font-family: sans-serif;
   overflow: hidden;
@@ -23,6 +23,20 @@
   margin-bottom: 1rem;
 }
 
+.tab {
+  display: flex;
+  gap: 10px;
+}
+
+.tabButton {
+  padding: 10px 14px;
+  font-size: 16px;
+  color: #f4f4f5;
+  background: transparent;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+}
+
 .demo {
   width: 640px;
   height: 480px;
@@ -41,15 +55,6 @@
   font-weight: 600;
   position: relative;
 }
-
-/* .code {
-  width: 640px;
-  height: 480px;
-  border-radius: 1.5rem;
-  border: 1px solid #27272a;
-  background-color: #0d0d0d;
-  overflow: hidden;
-} */
 
 .replayButton {
   display: inline-flex;

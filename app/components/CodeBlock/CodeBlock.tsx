@@ -8,7 +8,7 @@ function addLineNumbers(html) {
   return html.replace(/<span class="line">/g, (match, offset, full) => {
     const index =
       full.slice(0, offset).match(/<span class="line">/g)?.length || 0;
-    return `<span class="line"><span class="line-number">${index + 1}</span>`;
+    return `<span class="line"><span class="line-number">${index + 1}  </span>`;
   });
 }
 
