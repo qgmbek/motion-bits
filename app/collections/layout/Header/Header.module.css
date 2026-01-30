@@ -1,9 +1,9 @@
-.sidebarHeader {
+.header {
   height: fit-content;
   width: 100%;
 }
 
-.sidebarContent {
+.headerContent {
   height: fit-content;
   margin: 40px;
   margin-top: 20px;
@@ -14,9 +14,9 @@
   font-weight: bold;
 }
 
-.sidebarLogo {
-  width: 48px;
-  height: 48px;
+.headerLogo {
+  width: 36px;
+  height: 36px;
   background-color: var(--primary-color);
   border-radius: 22px;
   display: flex;

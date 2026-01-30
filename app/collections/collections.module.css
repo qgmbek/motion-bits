@@ -29,12 +29,24 @@
 }
 
 .tabButton {
-  padding: 10px 14px;
-  font-size: 16px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 400;
   color: #f4f4f5;
-  background: transparent;
   border: 1px solid #27272a;
-  border-radius: 8px;
+  border-radius: 16px;
+  background: transparent;
+  display: flex;
+  align-items: start;
+  gap: 6px;
+}
+
+.tabButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.active {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .demo {

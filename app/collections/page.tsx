@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { RotateCcw } from "lucide-react";
+import { Eye, Code } from "lucide-react";
 
 import Header from "./layout/Header/Header";
 import { Sidebar } from "./layout/Sidebar/Sidebar";
@@ -34,10 +35,22 @@ export default function CollectionsPage() {
         <div className={styles.collectionWrapper}>
           <h1 className={styles.collectionName}>{activeItem.name}</h1>
           <div className={styles.tab}>
-            <button onClick={() => setTab("demo")} className={styles.tabButton}>
+            <button
+              onClick={() => setTab("demo")}
+              className={`${styles.tabButton} ${
+                tab === "demo" ? styles.active : ""
+              }`}
+            >
+              <Eye size={16} />
               Demo
             </button>
-            <button onClick={() => setTab("code")} className={styles.tabButton}>
+            <button
+              onClick={() => setTab("code")}
+              className={`${styles.tabButton} ${
+                tab === "code" ? styles.active : ""
+              }`}
+            >
+              <Code size={16} />
               Code
             </button>
           </div>

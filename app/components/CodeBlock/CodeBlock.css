@@ -47,8 +47,8 @@
 
 .copy-button {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 7px;
+  right: 7px;
   z-index: 10;
 
   display: flex;
