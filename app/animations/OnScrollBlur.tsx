@@ -2,9 +2,8 @@
 
 import { motion, type Easing } from "framer-motion";
 
-// on scroll blur
-export default function BlurText() {
-  const text = "Blur Text Animation";
+export default function OnScrollBlur() {
+  const text = "Scroll Blur Animation";
   const ease: Easing = [0.16, 1, 0.3, 1];
 
   return (

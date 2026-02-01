@@ -1,5 +1,4 @@
-const code = `
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
