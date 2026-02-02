@@ -8,10 +8,12 @@ export const ANIMATIONS_DATA = {
       { id: "blur-text", name: "Blur Text" },
       { id: "per-letter-blur", name: "Per Letter Blur" },
       { id: "split-reveal", name: "Split Reveal" },
+      { id: "kinetic-reveal", name: "Kinetic Reveal" },
       { id: "wave-text", name: "Wave Text" },
       { id: "elastic-text", name: "Elastic Text" },
       { id: "typewriter", name: "Typewriter" },
       { id: "on-hover-swap", name: "On Hover Swap" },
+      { id: "breathing-text", name: "Breathing Text" },
     ],
   },
   components: {

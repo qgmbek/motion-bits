@@ -5,6 +5,8 @@ import ElasticText from "./ElasticText/ElasticText";
 import SplitReveal from "./SplitReveal/SplitReveal";
 import Typewriter from "./Typewriter/Typewriter";
 import OnHoverSwap from "./OnHoverSwap/OnHoverSwap";
+import BreathingText from "./BreathingText/BreathingText";
+import KineticReveal from "./KineticReveal/KineticReveal";
 
 import blurTextCode from "./BlurText/BlurText.code";
 import perLetterBlurCode from "./PerLetterBlur/PerLetterBlur.code";
@@ -13,6 +15,8 @@ import elasticTextCode from "./ElasticText/ElasticText.code";
 import splitRevealCode from "./SplitReveal/SplitReveal.code";
 import typewriterCode from "./Typewriter/Typewriter.code";
 import onHoverSwapCode from "./OnHoverSwap/OnHoverSwap.code";
+import breathingTextCode from "./BreathingText/BreathingText.code";
+import kineticRevealCode from "./KineticReveal/KineticReveal.code";
 
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
@@ -28,6 +32,11 @@ export const ANIMATIONS_REGISTRY = {
   "split-reveal": {
     component: SplitReveal,
     code: splitRevealCode,
+    language: "jsx",
+  },
+  "kinetic-reveal": {
+    component: KineticReveal,
+    code: kineticRevealCode,
     language: "jsx",
   },
   "wave-text": {
@@ -48,6 +57,11 @@ export const ANIMATIONS_REGISTRY = {
   "on-hover-swap": {
     component: OnHoverSwap,
     code: onHoverSwapCode,
+    language: "jsx",
+  },
+  "breathing-text": {
+    component: BreathingText,
+    code: breathingTextCode,
     language: "jsx",
   },
 };
