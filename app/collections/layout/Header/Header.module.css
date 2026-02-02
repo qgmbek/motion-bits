@@ -8,6 +8,7 @@
   margin: 40px;
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 20px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -15,13 +16,8 @@
 }
 
 .headerLogo {
-  width: 36px;
-  height: 36px;
-  background-color: var(--primary-color);
-  border-radius: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 200px;
+  height: auto;
 }
 
 .fadingBorderTop {
