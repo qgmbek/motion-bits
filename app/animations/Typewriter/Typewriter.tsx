@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 "use client";
 
 import { motion } from "framer-motion";

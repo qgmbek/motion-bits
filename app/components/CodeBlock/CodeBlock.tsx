@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Copy, Check } from "lucide-react";
 import "./CodeBlock.css";
 
-function addLineNumbers(html) {
+function addLineNumbers(html: string): string {
   return html.replace(/<span class="line">/g, (match, offset, full) => {
     const index =
       full.slice(0, offset).match(/<span class="line">/g)?.length || 0;
@@ -12,7 +12,12 @@ function addLineNumbers(html) {
   });
 }
 
-export default function CodeBlock({ code, language }) {
+interface CodeBlockProps {
+  code: string;
+  language: string;
+}
+
+export default function CodeBlock({ code, language }: CodeBlockProps) {
   const [html, setHtml] = useState("");
   const [copied, setCopied] = useState(false);
 

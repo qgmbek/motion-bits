@@ -12,8 +12,10 @@ import { ANIMATIONS_DATA } from "../constants/animations";
 import { ANIMATIONS_REGISTRY } from "../animations/registry";
 import styles from "./collections.module.css";
 
+type AnimationSlug = keyof typeof ANIMATIONS_REGISTRY;
+
 export default function CollectionsPage() {
-  const [currentSlug, setCurrentSlug] = useState("blur-text");
+  const [currentSlug, setCurrentSlug] = useState<AnimationSlug>("blur-text");
   const [tab, setTab] = useState("demo");
   const [replayKey, setReplayKey] = useState(0);
 
@@ -22,7 +24,7 @@ export default function CollectionsPage() {
     return allItems.find((item) => item.id === currentSlug) || allItems[0];
   }, [currentSlug]);
 
-  const activeEntry = ANIMATIONS_REGISTRY[activeItem.id];
+  const activeEntry = ANIMATIONS_REGISTRY[currentSlug];
   const ActiveDemo = activeEntry?.component;
   const activeCode = activeEntry?.code;
 

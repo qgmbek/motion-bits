@@ -1,5 +1,7 @@
 .sidebar {
   margin: 12px;
+  width: 15vw;
+  padding: 5px;
 }
 
 .categoryLabel {
