@@ -1,61 +1,70 @@
 "use client";
 
-import { motion, useTime, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useRef } from "react";
 
-const text = "Wave / Ripple Text Animation";
+export default function CursorAwareHighlight() {
+  const ref = useRef<HTMLDivElement>(null);
 
-export default function WaveRippleText() {
-  const time = useTime();
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth, premium lag (this is the magic)
+  const x = useSpring(mouseX, { stiffness: 120, damping: 20 });
+  const y = useSpring(mouseY, { stiffness: 120, damping: 20 });
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  }
 
   return (
     <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
       style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "#0b0b0b",
+        display: "inline-block",
+        position: "relative",
+        cursor: "default",
       }}
     >
-      <motion.h1
-        initial="rest"
-        whileHover="hover"
+      {/* Base text */}
+      <span
         style={{
-          display: "flex",
-          fontSize: "64px",
-          fontWeight: 600,
-          letterSpacing: "-0.02em",
-          color: "#fff",
-          cursor: "default",
+          fontSize: "clamp(3rem, 8vw, 6rem)",
+          fontWeight: 800,
+          letterSpacing: "-0.04em",
+          color: "#2b2b2b",
         }}
       >
-        {text.split("").map((char, i) => {
-          const y = useTransform(time, (t) => {
-            return Math.sin(t / 250 + i * 0.6) * 14;
-          });
+        Cursor-Aware Highlight
+      </span>
 
-          return (
-            <motion.span
-              key={i}
-              style={{
-                display: "inline-block",
-                y,
-              }}
-              variants={{
-                rest: { scale: 1 },
-                hover: { scale: 1.15 },
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 20,
-              }}
-            >
-              {char === " " ? "\u00A0" : char}
-            </motion.span>
-          );
-        })}
-      </motion.h1>
+      {/* Cursor-aware highlight layer */}
+      <motion.span
+        style={{
+          pointerEvents: "none",
+          position: "absolute",
+          inset: 0,
+          fontSize: "clamp(3rem, 8vw, 6rem)",
+          fontWeight: 800,
+          letterSpacing: "-0.04em",
+          background: `radial-gradient(
+            120px circle at ${x}px ${y}px,
+            #7c3aed,
+            #22d3ee,
+            transparent 70%
+          )`,
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          filter: "drop-shadow(0 0 20px rgba(124,58,237,0.35))",
+        }}
+      >
+        Cursor-Aware Highlight
+      </motion.span>
     </div>
   );
 }

@@ -9,10 +9,13 @@ export default function OnScrollBlur() {
   return (
     <div
       style={{
-        minHeight: "250vh",
+        height: "250%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        paddingTop: "1000px",
+
+        backgroundColor: "#000",
       }}
     >
       <motion.h1

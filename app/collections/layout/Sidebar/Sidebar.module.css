@@ -48,6 +48,6 @@
 .navItemCircle {
   width: 4px;
   height: 4px;
-  background-color: var(--primary-color);
+  background-color: #43d6d6;
   border-radius: 50%;
 }

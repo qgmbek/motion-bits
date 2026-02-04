@@ -1,8 +1,9 @@
 .codeblock-container {
-  width: 640px;
+  width: 900px;
   /* height: 480px; */
   height: auto;
   margin: 10px;
+  margin-left: 0;
 }
 
 .shiki {
