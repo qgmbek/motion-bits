@@ -9,11 +9,15 @@ export const ANIMATIONS_DATA = {
       { id: "per-letter-blur", name: "Per Letter Blur" },
       { id: "split-reveal", name: "Split Reveal" },
       { id: "kinetic-reveal", name: "Kinetic Reveal" },
+      { id: "narrative-text", name: "Narrative Text" },
       { id: "wave-text", name: "Wave Text" },
       { id: "elastic-text", name: "Elastic Text" },
       { id: "typewriter", name: "Typewriter" },
+      { id: "ascii-morph", name: "ASCII Morph" },
       { id: "on-hover-swap", name: "On Hover Swap" },
       { id: "breathing-text", name: "Breathing Text" },
+            { id: "glitch-stabilize", name: "Glitch Stabilize" },
+
     ],
   },
   components: {

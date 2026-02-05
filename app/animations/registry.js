@@ -7,6 +7,9 @@ import Typewriter from "./Typewriter/Typewriter";
 import OnHoverSwap from "./OnHoverSwap/OnHoverSwap";
 import BreathingText from "./BreathingText/BreathingText";
 import KineticReveal from "./KineticReveal/KineticReveal";
+import NarrativeText from "./NarrativeText/NarrativeText";
+import ASCIIMorph from "./ASCIIMorph/ASCIIMorph";
+import GlitchStabilize from "./GlitchStabilize/GlitchStabilize";
 
 import blurTextCode from "./BlurText/BlurText.code";
 import perLetterBlurCode from "./PerLetterBlur/PerLetterBlur.code";
@@ -39,6 +42,11 @@ export const ANIMATIONS_REGISTRY = {
     code: kineticRevealCode,
     language: "jsx",
   },
+  "narrative-text": {
+    component: NarrativeText,
+    code: kineticRevealCode,  // !!!!!!
+    language: "jsx",
+  },
   "wave-text": {
     component: WaveText,
     code: waveTextCode,
@@ -54,6 +62,11 @@ export const ANIMATIONS_REGISTRY = {
     code: typewriterCode,
     language: "jsx",
   },
+  "ascii-morph": {
+    component: ASCIIMorph,
+    code: typewriterCode, // !!!!
+    language: "jsx",
+  },
   "on-hover-swap": {
     component: OnHoverSwap,
     code: onHoverSwapCode,
@@ -64,4 +77,9 @@ export const ANIMATIONS_REGISTRY = {
     code: breathingTextCode,
     language: "jsx",
   },
+  "glitch-stabilize":{
+    component: GlitchStabilize,
+    code: breathingTextCode,  // !!!!!!
+    language: "jsx",
+  }
 };
