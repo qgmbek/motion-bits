@@ -2,31 +2,30 @@
 
 import { motion } from "framer-motion";
 
-const text = "Narrative Cinematic Text Animation";
+const text = "Narrative Text unfolds like a quiet film subtitle";
 
 export default function NarrativeText() {
   const words = text.split(" ");
 
   return (
-    <div style={{ overflow: "hidden" }}>
+    <div
+      style={{
+        fontSize: "36px",
+        fontWeight: 500,
+        letterSpacing: "-0.02em",
+      }}
+    >
       <motion.div
         initial="hidden"
         animate="visible"
         variants={{
-          hidden: {},
           visible: {
             transition: {
-              staggerChildren: 0.18, // story timing
+              staggerChildren: 0.18, // story pacing
             },
           },
         }}
-        style={{
-          display: "flex",
-          gap: "0.35em",
-          fontSize: "36px",
-          fontWeight: 500,
-          lineHeight: 1.1,
-        }}
+        style={{ display: "flex", gap: "12px" }}
       >
         {words.map((word, i) => (
           <motion.span
@@ -34,20 +33,22 @@ export default function NarrativeText() {
             variants={{
               hidden: {
                 opacity: 0,
-                y: i === 0 ? 40 : 24,
-                filter: "blur(8px)",
+                y: 24,
               },
               visible: {
                 opacity: 1,
                 y: 0,
-                filter: "blur(0px)",
                 transition: {
-                  duration: i === 0 ? 0.9 : 0.6,
-                  ease: [0.22, 1, 0.36, 1],
+                  duration: 0.7,
+                  ease: [0.22, 1, 0.36, 1], // cinematic easeOut
+                  delay: i === 0 ? 0 : 0.4, // first word leads
                 },
               },
             }}
-            style={{ display: "inline-block" }}
+            style={{
+              display: "inline-block",
+              whiteSpace: "nowrap",
+            }}
           >
             {word}
           </motion.span>
