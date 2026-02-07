@@ -19,6 +19,7 @@ export const ANIMATIONS_DATA = {
       { id: "soft-glow-pulse", name: "Soft Glow Pulse" },
       { id: "gradient-flow", name: "Gradient Flow" },
       { id: "glitch-stabilize", name: "Glitch Stabilize" },
+      { id: "starwars-text", name: "Star Wars Text" },
     ],
   },
   components: {

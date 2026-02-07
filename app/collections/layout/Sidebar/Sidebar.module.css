@@ -2,6 +2,14 @@
   margin: 12px;
   width: 15vw;
   padding: 5px;
+
+  height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 0;
 }
 
 .categoryLabel {

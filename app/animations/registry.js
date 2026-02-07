@@ -7,7 +7,6 @@ import Typewriter from "./Typewriter/Typewriter";
 import OnHoverSwap from "./OnHoverSwap/OnHoverSwap";
 import BreathingText from "./BreathingText/BreathingText";
 import KineticReveal from "./KineticReveal/KineticReveal";
-// from there no code made
 import NarrativeText from "./NarrativeText/NarrativeText";
 import ASCIIMorph from "./ASCIIMorph/ASCIIMorph";
 import GlitchStabilize from "./GlitchStabilize/GlitchStabilize";
@@ -23,6 +22,12 @@ import typewriterCode from "./Typewriter/Typewriter.code";
 import onHoverSwapCode from "./OnHoverSwap/OnHoverSwap.code";
 import breathingTextCode from "./BreathingText/BreathingText.code";
 import kineticRevealCode from "./KineticReveal/KineticReveal.code";
+import narrativeText from "./NarrativeText/NarrativeText.code";
+import asmiiMorphCode from "./ASCIIMorph/ASCIIMorph.code";
+import glitchStabilize from "./GlitchStabilize/GlitchStabilize.code";
+import gradientFlow from "./GradientFlow/GradientFlow.code";
+import softGlowPulse from "./SoftGlowPulse/SoftGlowPulse.code";
+import StarWarsText from "./StarWarsText/StarWarsText";
 
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
@@ -47,7 +52,7 @@ export const ANIMATIONS_REGISTRY = {
   },
   "narrative-text": {
     component: NarrativeText,
-    code: kineticRevealCode, // !!!!!!
+    code: narrativeText,
     language: "jsx",
   },
   "wave-text": {
@@ -67,7 +72,7 @@ export const ANIMATIONS_REGISTRY = {
   },
   "ascii-morph": {
     component: ASCIIMorph,
-    code: typewriterCode, // !!!!
+    code: asmiiMorphCode,
     language: "jsx",
   },
   "on-hover-swap": {
@@ -82,17 +87,22 @@ export const ANIMATIONS_REGISTRY = {
   },
   "soft-glow-pulse": {
     component: SoftGlowPulse,
-    code: breathingTextCode, //// ""
+    code: softGlowPulse,
     language: "jsx",
   },
   "gradient-flow": {
     component: GradientFlow,
-    code: breathingTextCode, //// !!
+    code: gradientFlow,
     language: "jsx",
   },
   "glitch-stabilize": {
     component: GlitchStabilize,
-    code: breathingTextCode, // !!!!!!
+    code: glitchStabilize,
+    language: "jsx",
+  },
+  "starwars-text": {
+    component: StarWarsText,
+    code: glitchStabilize, /// !!!!
     language: "jsx",
   },
 };
