@@ -7,9 +7,12 @@ import Typewriter from "./Typewriter/Typewriter";
 import OnHoverSwap from "./OnHoverSwap/OnHoverSwap";
 import BreathingText from "./BreathingText/BreathingText";
 import KineticReveal from "./KineticReveal/KineticReveal";
+// from there no code made
 import NarrativeText from "./NarrativeText/NarrativeText";
 import ASCIIMorph from "./ASCIIMorph/ASCIIMorph";
 import GlitchStabilize from "./GlitchStabilize/GlitchStabilize";
+import GradientFlow from "./GradientFlow/GradientFlow";
+import SoftGlowPulse from "./SoftGlowPulse/SoftGlowPulse";
 
 import blurTextCode from "./BlurText/BlurText.code";
 import perLetterBlurCode from "./PerLetterBlur/PerLetterBlur.code";
@@ -44,7 +47,7 @@ export const ANIMATIONS_REGISTRY = {
   },
   "narrative-text": {
     component: NarrativeText,
-    code: kineticRevealCode,  // !!!!!!
+    code: kineticRevealCode, // !!!!!!
     language: "jsx",
   },
   "wave-text": {
@@ -77,9 +80,19 @@ export const ANIMATIONS_REGISTRY = {
     code: breathingTextCode,
     language: "jsx",
   },
-  "glitch-stabilize":{
-    component: GlitchStabilize,
-    code: breathingTextCode,  // !!!!!!
+  "soft-glow-pulse": {
+    component: SoftGlowPulse,
+    code: breathingTextCode, //// ""
     language: "jsx",
-  }
+  },
+  "gradient-flow": {
+    component: GradientFlow,
+    code: breathingTextCode, //// !!
+    language: "jsx",
+  },
+  "glitch-stabilize": {
+    component: GlitchStabilize,
+    code: breathingTextCode, // !!!!!!
+    language: "jsx",
+  },
 };

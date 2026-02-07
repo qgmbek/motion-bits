@@ -16,8 +16,9 @@ export const ANIMATIONS_DATA = {
       { id: "ascii-morph", name: "ASCII Morph" },
       { id: "on-hover-swap", name: "On Hover Swap" },
       { id: "breathing-text", name: "Breathing Text" },
-            { id: "glitch-stabilize", name: "Glitch Stabilize" },
-
+      { id: "soft-glow-pulse", name: "Soft Glow Pulse" },
+      { id: "gradient-flow", name: "Gradient Flow" },
+      { id: "glitch-stabilize", name: "Glitch Stabilize" },
     ],
   },
   components: {

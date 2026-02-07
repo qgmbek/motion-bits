@@ -63,10 +63,10 @@ export default function LiquidMaskReveal() {
       >
         {/* Parallax Content Container */}
         <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            animate={isInView ? { y: 0, opacity: 1 } : {}}
-            transition={{ duration: 1.5, delay: 0.4, ease: "easeOut" }}
-            style={{ textAlign: "center", padding: "20px" }}
+          initial={{ y: 50, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 1.5, delay: 0.4, ease: "easeOut" }}
+          style={{ textAlign: "center", padding: "20px" }}
         >
           <h1
             style={{
@@ -82,7 +82,7 @@ export default function LiquidMaskReveal() {
             <br />
             <span style={{ fontStyle: "italic" }}>Reveal</span>
           </h1>
-          
+
           <p
             style={{
               marginTop: "2rem",

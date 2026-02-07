@@ -79,3 +79,86 @@ function NoiseLetter({
     </motion.span>
   );
 }
+
+
+
+
+
+// "use client";
+
+// import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
+// import { useRef } from "react";
+
+// export default function NoiseDisplacementText() {
+//   const text = "Noise Displacement Text";
+//   const letters = text.split("");
+
+//   return (
+//     <div
+//       style={{
+//         display: "flex",
+//         justifyContent: "center",
+//         alignItems: "center",
+//         height: "100vh",
+//         background: "#0b0b0b",
+//       }}
+//     >
+//       <h1
+//         style={{
+//           fontSize: "clamp(2.5rem, 6vw, 6rem)",
+//           fontWeight: 600,
+//           letterSpacing: "-0.02em",
+//           display: "flex",
+//           color: "#fff",
+//         }}
+//       >
+//         {letters.map((char, i) => (
+//           <NoiseLetter key={i} char={char} index={i} />
+//         ))}
+//       </h1>
+//     </div>
+//   );
+// }
+
+// function NoiseLetter({
+//   char,
+//   index,
+// }: {
+//   char: string;
+//   index: number;
+// }) {
+//   const x = useMotionValue(0);
+//   const y = useMotionValue(0);
+//   const t = useRef(Math.random() * 1000);
+
+//   useAnimationFrame(() => {
+//     // smooth pseudo-noise (not shaking)
+//     t.current += 0.015;
+
+//     const noiseX =
+//       Math.sin(t.current + index * 0.7) *
+//       Math.cos(t.current * 0.9) *
+//       0.6;
+
+//     const noiseY =
+//       Math.cos(t.current + index * 0.5) *
+//       Math.sin(t.current * 0.8) *
+//       0.6;
+
+//     x.set(noiseX);
+//     y.set(noiseY);
+//   });
+
+//   return (
+//     <motion.span
+//       style={{
+//         display: "inline-block",
+//         x,
+//         y,
+//         willChange: "transform",
+//       }}
+//     >
+//       {char === " " ? "\u00A0" : char}
+//     </motion.span>
+//   );
+// }
