@@ -18,6 +18,7 @@ export const ANIMATIONS_DATA = {
       { id: "breathing-text", name: "Breathing Text" },
       { id: "soft-glow-pulse", name: "Soft Glow Pulse" },
       { id: "gradient-flow", name: "Gradient Flow" },
+      { id: "wednesday", name: "Wednesday" },
       { id: "glitch-stabilize", name: "Glitch Stabilize" },
       { id: "starwars-text", name: "Star Wars Text" },
     ],

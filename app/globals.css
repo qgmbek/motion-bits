@@ -1,5 +1,6 @@
 :root {
-  --primary-color: #eab308;
+  --primary-font: var(--font-red-hat-text), sans-serif;
+  --primary-color: #43d6d6;
   --bg-color: #060606;
 }
 
@@ -10,7 +11,7 @@ body {
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--primary-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
@@ -28,6 +29,7 @@ a {
 }
 
 button {
+  font-family: var(--primary-font);
   background: transparent;
   border: 1px solid #fff;
   padding: 4px;
@@ -48,9 +50,14 @@ button:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #43d6d6;
+  background-color: var(--primary-color);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   opacity: 0.6;
+}
+
+::selection {
+  background: transparent;
+  color: var(--primary-color);
 }

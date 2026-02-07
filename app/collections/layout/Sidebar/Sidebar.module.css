@@ -1,11 +1,14 @@
 .sidebar {
   margin: 12px;
+  margin-top: 0;
   width: 15vw;
   padding: 5px;
+  padding-top: 0;
 
   height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
+
 }
 
 .sidebar::-webkit-scrollbar {
@@ -21,7 +24,7 @@
   gap: 8px;
   margin-top: 6px;
   margin-bottom: 6px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #71717a;
   letter-spacing: 0.1px;
@@ -30,7 +33,7 @@
 .navItem {
   width: 100%;
   text-align: left;
-  padding: 0.5rem 0.75rem;
+  padding: 0.4rem 0.75rem;
   border-radius: 0.375rem;
   font-size: 0.875rem;
   color: #a1a1aa;
@@ -43,6 +46,8 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 6px;
   color: #bbc0c4;
+
+  /* background-color: aquamarine; */
 }
 
 .navItem:hover {

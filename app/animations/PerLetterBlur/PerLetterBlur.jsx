@@ -32,16 +32,12 @@ const letter = {
 
 export default function BlurText() {
   return (
-    <motion.h1
+    <motion.div
       variants={container}
       initial="hidden"
       animate="visible"
       style={{
-        fontSize: 56,
-        fontWeight: 600,
-        color: "#fff",
         letterSpacing: "-0.02em",
-        display: "flex",
       }}
     >
       {text.split("").map((char, i) => (
@@ -56,6 +52,6 @@ export default function BlurText() {
           {char}
         </motion.span>
       ))}
-    </motion.h1>
+    </motion.div>
   );
 }

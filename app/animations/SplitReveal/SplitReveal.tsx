@@ -6,10 +6,9 @@ const text = "Split Reveal";
 
 export default function SplitReveal() {
   return (
-    <h1
+    <div
       style={{
         gap: "0.04em",
-        fontSize: "56px",
       }}
     >
       {text.split("").map((char, i) => (
@@ -40,6 +39,6 @@ export default function SplitReveal() {
           </motion.span>
         </span>
       ))}
-    </h1>
+    </div>
   );
 }

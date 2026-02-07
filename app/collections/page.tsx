@@ -35,7 +35,7 @@ export default function CollectionsPage() {
         <Sidebar currentSlug={currentSlug} onNavigate={setCurrentSlug} />
 
         <div className={styles.collectionWrapper}>
-          <h1 className={styles.collectionName}>{activeItem.name}</h1>
+          <div className={styles.collectionName}>{activeItem.name}</div>
           <div className={styles.tab}>
             <button
               onClick={() => setTab("demo")}
