@@ -6,7 +6,7 @@ type Direction = "left" | "right" | "up" | "down";
 
 interface GradientFlowProps {
   text?: string;
-  speed?: number; // seconds
+  speed?: number;
   direction?: Direction;
 }
 
@@ -41,8 +41,6 @@ export default function GradientFlow({
         repeat: Infinity,
       }}
       style={{
-        fontSize: "54px",
-        fontWeight: 500,
         letterSpacing: "-0.04em",
         lineHeight: 1,
         backgroundImage:

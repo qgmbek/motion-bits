@@ -22,11 +22,7 @@ export default function BreathingText() {
         repeat: reduceMotion ? 0 : Infinity,
       }}
       style={{
-        fontSize: "52px",
-        fontWeight: 400,
         letterSpacing: "-0.02em",
-        color: "#fff",
-        display: "inline-block",
       }}
     >
       Breathing Text

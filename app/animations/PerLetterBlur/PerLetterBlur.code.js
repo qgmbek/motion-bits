@@ -4,50 +4,42 @@ import { motion } from "framer-motion";
 
 const text = "Per Letter Animation";
 
-const container = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.035,
-    },
-  },
-};
-
-const letter = {
-  hidden: {
-    opacity: 0,
-    filter: "blur(12px)",
-    y: 12,
-  },
-  visible: {
-    opacity: 1,
-    filter: "blur(0px)",
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-};
-
-export default function BlurText() {
+export default function PerLetterBlur() {
   return (
-    <motion.h1
-      variants={container}
+    <motion.div
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            staggerChildren: 0.035,
+          },
+        },
+      }}
       initial="hidden"
       animate="visible"
       style={{
-        fontSize: 56,
-        fontWeight: 600,
-        color: "#fff",
         letterSpacing: "-0.02em",
-        display: "flex",
       }}
     >
       {text.split("").map((char, i) => (
         <motion.span
           key={i}
-          variants={letter}
+          variants={{
+            hidden: {
+              opacity: 0,
+              filter: "blur(12px)",
+              y: 12,
+            },
+            visible: {
+              opacity: 1,
+              filter: "blur(0px)",
+              y: 0,
+              transition: {
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1],
+              },
+            },
+          }}
           style={{
             display: "inline-block",
             whiteSpace: "pre",
@@ -56,7 +48,7 @@ export default function BlurText() {
           {char}
         </motion.span>
       ))}
-    </motion.h1>
+    </motion.div>
   );
 }
 `;

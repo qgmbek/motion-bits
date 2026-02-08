@@ -14,7 +14,7 @@ export default function OnHoverSwap() {
       style={{
         display: "inline-flex",
         fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
-        fontSize: "28px",
+        fontSize: "32px",
         fontWeight: 500,
         lineHeight: 1,
       }}
@@ -33,7 +33,7 @@ export default function OnHoverSwap() {
               height: "1em",
             }}
           >
-            {/* FROM CHARACTER */}
+            {/* FROMs */}
             <motion.span
               variants={{
                 rest: { opacity: 1 },
@@ -54,7 +54,7 @@ export default function OnHoverSwap() {
               {fromChar}
             </motion.span>
 
-            {/* TO CHARACTER */}
+            {/* TO */}
             <motion.span
               variants={{
                 rest: { opacity: 0 },

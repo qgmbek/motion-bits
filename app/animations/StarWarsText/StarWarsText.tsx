@@ -8,7 +8,7 @@ export default function StarWarsText() {
         height: "100%",
         width: "100%",
         overflow: "hidden",
-        perspective: "400px",
+        perspective: "300px",
       }}
     >
       <motion.div
@@ -21,7 +21,7 @@ export default function StarWarsText() {
         animate={{
           opacity: [0, 1, 1, 0], // Fades in, stays, then fades out at the top
           y: "-150vh", // Moves all the way up and "away"
-          rotateX: 35,
+          // rotateX: 35,
           scale: 0.3, // Shrinks as it hits the vanishing point
         }}
         transition={{
@@ -35,7 +35,8 @@ export default function StarWarsText() {
           fontSize: "5rem",
           textAlign: "center",
           textTransform: "uppercase",
-          maxWidth: "80%",
+          width: "80%",
+          alignSelf: "center",
           lineHeight: "1.2",
           fontFamily: '"Franklin Gothic", sans-serif',
         }}
@@ -48,6 +49,10 @@ export default function StarWarsText() {
           IT IS A PERIOD OF CIVIL WAR. REBEL SPACESHIPS, STRIKING FROM A HIDDEN
           BASE, HAVE WON THEIR FIRST VICTORY AGAINST THE EVIL GALACTIC EMPIRE.
         </div>
+        <p>
+          A developer mastered Framer Motion and created cinematic typography
+          that felt legendary.
+        </p>
       </motion.div>
     </div>
   );

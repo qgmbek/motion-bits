@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
@@ -50,3 +50,6 @@ export default function Wednesday() {
     </motion.div>
   );
 }
+`;
+
+export default code;

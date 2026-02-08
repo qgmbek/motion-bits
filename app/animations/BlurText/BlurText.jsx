@@ -17,7 +17,7 @@ export default function BlurText() {
       }}
       transition={{
         duration: 1.4,
-        ease: [0.16, 1, 0.3, 1], // awwwards-style ease
+        ease: [0.16, 1, 0.3, 1],
       }}
       style={{
         letterSpacing: "-0.02em",

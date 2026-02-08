@@ -1,4 +1,5 @@
-const code = `"use client";
+const code = `/* eslint-disable prefer-const */
+"use client";
 
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -98,11 +99,10 @@ export default function Typewriter() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       style={{
-        fontSize: "2.2rem",
-        fontWeight: 500,
+        fontSize: "26px",
+        fontWeight: 400,
         letterSpacing: "-0.02em",
         fontFamily: "ui-sans-serif, system-ui",
-        color: "#fff",
       }}
     >
       {display}
@@ -111,7 +111,6 @@ export default function Typewriter() {
   );
 }
 
-/* utils */
 function wait(ms: number) {
   return new Promise((res) => setTimeout(res, ms));
 }

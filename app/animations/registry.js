@@ -12,9 +12,8 @@ import ASCIIMorph from "./ASCIIMorph/ASCIIMorph";
 import GlitchStabilize from "./GlitchStabilize/GlitchStabilize";
 import GradientFlow from "./GradientFlow/GradientFlow";
 import SoftGlowPulse from "./SoftGlowPulse/SoftGlowPulse";
-
-
 import Wednesday from "./Wednesday/Wednesday";
+
 import StarWarsText from "./StarWarsText/StarWarsText";
 
 import blurTextCode from "./BlurText/BlurText.code";
@@ -31,6 +30,7 @@ import asmiiMorphCode from "./ASCIIMorph/ASCIIMorph.code";
 import glitchStabilize from "./GlitchStabilize/GlitchStabilize.code";
 import gradientFlow from "./GradientFlow/GradientFlow.code";
 import softGlowPulse from "./SoftGlowPulse/SoftGlowPulse.code";
+import wednesday from "./Wednesday/Wednesday.code";
 
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
@@ -98,9 +98,9 @@ export const ANIMATIONS_REGISTRY = {
     code: gradientFlow,
     language: "jsx",
   },
-  "wednesday": {
+  wednesday: {
     component: Wednesday,
-    code: gradientFlow,   //// !!!!!!!!!!
+    code: wednesday,
     language: "jsx",
   },
   "glitch-stabilize": {

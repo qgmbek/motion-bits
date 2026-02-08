@@ -21,7 +21,6 @@ export default function SoftGlowPulse() {
         repeatType: "mirror",
       }}
       style={{
-        fontWeight: 600,
         letterSpacing: "-0.02em",
         color: "#eafff9",
         filter: "blur(0.2px)", // kills harsh digital edges

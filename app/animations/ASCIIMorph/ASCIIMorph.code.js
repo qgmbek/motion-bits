@@ -25,7 +25,7 @@ export default function ASCIIMorph() {
 
             return ASCII[Math.floor(Math.random() * ASCII.length)];
           })
-          .join("")
+          .join(""),
       );
 
       frame++;
@@ -42,8 +42,6 @@ export default function ASCIIMorph() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       style={{
         fontFamily: "monospace",
-        fontSize: "clamp(2rem, 6vw, 4rem)",
-        fontWeight: "400",
         letterSpacing: "0.12em",
         color: "#00ffcc",
         textShadow: "0 0 8px rgba(0,255,200,0.4)",

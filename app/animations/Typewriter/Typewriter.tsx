@@ -103,7 +103,6 @@ export default function Typewriter() {
         fontWeight: 400,
         letterSpacing: "-0.02em",
         fontFamily: "ui-sans-serif, system-ui",
-        color: "#fff",
       }}
     >
       {display}
@@ -112,7 +111,6 @@ export default function Typewriter() {
   );
 }
 
-/* utils */
 function wait(ms: number) {
   return new Promise((res) => setTimeout(res, ms));
 }

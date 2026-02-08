@@ -26,6 +26,10 @@ export default function ElasticText() {
             damping: 14,
             mass: 0.8,
             delay: i * 0.07,
+            // !! uncomment below lines for infinitly repeated animation !!
+            // repeat: Infinity,
+            // repeatType: "mirror",
+            // repeatDelay: 0.6,
           }}
         >
           {char}

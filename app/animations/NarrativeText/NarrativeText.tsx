@@ -24,7 +24,7 @@ export default function NarrativeText() {
           display: "flex",
           gap: "0.35em",
           fontSize: "36px",
-          fontWeight: 500,
+          fontWeight: 400,
           lineHeight: 1.1,
         }}
       >
