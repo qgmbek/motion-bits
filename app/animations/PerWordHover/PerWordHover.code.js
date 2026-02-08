@@ -1,22 +1,11 @@
-"use client";
+const code = `"use client";
 import { motion } from "framer-motion";
 
 export default function PerWordHover() {
   const text = "Per Word Hover";
 
   return (
-    <div
-      style={{
-        color: "#fff",
-        fontSize: "2rem",
-        padding: "2rem",
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#000",
-      }}
-    >
+    <div>
       {text.split(" ").map((word, wi) => (
         <motion.span
           key={wi}
@@ -25,7 +14,7 @@ export default function PerWordHover() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.02 }}
-          whileHover={{ scale: 1.04, color: "rgb(139, 1, 170)" }}
+          whileHover={{ scale: 1.04, color: "rgb(208, 0, 255)" }}
         >
           {word}
         </motion.span>
@@ -33,3 +22,6 @@ export default function PerWordHover() {
     </div>
   );
 }
+`;
+
+export default code;

@@ -2,6 +2,7 @@ import BlurText from "./BlurText/BlurText";
 import PerLetterBlur from "./PerLetterBlur/PerLetterBlur";
 import WaveText from "./WaveText/WaveText";
 import ElasticText from "./ElasticText/ElasticText";
+import GravityDrop from "./GravityDrop/GravityDrop";
 import SplitReveal from "./SplitReveal/SplitReveal";
 import Typewriter from "./Typewriter/Typewriter";
 import OnHoverSwap from "./OnHoverSwap/OnHoverSwap";
@@ -13,6 +14,9 @@ import GlitchStabilize from "./GlitchStabilize/GlitchStabilize";
 import GradientFlow from "./GradientFlow/GradientFlow";
 import SoftGlowPulse from "./SoftGlowPulse/SoftGlowPulse";
 import Wednesday from "./Wednesday/Wednesday";
+import Counter from "./Counter/Counter";
+import PerLetterHover from "./PerLetterHover/PerLetterHover";
+import PerWordHover from "./PerWordHover/PerWordHover";
 
 import StarWarsText from "./StarWarsText/StarWarsText";
 
@@ -20,6 +24,7 @@ import blurTextCode from "./BlurText/BlurText.code";
 import perLetterBlurCode from "./PerLetterBlur/PerLetterBlur.code";
 import waveTextCode from "./WaveText/WaveText.code";
 import elasticTextCode from "./ElasticText/ElasticText.code";
+import gravityDrop from "./GravityDrop/GravityDrop.code";
 import splitRevealCode from "./SplitReveal/SplitReveal.code";
 import typewriterCode from "./Typewriter/Typewriter.code";
 import onHoverSwapCode from "./OnHoverSwap/OnHoverSwap.code";
@@ -31,6 +36,9 @@ import glitchStabilize from "./GlitchStabilize/GlitchStabilize.code";
 import gradientFlow from "./GradientFlow/GradientFlow.code";
 import softGlowPulse from "./SoftGlowPulse/SoftGlowPulse.code";
 import wednesday from "./Wednesday/Wednesday.code";
+import counter from "./Counter/Counter.code";
+import perLetterHover from "./PerLetterHover/PerLetterHover.code";
+import perWordHover from "./PerWordHover/PerWordHover.code";
 
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
@@ -68,6 +76,16 @@ export const ANIMATIONS_REGISTRY = {
     code: elasticTextCode,
     language: "jsx",
   },
+  "gravity-drop": {
+    component: GravityDrop,
+    code: gravityDrop,
+    language: "jsx",
+  },
+  counter: {
+    component: Counter,
+    code: counter,
+    language: "jsx",
+  },
   typewriter: {
     component: Typewriter,
     code: typewriterCode,
@@ -81,6 +99,16 @@ export const ANIMATIONS_REGISTRY = {
   "on-hover-swap": {
     component: OnHoverSwap,
     code: onHoverSwapCode,
+    language: "jsx",
+  },
+  "per-letter-hover": {
+    component: PerLetterHover,
+    code: perLetterHover,
+    language: "jsx",
+  },
+  "per-word-hover": {
+    component: PerWordHover,
+    code: perWordHover,
     language: "jsx",
   },
   "breathing-text": {

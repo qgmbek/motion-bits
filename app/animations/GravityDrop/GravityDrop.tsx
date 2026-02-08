@@ -8,15 +8,8 @@ export default function GravityDrop() {
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
         overflow: "hidden",
-        fontSize: "clamp(3rem, 8vw, 6rem)",
-        fontWeight: 700,
-        letterSpacing: "-0.04em",
-        color: "#fff",
+        letterSpacing: "-0.03em",
       }}
     >
       <motion.div
