@@ -18,6 +18,9 @@ import Counter from "./Counter/Counter";
 import PerLetterHover from "./PerLetterHover/PerLetterHover";
 import PerWordHover from "./PerWordHover/PerWordHover";
 
+import BlueprintWireframe from "./BlueprintWireframe/BlueprintWireframe";
+import DataStreamDecode from "./DataStreamDecode/DataStreamDecode";
+import ScanlineReveal from "./ScanlineReveal/ScanlineReveal";
 import StarWarsText from "./StarWarsText/StarWarsText";
 
 import blurTextCode from "./BlurText/BlurText.code";
@@ -94,6 +97,21 @@ export const ANIMATIONS_REGISTRY = {
   "ascii-morph": {
     component: ASCIIMorph,
     code: asmiiMorphCode,
+    language: "jsx",
+  },
+  "data-stream-decode": {
+    component: DataStreamDecode,
+    code: "",
+    language: "jsx",
+  },
+  "blueprint-wireframe": {
+    component: BlueprintWireframe,
+    code: "",
+    language: "jsx",
+  },
+  "scanline-reveal": {
+    component: ScanlineReveal,
+    code: "",
     language: "jsx",
   },
   "on-hover-swap": {

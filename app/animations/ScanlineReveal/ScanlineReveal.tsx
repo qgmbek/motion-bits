@@ -3,10 +3,9 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 
-export default function ScanlineRevealText() {
+export default function ScanlineReveal() {
   const text = "Scanline Reveal";
 
-  // split text into characters so scan feels granular
   const chars = useMemo(() => text.split(""), [text]);
 
   return (
@@ -15,29 +14,9 @@ export default function ScanlineRevealText() {
         position: "relative",
         display: "inline-block",
         overflow: "hidden",
-        background: "#000",
-        padding: "24px 32px",
+        padding: "24px 12px",
       }}
     >
-      {/* PHOSPHOR GLOW */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          filter: "blur(12px)",
-          opacity: 0.35,
-          pointerEvents: "none",
-          color: "#7CFF9B",
-          fontSize: 48,
-          fontFamily: "monospace",
-          letterSpacing: "0.08em",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {text}
-      </div>
-
-      {/* TEXT */}
       <div
         style={{
           position: "relative",
@@ -73,12 +52,11 @@ export default function ScanlineRevealText() {
         ))}
       </div>
 
-      {/* SCANLINE MASK */}
       <motion.div
-        initial={{ y: "-120%" }}
+        initial={{ y: "-140%" }}
         animate={{ y: "120%" }}
         transition={{
-          duration: 1.1,
+          duration: 0.8,
           ease: "linear",
         }}
         style={{
