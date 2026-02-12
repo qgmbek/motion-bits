@@ -1,114 +1,89 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useEffect, useRef } from "react";
+import "./CodeGrid.css";
 
-export default function ScanlineRevealText() {
-  const text = "Scanline Reveal";
+const cardData = [
+  {
+    icon: "fa-apartment",
+    title: "Apartments",
+    subtitle: "Places to be apart. Wait, what?",
+  },
+  {
+    icon: "fa-unicorn",
+    title: "Unicorns",
+    subtitle: "A single corn. Er, I mean horn.",
+  },
+  {
+    icon: "fa-blender-phone",
+    title: "Blender Phones",
+    subtitle: "These absolutely deserve to exist.",
+  },
+  {
+    icon: "fa-person-to-portal",
+    title: "Adios",
+    subtitle: "See you...",
+  },
+  {
+    icon: "fa-person-from-portal",
+    title: "I mean hello",
+    subtitle: "...over here.",
+  },
+  {
+    icon: "fa-otter",
+    title: "Otters",
+    subtitle: "Look at me, imma cute lil fella.",
+  },
+];
 
-  // split text into characters so scan feels granular
-  const chars = useMemo(() => text.split(""), [text]);
+export default function CodeGrid() {
+  const cardsRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    const cardsContainer = cardsRef.current;
+    if (!cardsContainer) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const cards = cardsContainer.querySelectorAll<HTMLDivElement>(".card");
+
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+      });
+    };
+
+    cardsContainer.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      cardsContainer.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
   return (
-    <div
-      style={{
-        position: "relative",
-        display: "inline-block",
-        overflow: "hidden",
-        background: "#000",
-        padding: "24px 32px",
-      }}
-    >
-      {/* PHOSPHOR GLOW */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          filter: "blur(12px)",
-          opacity: 0.35,
-          pointerEvents: "none",
-          color: "#7CFF9B",
-          fontSize: 48,
-          fontFamily: "monospace",
-          letterSpacing: "0.08em",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {text}
-      </div>
-
-      {/* TEXT */}
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          fontSize: 48,
-          fontFamily: "monospace",
-          letterSpacing: "0.08em",
-          color: "#7CFF9B",
-        }}
-      >
-        {chars.map((char, i) => (
-          <motion.span
-            key={i}
-            initial={{
-              opacity: 0,
-              filter: "blur(6px)",
-            }}
-            animate={{
-              opacity: [0, 1, 0.85, 1],
-              filter: ["blur(6px)", "blur(0px)"],
-            }}
-            transition={{
-              delay: i * 0.035,
-              duration: 0.45,
-              ease: "easeOut",
-            }}
-            style={{
-              display: "inline-block",
-            }}
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
+    <div>
+      <div id="cards" ref={cardsRef}>
+        {cardData.map((card, index) => (
+          <div className="card" key={index}>
+            <div className="card-content">
+              <div className="card-image">
+                <i className={`fa-duotone ${card.icon}`}></i>
+              </div>
+              <div className="card-info-wrapper">
+                <div className="card-info">
+                  <i className={`fa-duotone ${card.icon}`}></i>
+                  <div className="card-info-title">
+                    <h3>{card.title}</h3>
+                    <h4>{card.subtitle}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
-
-      {/* SCANLINE MASK */}
-      <motion.div
-        initial={{ y: "-120%" }}
-        animate={{ y: "120%" }}
-        transition={{
-          duration: 1.1,
-          ease: "linear",
-        }}
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          height: "24px",
-          background:
-            "linear-gradient(to bottom, transparent, rgba(124,255,155,0.35), transparent)",
-          mixBlendMode: "screen",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* FLICKER */}
-      <motion.div
-        animate={{ opacity: [0.04, 0.09, 0.05, 0.08] }}
-        transition={{
-          repeat: Infinity,
-          duration: 0.15,
-          ease: "linear",
-        }}
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 2px, transparent 4px)",
-          pointerEvents: "none",
-        }}
-      />
     </div>
   );
 }
