@@ -33,6 +33,9 @@ export const ANIMATIONS_DATA = {
   components: {
     title: "Components",
     icon: <Square size={18} />,
-    items: [{ id: "dock", name: "MacOS Dock" }],
+    items: [
+      { id: "dock", name: "MacOS Dock" },
+      { id: "code-grid", name: "Code Grid" },
+    ],
   },
 };

@@ -1,16 +1,15 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { RotateCcw } from "lucide-react";
-import { Eye, Code } from "lucide-react";
+import { RotateCcw, Eye, Code } from "lucide-react";
 
 import Header from "./layout/Header/Header";
 import { Sidebar } from "./layout/Sidebar/Sidebar";
 import CodeBlock from "../components/CodeBlock/CodeBlock";
+import styles from "./collections.module.css";
 
 import { ANIMATIONS_DATA } from "../constants/animations";
 import { ANIMATIONS_REGISTRY } from "../animations/registry";
-import styles from "./collections.module.css";
 
 type AnimationSlug = keyof typeof ANIMATIONS_REGISTRY;
 
@@ -78,7 +77,7 @@ export default function CollectionsPage() {
 
           {tab === "code" && (
             <div className={styles.code}>
-              <CodeBlock code={activeCode} language={activeEntry.language} />
+              <CodeBlock code={activeCode} language="jsx" />
             </div>
           )}
 

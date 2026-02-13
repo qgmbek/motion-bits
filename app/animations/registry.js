@@ -43,120 +43,104 @@ import counter from "./Counter/Counter.code";
 import perLetterHover from "./PerLetterHover/PerLetterHover.code";
 import perWordHover from "./PerWordHover/PerWordHover.code";
 
+// components
+import CodeGrid from "./components/CodeGrid/CodeGrid";
+
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
     component: BlurText,
     code: blurTextCode,
-    language: "jsx",
   },
   "per-letter-blur": {
     component: PerLetterBlur,
     code: perLetterBlurCode,
-    language: "jsx",
   },
   "split-reveal": {
     component: SplitReveal,
     code: splitRevealCode,
-    language: "jsx",
   },
   "kinetic-reveal": {
     component: KineticReveal,
     code: kineticRevealCode,
-    language: "jsx",
   },
   "narrative-text": {
     component: NarrativeText,
     code: narrativeText,
-    language: "jsx",
   },
   "wave-text": {
     component: WaveText,
     code: waveTextCode,
-    language: "jsx",
   },
   "elastic-text": {
     component: ElasticText,
     code: elasticTextCode,
-    language: "jsx",
   },
   "gravity-drop": {
     component: GravityDrop,
     code: gravityDrop,
-    language: "jsx",
   },
   counter: {
     component: Counter,
     code: counter,
-    language: "jsx",
   },
   typewriter: {
     component: Typewriter,
     code: typewriterCode,
-    language: "jsx",
   },
   "ascii-morph": {
     component: ASCIIMorph,
     code: asmiiMorphCode,
-    language: "jsx",
   },
   "data-stream-decode": {
     component: DataStreamDecode,
     code: "",
-    language: "jsx",
   },
   "blueprint-wireframe": {
     component: BlueprintWireframe,
     code: "",
-    language: "jsx",
   },
   "scanline-reveal": {
     component: ScanlineReveal,
     code: "",
-    language: "jsx",
   },
   "on-hover-swap": {
     component: OnHoverSwap,
     code: onHoverSwapCode,
-    language: "jsx",
   },
   "per-letter-hover": {
     component: PerLetterHover,
     code: perLetterHover,
-    language: "jsx",
   },
   "per-word-hover": {
     component: PerWordHover,
     code: perWordHover,
-    language: "jsx",
   },
   "breathing-text": {
     component: BreathingText,
     code: breathingTextCode,
-    language: "jsx",
   },
   "soft-glow-pulse": {
     component: SoftGlowPulse,
     code: softGlowPulse,
-    language: "jsx",
   },
   "gradient-flow": {
     component: GradientFlow,
     code: gradientFlow,
-    language: "jsx",
   },
   wednesday: {
     component: Wednesday,
     code: wednesday,
-    language: "jsx",
   },
   "glitch-stabilize": {
     component: GlitchStabilize,
     code: glitchStabilize,
-    language: "jsx",
   },
   "starwars-text": {
     component: StarWarsText,
-    code: glitchStabilize, /// !!!!
-    language: "jsx",
+    code: "",
+  },
+  "code-grid": {
+    component: CodeGrid,
+    code: "",
   },
 };
