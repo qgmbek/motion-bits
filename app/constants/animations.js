@@ -18,6 +18,7 @@ export const ANIMATIONS_DATA = {
       { id: "ascii-morph", name: "ASCII Morph" },
       { id: "data-stream-decode", name: "Data Stream Decode" },
       { id: "blueprint-wireframe", name: "Blueprint Wireframe Text" },
+      { id: "led-text", name: "Led Text" },
       { id: "scanline-reveal", name: "Scanline Reveal" },
       { id: "on-hover-swap", name: "On Hover Swap" },
       { id: "per-letter-hover", name: "Per Letter Hover" },

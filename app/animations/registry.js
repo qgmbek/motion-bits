@@ -19,6 +19,7 @@ import PerLetterHover from "./PerLetterHover/PerLetterHover";
 import PerWordHover from "./PerWordHover/PerWordHover";
 
 import BlueprintWireframe from "./BlueprintWireframe/BlueprintWireframe";
+import LedText from "./LedText/LedText";
 import DataStreamDecode from "./DataStreamDecode/DataStreamDecode";
 import ScanlineReveal from "./ScanlineReveal/ScanlineReveal";
 import StarWarsText from "./StarWarsText/StarWarsText";
@@ -97,6 +98,10 @@ export const ANIMATIONS_REGISTRY = {
   },
   "blueprint-wireframe": {
     component: BlueprintWireframe,
+    code: "",
+  },
+  "led-text": {
+    component: LedText,
     code: "",
   },
   "scanline-reveal": {
