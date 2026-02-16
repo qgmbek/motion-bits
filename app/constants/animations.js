@@ -28,6 +28,8 @@ export const ANIMATIONS_DATA = {
       { id: "gradient-flow", name: "Gradient Flow" },
       { id: "wednesday", name: "Wednesday" },
       { id: "glitch-stabilize", name: "Glitch Stabilize" },
+      { id: "distored-text", name: "Distorted Text" },
+      { id: "word-morph", name: "Word Morph" },
       { id: "starwars-text", name: "Star Wars Text" },
     ],
   },

@@ -22,6 +22,8 @@ import BlueprintWireframe from "./BlueprintWireframe/BlueprintWireframe";
 import LedText from "./LedText/LedText";
 import DataStreamDecode from "./DataStreamDecode/DataStreamDecode";
 import ScanlineReveal from "./ScanlineReveal/ScanlineReveal";
+import DistortedText from "./DistortedText/DistortedText";
+import WordMorph from "./WordMorph/WordMorph";
 import StarWarsText from "./StarWarsText/StarWarsText";
 
 import blurTextCode from "./BlurText/BlurText.code";
@@ -139,6 +141,14 @@ export const ANIMATIONS_REGISTRY = {
   "glitch-stabilize": {
     component: GlitchStabilize,
     code: glitchStabilize,
+  },
+  "distored-text": {
+    component: DistortedText,
+    code: "",
+  },
+   "word-morph": {
+    component: WordMorph,
+    code: "",
   },
   "starwars-text": {
     component: StarWarsText,

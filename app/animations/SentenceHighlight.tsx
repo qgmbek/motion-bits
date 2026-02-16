@@ -3,9 +3,9 @@
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 
-export default function NarrativeSentenceHighlight() {
+export default function SentenceHighlight() {
   const sentence =
-    "How do you plan to live your life, Thorfinn? You haven't thought about it, right? Move forward already. Don't stay stuck in a damn boring place like this forever. Go far ahead. Go beyond the world where Thors went. You're Thors' son. Go. That's your real fight. Become a true warrior.";
+    "Don't stay stuck in a damn boring place like this forever. Go far ahead. Go beyond the world where Thors went. You're Thors' son. Go. That's your real fight. Become a true warrior.";
   const words = sentence.split(" ");
   const controls = useAnimation();
 
