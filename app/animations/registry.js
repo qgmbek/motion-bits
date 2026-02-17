@@ -48,6 +48,8 @@ import perWordHover from "./PerWordHover/PerWordHover.code";
 
 // components
 import CodeGrid from "./components/CodeGrid/CodeGrid";
+import BorderShard from "./components/BorderShard/BorderShard";
+import GradientBorder from "./components/GradientBorder/GradientBorder";
 
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
@@ -146,7 +148,7 @@ export const ANIMATIONS_REGISTRY = {
     component: DistortedText,
     code: "",
   },
-   "word-morph": {
+  "word-morph": {
     component: WordMorph,
     code: "",
   },
@@ -158,4 +160,12 @@ export const ANIMATIONS_REGISTRY = {
     component: CodeGrid,
     code: "",
   },
+  "border-shard": {
+    component: BorderShard,
+    code: "",
+  },
+  "gradient-border": {
+    component: GradientBorder,
+    code: "",
+  }
 };

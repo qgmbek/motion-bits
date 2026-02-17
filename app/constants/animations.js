@@ -37,8 +37,9 @@ export const ANIMATIONS_DATA = {
     title: "Components",
     icon: <Square size={18} />,
     items: [
-      { id: "dock", name: "MacOS Dock" },
       { id: "code-grid", name: "Code Grid" },
+      { id: "border-shard", name: "Border Shard" },
+      // { id: "gradient-border", name: "Gradient Border" },
     ],
   },
 };
