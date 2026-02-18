@@ -23,14 +23,12 @@ export const ANIMATIONS_DATA = {
       { id: "on-hover-swap", name: "On Hover Swap" },
       { id: "per-letter-hover", name: "Per Letter Hover" },
       { id: "per-word-hover", name: "Per Word Hover" },
-      { id: "breathing-text", name: "Breathing Text" },
       { id: "soft-glow-pulse", name: "Soft Glow Pulse" },
       { id: "gradient-flow", name: "Gradient Flow" },
       { id: "wednesday", name: "Wednesday" },
       { id: "glitch-stabilize", name: "Glitch Stabilize" },
       { id: "distored-text", name: "Distorted Text" },
       { id: "word-morph", name: "Word Morph" },
-      { id: "starwars-text", name: "Star Wars Text" },
     ],
   },
   components: {
@@ -39,7 +37,8 @@ export const ANIMATIONS_DATA = {
     items: [
       { id: "code-grid", name: "Code Grid" },
       { id: "border-shard", name: "Border Shard" },
-      // { id: "gradient-border", name: "Gradient Border" },
+      { id: "gradient-border", name: "Gradient Border" },
+      { id: "gradient-card", name: "Gradient Card" },
     ],
   },
 };

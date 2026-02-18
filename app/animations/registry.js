@@ -1,55 +1,57 @@
-import BlurText from "./BlurText/BlurText";
-import PerLetterBlur from "./PerLetterBlur/PerLetterBlur";
-import WaveText from "./WaveText/WaveText";
-import ElasticText from "./ElasticText/ElasticText";
-import GravityDrop from "./GravityDrop/GravityDrop";
-import SplitReveal from "./SplitReveal/SplitReveal";
-import Typewriter from "./Typewriter/Typewriter";
-import OnHoverSwap from "./OnHoverSwap/OnHoverSwap";
-import BreathingText from "./BreathingText/BreathingText";
-import KineticReveal from "./KineticReveal/KineticReveal";
-import NarrativeText from "./NarrativeText/NarrativeText";
-import ASCIIMorph from "./ASCIIMorph/ASCIIMorph";
-import GlitchStabilize from "./GlitchStabilize/GlitchStabilize";
-import GradientFlow from "./GradientFlow/GradientFlow";
-import SoftGlowPulse from "./SoftGlowPulse/SoftGlowPulse";
-import Wednesday from "./Wednesday/Wednesday";
-import Counter from "./Counter/Counter";
-import PerLetterHover from "./PerLetterHover/PerLetterHover";
-import PerWordHover from "./PerWordHover/PerWordHover";
+import BlurText from "./text/BlurText/BlurText";
+import PerLetterBlur from "./text/PerLetterBlur/PerLetterBlur";
+import WaveText from "./text/WaveText/WaveText";
+import ElasticText from "./text/ElasticText/ElasticText";
+import GravityDrop from "./text/GravityDrop/GravityDrop";
+import SplitReveal from "./text/SplitReveal/SplitReveal";
+import Typewriter from "./text/Typewriter/Typewriter";
+import OnHoverSwap from "./text/OnHoverSwap/OnHoverSwap";
+import KineticReveal from "./text/KineticReveal/KineticReveal";
+import NarrativeText from "./text/NarrativeText/NarrativeText";
+import ASCIIMorph from "./text/ASCIIMorph/ASCIIMorph";
+import GlitchStabilize from "./text/GlitchStabilize/GlitchStabilize";
+import GradientFlow from "./text/GradientFlow/GradientFlow";
+import SoftGlowPulse from "./text/SoftGlowPulse/SoftGlowPulse";
+import Wednesday from "./text/Wednesday/Wednesday";
+import Counter from "./text/Counter/Counter";
+import PerLetterHover from "./text/PerLetterHover/PerLetterHover";
+import PerWordHover from "./text/PerWordHover/PerWordHover";
 
-import BlueprintWireframe from "./BlueprintWireframe/BlueprintWireframe";
-import LedText from "./LedText/LedText";
-import DataStreamDecode from "./DataStreamDecode/DataStreamDecode";
-import ScanlineReveal from "./ScanlineReveal/ScanlineReveal";
-import DistortedText from "./DistortedText/DistortedText";
-import WordMorph from "./WordMorph/WordMorph";
-import StarWarsText from "./StarWarsText/StarWarsText";
+import BlueprintWireframe from "./text/BlueprintWireframe/BlueprintWireframe";
+import LedText from "./text/LedText/LedText";
+import DataStreamDecode from "./text/DataStreamDecode/DataStreamDecode";
+import ScanlineReveal from "./text/ScanlineReveal/ScanlineReveal";
+import DistortedText from "./text/DistortedText/DistortedText";
+import WordMorph from "./text/WordMorph/WordMorph";
 
-import blurTextCode from "./BlurText/BlurText.code";
-import perLetterBlurCode from "./PerLetterBlur/PerLetterBlur.code";
-import waveTextCode from "./WaveText/WaveText.code";
-import elasticTextCode from "./ElasticText/ElasticText.code";
-import gravityDrop from "./GravityDrop/GravityDrop.code";
-import splitRevealCode from "./SplitReveal/SplitReveal.code";
-import typewriterCode from "./Typewriter/Typewriter.code";
-import onHoverSwapCode from "./OnHoverSwap/OnHoverSwap.code";
-import breathingTextCode from "./BreathingText/BreathingText.code";
-import kineticRevealCode from "./KineticReveal/KineticReveal.code";
-import narrativeText from "./NarrativeText/NarrativeText.code";
-import asmiiMorphCode from "./ASCIIMorph/ASCIIMorph.code";
-import glitchStabilize from "./GlitchStabilize/GlitchStabilize.code";
-import gradientFlow from "./GradientFlow/GradientFlow.code";
-import softGlowPulse from "./SoftGlowPulse/SoftGlowPulse.code";
-import wednesday from "./Wednesday/Wednesday.code";
-import counter from "./Counter/Counter.code";
-import perLetterHover from "./PerLetterHover/PerLetterHover.code";
-import perWordHover from "./PerWordHover/PerWordHover.code";
+import blurTextCode from "./text/BlurText/BlurText.code";
+import perLetterBlurCode from "./text/PerLetterBlur/PerLetterBlur.code";
+import waveTextCode from "./text/WaveText/WaveText.code";
+import elasticTextCode from "./text/ElasticText/ElasticText.code";
+import gravityDrop from "./text/GravityDrop/GravityDrop.code";
+import splitRevealCode from "./text/SplitReveal/SplitReveal.code";
+import typewriterCode from "./text/Typewriter/Typewriter.code";
+import onHoverSwapCode from "./text/OnHoverSwap/OnHoverSwap.code";
+import kineticRevealCode from "./text/KineticReveal/KineticReveal.code";
+import narrativeText from "./text/NarrativeText/NarrativeText.code";
+import asmiiMorphCode from "./text/ASCIIMorph/ASCIIMorph.code";
+import glitchStabilize from "./text/GlitchStabilize/GlitchStabilize.code";
+import gradientFlow from "./text/GradientFlow/GradientFlow.code";
+import softGlowPulse from "./text/SoftGlowPulse/SoftGlowPulse.code";
+import wednesday from "./text/Wednesday/Wednesday.code";
+import counter from "./text/Counter/Counter.code";
+import perLetterHover from "./text/PerLetterHover/PerLetterHover.code";
+import perWordHover from "./text/PerWordHover/PerWordHover.code";
 
 // components
 import CodeGrid from "./components/CodeGrid/CodeGrid";
 import BorderShard from "./components/BorderShard/BorderShard";
 import GradientBorder from "./components/GradientBorder/GradientBorder";
+import GradientCard from "./components/GradientCard/GradientCard";
+
+import codegrid from "./components/CodeGrid/CodeGrid.code";
+import borderShard from "./components/BorderShard/BorderShard.code";
+import gradientCard from "./components/GradientCard/GradientCard.code";
 
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
@@ -124,10 +126,6 @@ export const ANIMATIONS_REGISTRY = {
     component: PerWordHover,
     code: perWordHover,
   },
-  "breathing-text": {
-    component: BreathingText,
-    code: breathingTextCode,
-  },
   "soft-glow-pulse": {
     component: SoftGlowPulse,
     code: softGlowPulse,
@@ -152,20 +150,20 @@ export const ANIMATIONS_REGISTRY = {
     component: WordMorph,
     code: "",
   },
-  "starwars-text": {
-    component: StarWarsText,
-    code: "",
-  },
   "code-grid": {
     component: CodeGrid,
-    code: "",
+    code: codegrid,
   },
   "border-shard": {
     component: BorderShard,
-    code: "",
+    code: borderShard,
   },
   "gradient-border": {
     component: GradientBorder,
     code: "",
-  }
+  },
+  "gradient-card": {
+    component: GradientCard,
+    code: gradientCard,
+  },
 };

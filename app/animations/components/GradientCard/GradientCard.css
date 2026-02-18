@@ -1,0 +1,99 @@
+.gc-wrapper {
+  background-color: rgb(10, 10, 10);
+  display: grid;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  place-items: center;
+}
+
+.gc-card {
+  aspect-ratio: 1 / 1.6;
+  border: 2px solid rgb(3, 169, 244);
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  max-width: 30%;
+}
+
+.gc-card:hover:before {
+  background-position: 100% 100%;
+  transform: scale(1.08, 1.03);
+}
+
+.gc-card:hover > .gc-card-content {
+  background-position: -10% 0%;
+}
+
+.gc-card:hover > .gc-card-content > .gc-card-subtitle > .gc-card-subtitle-word {
+  opacity: 1;
+  transform: translateY(0%);
+  transition:
+    opacity 0ms,
+    transform 200ms cubic-bezier(0.9, 0.06, 0.15, 0.9);
+}
+
+.gc-card:before {
+  background: linear-gradient(
+    130deg,
+    transparent 0% 33%,
+    rgb(98, 0, 234) 66%,
+    rgb(236, 64, 122) 83.5%,
+    rgb(253, 216, 53) 100%
+  );
+  background-position: 0% 0%;
+  background-size: 300% 300%;
+  content: "";
+  height: 100%;
+  left: 0px;
+  pointer-events: none;
+  position: absolute;
+  top: 0px;
+  transition:
+    background-position 350ms ease,
+    transform 350ms ease;
+  width: 100%;
+  z-index: 1;
+}
+
+.gc-card-content {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.2) 8%,
+    transparent 8%
+  );
+  background-position: 0% 0%;
+  background-size: 5vmin 5vmin;
+  height: calc(100% - 10vmin);
+  padding: 14px;
+  position: relative;
+  transition: background-position 350ms ease;
+  width: calc(100% - 10vmin);
+  z-index: 2;
+}
+
+.gc-card-title,
+.gc-card-subtitle {
+  color: white;
+  font-family: "Anek Latin", sans-serif;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.gc-card-title {
+  font-size: 20px;
+}
+
+.gc-card-subtitle {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.gc-card-subtitle-word {
+  display: inline-block;
+  margin: 0vmin 0.3vmin;
+  opacity: 0;
+  position: relative;
+  transform: translateY(40%);
+  transition: none;
+}
