@@ -76,6 +76,7 @@
   );
   background-position: 50% 50%;
   background-size: 1.1rem 1.1rem; */
+  overflow: hidden;
 }
 
 .replayButton {

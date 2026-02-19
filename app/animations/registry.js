@@ -48,6 +48,7 @@ import CodeGrid from "./components/CodeGrid/CodeGrid";
 import BorderShard from "./components/BorderShard/BorderShard";
 import GradientBorder from "./components/GradientBorder/GradientBorder";
 import GradientCard from "./components/GradientCard/GradientCard";
+import ScrambleScreen from "./components/ScrambleScreen/ScrambleScreen";
 
 import codegrid from "./components/CodeGrid/CodeGrid.code";
 import borderShard from "./components/BorderShard/BorderShard.code";
@@ -165,5 +166,9 @@ export const ANIMATIONS_REGISTRY = {
   "gradient-card": {
     component: GradientCard,
     code: gradientCard,
+  },
+  "scramble-screen": {
+    component: ScrambleScreen,
+    code: "",
   },
 };

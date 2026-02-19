@@ -39,6 +39,7 @@ export const ANIMATIONS_DATA = {
       { id: "border-shard", name: "Border Shard" },
       { id: "gradient-border", name: "Gradient Border" },
       { id: "gradient-card", name: "Gradient Card" },
+      { id: "scramble-screen", name: "Scramble Screen" },
     ],
   },
 };
