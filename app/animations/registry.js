@@ -49,6 +49,8 @@ import BorderShard from "./components/BorderShard/BorderShard";
 import GradientBorder from "./components/GradientBorder/GradientBorder";
 import GradientCard from "./components/GradientCard/GradientCard";
 import ScrambleScreen from "./components/ScrambleScreen/ScrambleScreen";
+import GlowStars from "./components/GlowStars/GlowStars";
+import PurpleTrails from "./components/PurpleTrail/PurpleTrail";
 
 import codegrid from "./components/CodeGrid/CodeGrid.code";
 import borderShard from "./components/BorderShard/BorderShard.code";
@@ -169,6 +171,14 @@ export const ANIMATIONS_REGISTRY = {
   },
   "scramble-screen": {
     component: ScrambleScreen,
+    code: "",
+  },
+  "glow-stars": {
+    component: GlowStars,
+    code: "",
+  },
+  "purple-trails": {
+    component: PurpleTrails,
     code: "",
   },
 };

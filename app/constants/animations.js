@@ -40,6 +40,8 @@ export const ANIMATIONS_DATA = {
       { id: "gradient-border", name: "Gradient Border" },
       { id: "gradient-card", name: "Gradient Card" },
       { id: "scramble-screen", name: "Scramble Screen" },
+      { id: "glow-stars", name: "Glow Stars" },
+      { id: "purple-trails", name: "Purple Trails" },
     ],
   },
 };
