@@ -17,6 +17,7 @@ import Counter from "./text/Counter/Counter";
 import PerLetterHover from "./text/PerLetterHover/PerLetterHover";
 import PerWordHover from "./text/PerWordHover/PerWordHover";
 
+import Severance from "./text/Severance/Severance";
 import BlueprintWireframe from "./text/BlueprintWireframe/BlueprintWireframe";
 import LedText from "./text/LedText/LedText";
 import DataStreamDecode from "./text/DataStreamDecode/DataStreamDecode";
@@ -49,6 +50,7 @@ import BorderShard from "./components/BorderShard/BorderShard";
 import GradientBorder from "./components/GradientBorder/GradientBorder";
 import GradientCard from "./components/GradientCard/GradientCard";
 import ScrambleScreen from "./components/ScrambleScreen/ScrambleScreen";
+import LudwigHover from "./components/LudwigHover/LudwigHover";
 import GlowStars from "./components/GlowStars/GlowStars";
 import PurpleTrails from "./components/PurpleTrail/PurpleTrail";
 
@@ -141,6 +143,10 @@ export const ANIMATIONS_REGISTRY = {
     component: Wednesday,
     code: wednesday,
   },
+  severance: {
+    component: Severance,
+    code: "!",
+  },
   "glitch-stabilize": {
     component: GlitchStabilize,
     code: glitchStabilize,
@@ -171,6 +177,10 @@ export const ANIMATIONS_REGISTRY = {
   },
   "scramble-screen": {
     component: ScrambleScreen,
+    code: "",
+  },
+  "ludwig-hover": {
+    component: LudwigHover,
     code: "",
   },
   "glow-stars": {

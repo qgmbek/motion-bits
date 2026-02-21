@@ -1,0 +1,131 @@
+.ldh-wrapper {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#ldh-cards {
+  width: 100%;
+  display: flex;
+  gap: 50px;
+}
+
+.ldh-card {
+  position: relative;
+  cursor: pointer;
+  transition: scale 100ms;
+}
+
+.ldh-card:active {
+  scale: 0.98;
+}
+
+.ldh-card-image {
+  width: 180px;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+}
+
+.ldh-card-front-image {
+  position: relative;
+  z-index: 2;
+}
+
+.ldh-card-faders {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1500ms;
+  pointer-events: none;
+}
+
+.ldh-card:hover .ldh-card-faders {
+  opacity: 1;
+}
+
+.ldh-card-fader {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.ldh-card-fader:nth-child(odd) {
+  animation: ldh-fade-left 3s linear infinite;
+}
+
+.ldh-card-fader:nth-child(even) {
+  animation: ldh-fade-right 3s linear infinite;
+}
+
+.ldh-card-fader:is(:nth-child(3), :nth-child(4)) {
+  animation-delay: 750ms;
+}
+
+.ldh-card-fader:is(:nth-child(5), :nth-child(6)) {
+  animation-delay: 1500ms;
+}
+
+.ldh-card-fader:is(:nth-child(7), :nth-child(8)) {
+  animation-delay: 2250ms;
+}
+
+@keyframes ldh-fade-left {
+  from {
+    scale: 1;
+    translate: 0%;
+    opacity: 1;
+  }
+  to {
+    scale: 0.8;
+    translate: -30%;
+    opacity: 0;
+  }
+}
+
+@keyframes ldh-fade-right {
+  from {
+    scale: 1;
+    translate: 0%;
+    opacity: 1;
+  }
+  to {
+    scale: 0.8;
+    translate: 30%;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 1200px) {
+  .ldh-wrapper {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  #ldh-cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    padding: 4rem;
+  }
+
+  .ldh-card-image {
+    width: 400px;
+  }
+}
+
+@media (max-width: 600px) {
+  #ldh-cards {
+    gap: 2rem;
+    padding: 2rem;
+  }
+
+  .ldh-card {
+    width: 80%;
+  }
+
+  .ldh-card-image {
+    width: 100%;
+  }
+}
