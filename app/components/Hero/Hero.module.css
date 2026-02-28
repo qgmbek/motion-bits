@@ -1,0 +1,38 @@
+.main {
+  width: 100%;
+  height: 100vh;
+  padding-bottom: 100px;
+
+  /* background-image: url("/bg.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+}
+
+.title {
+  width: fit-content;
+  font-size: 66px;
+  color: #fff;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  width: fit-content;
+  font-size: 22px;
+  color: #d6d6d6;
+  font-weight: 500;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}

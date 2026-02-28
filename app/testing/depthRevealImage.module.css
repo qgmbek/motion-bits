@@ -1,0 +1,37 @@
+.container {
+  position: relative;
+  width: 500px;
+  height: 650px;
+  border-radius: 28px;
+  overflow: hidden;
+  cursor: pointer;
+
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  will-change: transform;
+
+  box-shadow: 0 50px 120px rgba(0, 0, 0, 0.25);
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+
+/* REAL Unsplash images (always available) */
+
+.back {
+  background-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80");
+  filter: brightness(0.9);
+}
+
+.mid {
+  background-image: url("https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=1200&q=80");
+}
+
+.front {
+  background-image: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80");
+}

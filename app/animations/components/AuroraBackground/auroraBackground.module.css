@@ -1,0 +1,57 @@
+.wrapper {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #040509;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blob {
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  filter: blur(140px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Different shapes via gradient centers */
+.blob1 {
+  background: radial-gradient(
+    ellipse at 30% 60%,
+    #00f5d4,
+    #3a86ff,
+    transparent 70%
+  );
+}
+
+.blob2 {
+  background: radial-gradient(
+    ellipse at 70% 30%,
+    #ff006e,
+    #ffbe0b,
+    transparent 70%
+  );
+}
+
+.blob3 {
+  background: radial-gradient(
+    ellipse at 50% 80%,
+    #8338ec,
+    #00ffcc,
+    transparent 70%
+  );
+}
+
+.text {
+  position: relative;
+  font-size: clamp(2rem, 6vw, 5rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: white;
+  z-index: 2;
+}
