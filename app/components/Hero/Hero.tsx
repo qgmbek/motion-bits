@@ -4,6 +4,7 @@ import { Sparkles, Boxes, Code2 } from "lucide-react";
 
 import PixelDissolveButton from "./PixelDissolveButton";
 import { SpiderCursor } from "./SpiderCursor";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -24,11 +25,11 @@ export default function Hero() {
       </div>
 
       <div className={styles.subtitle}>
-        Easily adoptable animations that can be integrated into existing style
-        vibes.
+        Production-ready animations that blend seamlessly into your design system.
       </div>
-
-      <PixelDissolveButton>Browse Collections</PixelDissolveButton>
+      <Link href="./collections">
+        <PixelDissolveButton>Browse Collections</PixelDissolveButton>
+      </Link>
     </div>
   );
 }

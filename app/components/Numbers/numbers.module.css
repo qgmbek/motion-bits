@@ -12,7 +12,7 @@
   height: 60vh;
 
   border-radius: 24px;
-  border: 1px solid #27272a;
+  border: 1px solid #59595b;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
   display: flex;
@@ -35,7 +35,7 @@
   width: 100%;
   height: calc(50% - 11.5px);
   border-radius: 24px;
-  border: 1px solid #27272a;
+  border: 1px solid #59595b;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
   display: flex;
@@ -43,6 +43,8 @@
   justify-content: center;
   gap: 4px;
   padding-left: 30px;
+    padding-right: 30px;
+
 }
 
 .number {
@@ -57,6 +59,6 @@
 }
 
 .numberDesc {
-  font-size: 22px;
+  font-size:18px;
   color: #9d9d9d;
 }
