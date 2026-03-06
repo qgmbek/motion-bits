@@ -5,8 +5,6 @@
   background-color: hsl(0, 0%, 2%);
   color: #f4f4f5;
   font-family: var(--font-red-hat-text), sans-serif;
-
-  /* font-family: sans-serif; */
   overflow: hidden;
 }
 
@@ -144,7 +142,7 @@
 }
 
 .userLink {
-  color: #8b5cf6;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
 }
