@@ -1,9 +1,12 @@
 import styles from "./numbers.module.css";
+import { Sparkles, Blocks } from "lucide-react";
 
 export default function Numbers() {
   return (
     <div className={styles.container}>
       <div className={styles.one}>
+        <Sparkles className={styles.icon} />
+
         <div className={styles.number}>30+</div>
         <div className={styles.numberName}>Production Animations</div>
         <div className={styles.numberDesc}>
@@ -12,6 +15,8 @@ export default function Numbers() {
       </div>
 
       <div className={styles.two}>
+        <Blocks className={styles.icon} />
+
         <div className={styles.number}>100%</div>
         <div className={styles.numberName}>Composable</div>
         <div className={styles.numberDesc}>

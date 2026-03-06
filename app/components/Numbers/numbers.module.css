@@ -20,6 +20,7 @@
   justify-content: end;
   gap: 10px;
   padding: 30px;
+  padding-bottom: 40px;
 }
 
 .third {
@@ -43,8 +44,7 @@
   justify-content: center;
   gap: 4px;
   padding-left: 30px;
-    padding-right: 30px;
-
+  padding-right: 30px;
 }
 
 .number {
@@ -59,6 +59,13 @@
 }
 
 .numberDesc {
-  font-size:18px;
+  font-size: 18px;
   color: #9d9d9d;
+}
+
+.icon {
+  width: 38px;
+  height: 38px;
+  color: var(--primary-color);
+  margin-bottom: 10px;
 }

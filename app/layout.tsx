@@ -1,5 +1,6 @@
 import { Red_Hat_Text } from "next/font/google";
 import "./globals.css";
+import Nav from "./components/Nav/Nav";
 
 const redHatText = Red_Hat_Text({
   variable: "--font-red-hat-text",
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={redHatText.variable}>
+        <Nav />
         {children}
       </body>
     </html>
