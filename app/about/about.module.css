@@ -1,0 +1,39 @@
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 100px 24px;
+  color: rgb(247, 254, 255);
+}
+
+.hero {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.lead {
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+.section {
+  font-size: 20px;
+  margin-bottom: 60px;
+  line-height: 1.7;
+}
+
+.subtitle {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.list {
+  padding-left: 20px;
+}
+
+.list li {
+  margin-bottom: 10px;
+}

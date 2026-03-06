@@ -82,8 +82,8 @@ export default function PixelDissolveButton({ children }: { children: string }) 
             animate={controls}
             style={{
               background: isHover
-                ? "rgba(255,255,255,0.9)"
-                : "rgba(255,255,255,0.7)",
+                ? "rgb(255, 255, 255)"
+                : "rgb(255, 255, 255)",
               zIndex: -1,
             }}
           />

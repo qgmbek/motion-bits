@@ -1,9 +1,3 @@
-:root {
-  --black: #0f0f0f;
-  --gray: #262626;
-  --white: #ff009d;
-}
-
 .navWrap {
   border: 1px solid var(--gray);
   width: fit-content;
@@ -11,6 +5,7 @@
   border-radius: 500px;
   position: relative;
   font-size: 18px;
+  font-family: var(--font-red-hat-text), sans-serif;
 }
 
 .nav {

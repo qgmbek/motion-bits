@@ -6,7 +6,6 @@ export default function Header() {
       <div className={styles.headerContent}>
         <img src="/logo.png" alt="" className={styles.headerLogo} />
       </div>
-      <div className={styles.fadingBorderTop} />
     </div>
   );
 }

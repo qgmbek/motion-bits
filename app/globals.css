@@ -2,6 +2,9 @@
   --primary-font: var(--font-red-hat-text), sans-serif;
   --primary-color: #a31bec;
   --bg-color: #060606;
+
+  --gray: #262626;
+  --black: #0f0f0f;
 }
 
 html,

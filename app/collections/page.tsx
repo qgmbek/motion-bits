@@ -30,6 +30,8 @@ export default function CollectionsPage() {
   return (
     <>
       <Header />
+      <div className={styles.fadingBorderTop} />
+
       <div className={styles.collectionContainer}>
         <Sidebar currentSlug={currentSlug} onNavigate={setCurrentSlug} />
 
