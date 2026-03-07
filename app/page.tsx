@@ -1,7 +1,8 @@
 import styles from "./page.module.css";
 import Hero from "./components/Hero/Hero";
 import Numbers from "./components/Numbers/Numbers";
-import Link from "next/link";
+import WhyMotionBits from "./components/WhyMotionBits/WhyMotionBits";
+import OpenSource from "./components/OpenSource/OpenSource";
 import { Heart } from "lucide-react";
 
 export default function Home() {
@@ -12,6 +13,8 @@ export default function Home() {
       <img src="/logo.png" alt="logo" className={styles.logo} />
       <Hero />
       <Numbers />
+      <WhyMotionBits />
+      <OpenSource />
       <div className={styles.fadingBorderTop} />
 
       <footer className={styles.footer}>
@@ -43,9 +46,25 @@ export default function Home() {
             Github
           </a>
 
-          <Link href="/collections" className={styles.footerLink}>
+          <a href="/collections" target="_blank" className={styles.footerLink}>
             Collections
-          </Link>
+          </a>
+          <a
+            href="https://www.instagram.com/qgbek9/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.footerLink}
+          >
+            Instagram
+          </a>
+          <a
+            href="https://www.facebook.com/khogam.bek"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.footerLink}
+          >
+            Facebook
+          </a>
         </div>
       </footer>
     </div>

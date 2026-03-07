@@ -2,6 +2,7 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 100px 24px;
+  font-family: var(--font-red-hat-text), sans-serif;
   color: rgb(247, 254, 255);
 }
 
@@ -12,6 +13,7 @@
 .title {
   font-size: 48px;
   margin-bottom: 16px;
+  color: var(--primary-color);
 }
 
 .lead {
