@@ -2,6 +2,7 @@
   padding: 120px 20px;
   display: flex;
   justify-content: center;
+  font-family: var(--font-red-hat-text), sans-serif;
 }
 
 .box {

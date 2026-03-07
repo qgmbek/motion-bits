@@ -1,0 +1,31 @@
+.starOnGithub {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.button {
+  width: fit-content;
+  display: inline-block;
+  border: 1px solid white;
+  padding: 10px 18px;
+  margin: 0 auto;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.button:hover {
+  background: white;
+  color: black;
+}
+
+.icon:hover {
+  color: var(--primary-color);
+}

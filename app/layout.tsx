@@ -1,6 +1,7 @@
 import { Red_Hat_Text } from "next/font/google";
 import "./globals.css";
 import Nav from "./components/Nav/Nav";
+import StarOnGithub from "./components/StarOnGithub/StarOnGithub";
 
 const redHatText = Red_Hat_Text({
   variable: "--font-red-hat-text",
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={redHatText.variable}>
         <Nav />
+        <StarOnGithub />
         {children}
       </body>
     </html>
