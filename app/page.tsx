@@ -11,7 +11,6 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <img src="/logo.png" alt="logo" className={styles.logo} />
       <Hero />
       <Numbers />
       <WhyMotionBits />

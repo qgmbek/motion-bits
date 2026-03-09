@@ -3,9 +3,8 @@
 import { useState, useMemo } from "react";
 import { RotateCcw, Eye, Code } from "lucide-react";
 
-import Header from "./layout/Header/Header";
-import { Sidebar } from "./layout/Sidebar/Sidebar";
-import CodeBlock from "../components/CodeBlock/CodeBlock";
+import { Sidebar } from "./components/Sidebar/Sidebar";
+import CodeBlock from "./components/CodeBlock/CodeBlock";
 import styles from "./collections.module.css";
 
 import { ANIMATIONS_DATA } from "../constants/animations";
@@ -29,7 +28,6 @@ export default function CollectionsPage() {
 
   return (
     <>
-      <Header />
       <div className={styles.fadingBorderTop} />
 
       <div className={styles.collectionContainer}>

@@ -19,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={redHatText.variable}>
+        <img src="/logo.png" alt="" className="logo" />
         <Nav />
         <StarOnGithub />
         {children}

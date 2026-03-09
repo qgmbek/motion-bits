@@ -13,10 +13,17 @@
   overflow-x: auto;
   font-size: 14px;
   line-height: 1.6;
-  background-color: #0d0d0d !important;
+  /* background-color: #0d0d0d !important;
   background-image: radial-gradient(#1a1a1a 1px, transparent 1px) !important;
-  background-size: 24px 24px !important;
+  background-size: 24px 24px !important; */
   border: 1px solid #27272a;
+
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.1) 1px,
+    transparent 1px
+  ) !important;
+  background-position: 50% 50% !important;
+  background-size: 1.1rem 1.1rem !important;
 }
 
 .shiki .line {
