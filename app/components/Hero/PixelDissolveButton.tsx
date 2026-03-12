@@ -27,9 +27,9 @@ export default function PixelDissolveButton({ children }: { children: string }) 
       onClick={handleClick}
       style={{
         position: "relative",
-        padding: "18px 48px",
-        marginTop: "30px",
-        fontSize: "18px",
+        padding: "clamp(12px, 2.8vw, 18px) clamp(28px, 6vw, 48px)",
+        marginTop: "clamp(16px, 6vw, 30px)",
+        fontSize: "clamp(14px, 1.8vw, 18px)",
         letterSpacing: "0.15em",
         textTransform: "uppercase",
         background: "transparent",
