@@ -84,3 +84,50 @@
   bottom: 10px;
   right: 40px;
 }
+
+@media (max-width: 900px) {
+  .section {
+    padding: 72px 20px;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .text {
+    max-width: none;
+  }
+
+  .cards {
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    position: relative;
+    width: auto;
+  }
+
+  .card1,
+  .card2,
+  .card3,
+  .card4 {
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}

@@ -83,3 +83,25 @@
 .copy-button:active {
   transform: scale(0.96);
 }
+
+@media (max-width: 768px) {
+  .codeblock-container {
+    width: 100%;
+    margin: 8px 0 0;
+  }
+
+  .shiki {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .copy-button {
+    top: 4px;
+    right: 4px;
+    padding: 6px 8px;
+  }
+
+  .copy-button span {
+    font-size: 12px;
+  }
+}

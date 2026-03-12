@@ -152,3 +152,36 @@
   color: #fff;
   text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+  .collectionContainer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .collectionWrapper {
+    width: 100%;
+    padding: 1.5rem;
+    margin: 0;
+}
+
+  .collectionName {
+    font-size: 25px;
+  }
+
+  .tab {
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .demo {
+    width: 100%;
+    height: 320px;
+    font-size: 32px;
+  }
+
+  .footerContent {
+    margin-top: 100px;
+    padding: 1.5rem 0 0;
+  }
+}

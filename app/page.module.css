@@ -1,5 +1,7 @@
 .page {
   font-family: var(--font-red-hat-text), sans-serif;
+  width: 100%;
+  overflow-x: hidden;
 }
 .logo {
   position: absolute;
@@ -23,11 +25,14 @@
 }
 
 .footer {
-  width: 76vw;
+  width: min(76vw, 1200px);
+  padding-left: 20px;
+  padding-right: 20px;
   margin: 20px auto 80px;
   color: #c0c0c0;
   display: flex;
   justify-content: space-between;
+  gap: 24px;
 }
 
 .footerLogo {
@@ -58,4 +63,33 @@
 .right {
   display: flex;
   gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .fadingBorderTop {
+    margin-top: 56px;
+    margin-bottom: 24px;
+  }
+
+  .footer {
+    width: 100%;
+    margin: 12px auto 56px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footerLogo {
+    width: 160px;
+  }
+
+  .footerContent {
+    font-size: 15px;
+    flex-wrap: wrap;
+  }
+
+  .right {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 }

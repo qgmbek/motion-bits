@@ -2,43 +2,15 @@
 
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import styles from "./CTA.module.css";
 
 export default function CTA() {
   return (
-    <section
-      style={{
-        width: "68vw",
-        margin: "30px auto",
-        position: "relative",
-        padding: "60px 20px",
-        borderRadius: "36px",
-        overflow: "hidden",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#000",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "#7c3aed",
-          zIndex: 0,
-        }}
-      />
+    <section className={styles.section}>
+      <div className={styles.bg} />
 
       <svg
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          opacity: 0.6,
-          mixBlendMode: "overlay",
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
+        className={styles.noiseSvg}
       >
         <filter id="noiseFilter">
           <feTurbulence
@@ -52,48 +24,16 @@ export default function CTA() {
         <rect width="100%" height="100%" filter="url(#noiseFilter)" />
       </svg>
 
-      <div
-        style={{
-          position: "relative",
-          textAlign: "center",
-          maxWidth: "600px",
-          color: "white",
-          zIndex: 2,
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "40px",
-            margin: "0 0 16px 0",
-          }}
-        >
-          Explore
-        </h2>
+      <div className={styles.content}>
+        <h2 className={styles.title}>Explore</h2>
 
-        <p
-          style={{
-            opacity: 0.8,
-            lineHeight: 1.6,
-            margin: "0 0 28px 0",
-            fontSize: "18px",
-          }}
-        >
+        <p className={styles.text}>
           Stop searching. All UI animations in one place.
         </p>
 
         <Link
           href="/collections"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            background: "white",
-            color: "black",
-            padding: "12px 20px",
-            borderRadius: "8px",
-            textDecoration: "none",
-            fontWeight: 500,
-          }}
+          className={styles.button}
         >
           Browse Components <ArrowRight size={18} />
         </Link>
