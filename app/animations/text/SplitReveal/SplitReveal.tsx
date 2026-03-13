@@ -34,9 +34,9 @@ export default function SplitReveal({ children = "Split Reveal" }: SplitRevealPr
               filter: "blur(0px)",
             }}
             transition={{
-              duration: 0.8,
+              duration: 0.2,
               ease: [0.22, 1, 0.36, 1],
-              delay: i * 0.06,
+              delay: i * 0.02,
             }}
           >
             {char === " " ? "\u00A0" : char}

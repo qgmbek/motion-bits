@@ -2,9 +2,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type BackspaceMode = "none" | "word" | "full" | "smart";
+
+type TypewriterProps = {
+  array?: string[];
+};
 
 const PHRASES = [
   "Everyone has one - make yours nice.",
@@ -12,15 +16,9 @@ const PHRASES = [
   "Everyone has one - make yours unforgettable.",
 ];
 
-type TypewriterProps = {
-  children?: ReactNode;
-};
+export default function Typewriter({ array }: TypewriterProps) {
+  const phrases = array ?? PHRASES;
 
-export default function Typewriter({ children }: TypewriterProps) {
-  const phrases =
-    typeof children === "string" && children.trim().length
-      ? [children]
-      : PHRASES;
   const [display, setDisplay] = useState("");
   const [cursor, setCursor] = useState(true);
   const phraseIndex = useRef(0);
@@ -44,7 +42,6 @@ export default function Typewriter({ children }: TypewriterProps) {
 
       let current = prevWords.current.join(" ");
 
-      /* SMART BACKSPACE */
       if (backspaceMode === "smart") {
         let i = 0;
         while (words[i] === prevWords.current[i]) i++;
@@ -60,34 +57,14 @@ export default function Typewriter({ children }: TypewriterProps) {
         current = unchanged;
       }
 
-      /* FULL / WORD BACKSPACE */
-      if (backspaceMode === "full") {
-        for (let i = display.length; i >= 0; i--) {
-          setDisplay(display.slice(0, i));
-          await wait(15);
-        }
-        current = "";
-      }
-
-      if (backspaceMode === "word") {
-        const parts = display.split(" ");
-        while (parts.length) {
-          parts.pop();
-          setDisplay(parts.join(" "));
-          await wait(80);
-        }
-        current = "";
-      }
-
-      /* TYPE */
       for (let i = current.length; i < phrase.length; i++) {
         const char = phrase[i];
         setDisplay(phrase.slice(0, i + 1));
 
         if (",.—!".includes(char)) {
-          await wait(350); // punctuation pause
+          await wait(350);
         } else {
-          await wait(random(35, 90)); // variable speed
+          await wait(random(35, 90));
         }
       }
 
@@ -101,7 +78,7 @@ export default function Typewriter({ children }: TypewriterProps) {
 
     timeout = setTimeout(type, 600);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [phrases]);
 
   return (
     <motion.div

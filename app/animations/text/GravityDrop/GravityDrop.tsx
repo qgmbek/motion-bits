@@ -29,7 +29,6 @@ export default function GravityDrop({
             },
           },
         }}
-        style={{ display: "flex" }}
       >
         {text.split("").map((char, i) => (
           <motion.span

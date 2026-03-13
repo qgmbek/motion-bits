@@ -23,7 +23,7 @@ const AnimatedCounter = ({
 
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      const progress = Math.min((timestamp - startTime) / (duration * 200), 1);
       const easeOut = 1 - Math.pow(1 - progress, 3);
 
       const newCount = Math.round(easeOut * end);

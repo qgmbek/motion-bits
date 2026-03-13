@@ -1,5 +1,6 @@
 import styles from "./numbers.module.css";
 import { Sparkles, Blocks } from "lucide-react";
+import Counter from "@/app/animations/text/Counter/Counter";
 
 export default function Numbers() {
   return (
@@ -7,7 +8,9 @@ export default function Numbers() {
       <div className={styles.one}>
         <Sparkles className={styles.icon} />
 
-        <div className={styles.number}>30+</div>
+        <div className={styles.number}>
+          <Counter value={30} />+
+        </div>
         <div className={styles.numberName}>Production Animations</div>
         <div className={styles.numberDesc}>
           Carefully crafted motion components ready for real-world interfaces.
@@ -17,7 +20,9 @@ export default function Numbers() {
       <div className={styles.two}>
         <Blocks className={styles.icon} />
 
-        <div className={styles.number}>100%</div>
+        <div className={styles.number}>
+          <Counter value={100} />%
+        </div>
         <div className={styles.numberName}>Composable</div>
         <div className={styles.numberDesc}>
           Built with flexibility in mind — fully customizable and easy to
@@ -27,7 +32,10 @@ export default function Numbers() {
 
       <div className={styles.third}>
         <div className={styles.thirdTop}>
-          <div className={styles.number}>0kb</div>
+          <div className={styles.number}>
+            <Counter value={0} />
+            kb
+          </div>
           <div className={styles.numberName}>Bloat</div>
           <div className={styles.numberDesc}>
             Lightweight patterns designed to integrate without slowing you down.

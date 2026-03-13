@@ -5,7 +5,9 @@ import { Sparkles, Boxes, Code2 } from "lucide-react";
 import PixelDissolveButton from "./PixelDissolveButton";
 import { SpiderCursor } from "./SpiderCursor";
 import Link from "next/link";
+
 import BlurText from "../../animations/text/BlurText/BlurText";
+import Typewriter from "@/app/animations/text/Typewriter/Typewriter";
 
 export default function Hero() {
   return (
@@ -30,8 +32,13 @@ export default function Hero() {
       </BlurText>
 
       <div className={styles.subtitle}>
-        Production-ready animations that blend seamlessly into your design
-        system.
+        <Typewriter
+          array={[
+            "Production-ready animations that blend seamlessly into your design system.",
+            "Elegant motion components built for developers who care about detail.",
+            "High-performance animations crafted for modern web experiences.",
+          ]}
+        />
       </div>
       <Link href="./collections">
         <PixelDissolveButton>Browse Collections</PixelDissolveButton>

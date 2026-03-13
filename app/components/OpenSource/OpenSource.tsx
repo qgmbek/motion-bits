@@ -2,6 +2,7 @@
 
 import styles from "./OpenSource.module.css";
 import { Github, StarIcon } from "lucide-react";
+import GravityDrop from "@/app/animations/text/GravityDrop/GravityDrop";
 
 export default function OpenSource() {
   return (
@@ -9,11 +10,13 @@ export default function OpenSource() {
       <div className={styles.box}>
         <Github size={28} />
 
-        <h2 className={styles.title}>Open Source</h2>
+        <h2 className={styles.title}>
+          <GravityDrop>Open Source</GravityDrop>
+        </h2>
 
         <p className={styles.text}>
-          Motion Bits is free and open source.  
-          Star the project on GitHub and help it grow.
+          Motion Bits is free and open source. Star the project on GitHub and
+          help it grow.
         </p>
 
         <a
@@ -21,7 +24,7 @@ export default function OpenSource() {
           target="_blank"
           className={styles.button}
         >
-            <StarIcon /> Star on GitHub
+          <StarIcon /> Star on GitHub
         </a>
       </div>
     </section>

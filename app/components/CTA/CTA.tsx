@@ -4,14 +4,15 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import styles from "./CTA.module.css";
 
+import GravityDrop from "@/app/animations/text/GravityDrop/GravityDrop";
+import SplitReveal from "@/app/animations/text/SplitReveal/SplitReveal";
+
 export default function CTA() {
   return (
     <section className={styles.section}>
       <div className={styles.bg} />
 
-      <svg
-        className={styles.noiseSvg}
-      >
+      <svg className={styles.noiseSvg}>
         <filter id="noiseFilter">
           <feTurbulence
             type="fractalNoise"
@@ -25,16 +26,17 @@ export default function CTA() {
       </svg>
 
       <div className={styles.content}>
-        <h2 className={styles.title}>Explore</h2>
+        <h2 className={styles.title}>
+          <GravityDrop>Explore</GravityDrop>
+        </h2>
 
-        <p className={styles.text}>
-          Stop searching. All UI animations in one place.
-        </p>
+        <div className={styles.text}>
+          <SplitReveal>
+            Stop searching. All UI animations in one place.
+          </SplitReveal>
+        </div>
 
-        <Link
-          href="/collections"
-          className={styles.button}
-        >
+        <Link href="/collections" className={styles.button}>
           Browse Components <ArrowRight size={18} />
         </Link>
       </div>
