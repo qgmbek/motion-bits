@@ -35,9 +35,9 @@ export default function BlueprintWireframe({
           filter: "drop-shadow(0 0 6px rgba(95,185,255,0.6))",
           letterSpacing: "2px",
         }}
-        animate={{
-          strokeDashoffset: 0,
-        }}
+        initial={{ strokeDashoffset: 600 }}
+        whileInView={{ strokeDashoffset: 0 }}
+        viewport={{ once: true }}
         transition={{
           duration: 2,
           ease: "easeInOut",
@@ -58,9 +58,9 @@ export default function BlueprintWireframe({
           letterSpacing: "2px",
           filter: "drop-shadow(0 0 12px rgba(95,185,255,0.35))",
         }}
-        animate={{
-          opacity: 1,
-        }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         transition={{
           delay: 1.9,
           duration: 0.8,

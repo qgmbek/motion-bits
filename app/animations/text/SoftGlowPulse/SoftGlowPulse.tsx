@@ -14,7 +14,7 @@ export default function SoftGlowPulse({
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
-      animate={{
+      whileInView={{
         opacity: [0.6, 1, 0.8],
         textShadow: [
           "0 0 20px rgba(0,255,200,0.25)",
@@ -22,6 +22,7 @@ export default function SoftGlowPulse({
           "0 0 25px rgba(0,255,200,0.3)",
         ],
       }}
+      viewport={{ once: true }}
       transition={{
         duration: 3.5,
         ease: "easeInOut",

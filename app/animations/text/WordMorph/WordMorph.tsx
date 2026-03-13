@@ -14,9 +14,7 @@ type WordMorphProps = {
 
 export default function WordMorph({ children }: WordMorphProps) {
   const words =
-    typeof children === "string" && children.trim().length
-      ? [children]
-      : WORDS;
+    typeof children === "string" && children.trim().length ? [children] : WORDS;
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -46,7 +44,10 @@ export default function WordMorph({ children }: WordMorphProps) {
   const characters = getCharacters(words[index]);
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
       style={{
         letterSpacing: "-0.025em",
         lineHeight: "1",
@@ -109,6 +110,6 @@ export default function WordMorph({ children }: WordMorphProps) {
           </motion.span>
         ))}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
-import { ReactNode, useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { ReactNode, useEffect, useMemo, useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const FINAL_TEXT = "Data Stream Decode";
 const CHARS =
@@ -21,7 +21,12 @@ export default function DataStreamDecode({
     finalText.split("").map(() => ""),
   );
 
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+
   useEffect(() => {
+    if (!isInView) return;
+
     setDisplayText(finalText.split("").map(() => ""));
     let frame = 0;
     const totalFrames = 40;
@@ -31,7 +36,7 @@ export default function DataStreamDecode({
           if (char === " ") return " ";
 
           if (frame / totalFrames > i / finalText.length) {
-            return char; // lock character
+            return char;
           }
 
           return CHARS[Math.floor(Math.random() * CHARS.length)];
@@ -43,17 +48,18 @@ export default function DataStreamDecode({
     }, 40);
 
     return () => clearInterval(interval);
-  }, [finalText]);
+  }, [finalText, isInView]);
 
   return (
     <div
+      ref={ref}
       style={{
         fontFamily: "monospace",
       }}
     >
       <motion.h1
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 1 }}
         style={{
           fontSize: "56px",
@@ -68,9 +74,13 @@ export default function DataStreamDecode({
         {displayText.map((char, index) => (
           <motion.span
             key={index}
-            animate={{
-              opacity: [0.6, 1, 0.8, 1],
-            }}
+            animate={
+              isInView
+                ? {
+                    opacity: [0.6, 1, 0.8, 1],
+                  }
+                : {}
+            }
             transition={{
               duration: 0.8,
               repeat: Infinity,

@@ -25,6 +25,8 @@ export default function Typewriter({ array }: TypewriterProps) {
   const prevWords = useRef<string[]>([]);
 
   const [backspaceMode] = useState<BackspaceMode>("smart");
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   /* Cursor blink */
   useEffect(() => {
@@ -32,7 +34,27 @@ export default function Typewriter({ array }: TypewriterProps) {
     return () => clearInterval(blink);
   }, []);
 
+  /* Detect when element is in viewport */
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
+
+    if (ref.current) observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  /* Typing effect */
+  useEffect(() => {
+    if (!inView) return;
+
     let timeout: NodeJS.Timeout;
 
     const type = async () => {
@@ -78,12 +100,14 @@ export default function Typewriter({ array }: TypewriterProps) {
 
     timeout = setTimeout(type, 600);
     return () => clearTimeout(timeout);
-  }, [phrases]);
+  }, [inView, phrases]);
 
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
       style={{
         fontSize: "26px",
         fontWeight: 400,

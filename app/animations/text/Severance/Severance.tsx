@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { ReactNode, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 type SeveranceProps = {
   children?: ReactNode;
@@ -9,6 +9,9 @@ type SeveranceProps = {
 
 export default function Severance({ children = "SEVERANCE" }: SeveranceProps) {
   const text = typeof children === "string" ? children : "SEVERANCE";
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.5 });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -32,6 +35,7 @@ export default function Severance({ children = "SEVERANCE" }: SeveranceProps) {
 
   return (
     <div
+      ref={containerRef}
       style={{
         display: "flex",
         justifyContent: "center",
@@ -53,96 +57,86 @@ export default function Severance({ children = "SEVERANCE" }: SeveranceProps) {
         }}
         variants={containerVariants}
         initial="hidden"
-        animate={["visible", "severed"]}
+        animate={isInView ? ["visible", "severed"] : "hidden"}
       >
-        {text.split("").map((char, index) => {
-          const isLast = index === text.length - 1;
-
-          return (
-            <motion.div
-              key={index}
-              variants={wrapperVariants}
+        {text.split("").map((char, index) => (
+          <motion.div
+            key={index}
+            variants={wrapperVariants}
+            style={{
+              position: "relative",
+              display: "inline-block",
+              marginRight: index === text.length - 1 ? 0 : "5px",
+            }}
+          >
+            <span
               style={{
-                position: "relative",
-                display: "inline-block",
-                marginRight: isLast ? 0 : "5px",
+                lineHeight: 1,
+                userSelect: "none",
+                opacity: 0,
               }}
             >
-              <span
-                style={{
-                  lineHeight: 1,
-                  userSelect: "none",
-                  opacity: 0,
-                }}
-              >
-                {char}
-              </span>
+              {char}
+            </span>
 
-              <motion.span
-                style={{
-                  textTransform: "uppercase",
-                  lineHeight: 1,
-                  userSelect: "none",
-                  clipPath: "polygon(0 0, 100% 0, 100% 50%, 0 50%)",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                }}
-                variants={{
-                  hidden: { y: -30, opacity: 0, filter: "blur(12px)" },
-                  visible: {
-                    y: 0,
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    transition: { duration: 1.6, ease: customEase },
-                  },
-                  severed: {
-                    x: -2,
-                    filter: "blur(0.5px)",
-                    transition: {
-                      delay: 2.5,
-                      duration: 1.2,
-                      ease: "easeInOut",
-                    },
-                  },
-                }}
-              >
-                {char}
-              </motion.span>
+            {/* Top half */}
+            <motion.span
+              style={{
+                textTransform: "uppercase",
+                lineHeight: 1,
+                userSelect: "none",
+                clipPath: "polygon(0 0, 100% 0, 100% 50%, 0 50%)",
+                position: "absolute",
+                top: 0,
+                left: 0,
+              }}
+              variants={{
+                hidden: { y: -30, opacity: 0, filter: "blur(12px)" },
+                visible: {
+                  y: 0,
+                  opacity: 1,
+                  filter: "blur(0px)",
+                  transition: { duration: 1.6, ease: customEase },
+                },
+                severed: {
+                  x: -2,
+                  filter: "blur(0.5px)",
+                  transition: { delay: 2.5, duration: 1.2, ease: "easeInOut" },
+                },
+              }}
+            >
+              {char}
+            </motion.span>
 
-              <motion.span
-                style={{
-                  textTransform: "uppercase",
-                  lineHeight: 1,
-                  userSelect: "none",
-                  clipPath: "polygon(0 50%, 100% 50%, 100% 100%, 0 100%)",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                }}
-                variants={{
-                  hidden: { y: 30, opacity: 0, filter: "blur(12px)" },
-                  visible: {
-                    y: 0,
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    transition: { duration: 1.6, ease: customEase },
-                  },
-                  severed: {
-                    x: 1,
-                    transition: {
-                      delay: 2.5,
-                      duration: 1.2,
-                      ease: "easeInOut",
-                    },
-                  },
-                }}
-              >
-                {char}
-              </motion.span>
-            </motion.div>
-          );
-        })}
+            {/* Bottom half */}
+            <motion.span
+              style={{
+                textTransform: "uppercase",
+                lineHeight: 1,
+                userSelect: "none",
+                clipPath: "polygon(0 50%, 100% 50%, 100% 100%, 0 100%)",
+                position: "absolute",
+                top: 0,
+                left: 0,
+              }}
+              variants={{
+                hidden: { y: 30, opacity: 0, filter: "blur(12px)" },
+                visible: {
+                  y: 0,
+                  opacity: 1,
+                  filter: "blur(0px)",
+                  transition: { duration: 1.6, ease: customEase },
+                },
+                severed: {
+                  x: 1,
+                  transition: { delay: 2.5, duration: 1.2, ease: "easeInOut" },
+                },
+              }}
+            >
+              {char}
+            </motion.span>
+          </motion.div>
+        ))}
       </motion.div>
     </div>
   );

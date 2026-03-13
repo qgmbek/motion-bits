@@ -36,14 +36,12 @@ export default function ScanlineReveal({
         {chars.map((char, i) => (
           <motion.span
             key={i}
-            initial={{
-              opacity: 0,
-              filter: "blur(6px)",
-            }}
-            animate={{
+            initial={{ opacity: 0, filter: "blur(6px)" }}
+            whileInView={{
               opacity: [0, 1, 0.85, 1],
               filter: ["blur(6px)", "blur(0px)"],
             }}
+            viewport={{ once: true }}
             transition={{
               delay: i * 0.035,
               duration: 0.45,
@@ -60,7 +58,8 @@ export default function ScanlineReveal({
 
       <motion.div
         initial={{ y: "-140%" }}
-        animate={{ y: "120%" }}
+        whileInView={{ y: "120%" }}
+        viewport={{ once: true }}
         transition={{
           duration: 0.8,
           ease: "linear",

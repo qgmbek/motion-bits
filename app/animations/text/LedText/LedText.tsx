@@ -27,7 +27,7 @@ export default function LedText({ children = "Led Text" }: LedTextProps) {
             display: "inline-block",
           }}
           initial={{ opacity: 0, y: 20 }}
-          animate={{
+          whileInView={{
             opacity: [0, 1, 1, 0.95, 1],
             y: 0,
             textShadow: [
@@ -38,6 +38,7 @@ export default function LedText({ children = "Led Text" }: LedTextProps) {
               "0px 0px 18px rgba(0,255,180,1)",
             ],
           }}
+          viewport={{ once: true }}
           transition={{
             duration: 2,
             delay: index * 0.15,

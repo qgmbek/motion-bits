@@ -7,10 +7,16 @@ type SplitRevealProps = {
   children?: ReactNode;
 };
 
-export default function SplitReveal({ children = "Split Reveal" }: SplitRevealProps) {
+export default function SplitReveal({
+  children = "Split Reveal",
+}: SplitRevealProps) {
   const text = typeof children === "string" ? children : "Split Reveal";
+
   return (
-    <div
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
       style={{
         gap: "0.04em",
       }}
@@ -25,13 +31,15 @@ export default function SplitReveal({ children = "Split Reveal" }: SplitRevealPr
         >
           <motion.span
             style={{ display: "inline-block" }}
-            initial={{
-              y: "120%",
-              filter: "blur(8px)",
-            }}
-            animate={{
-              y: "0%",
-              filter: "blur(0px)",
+            variants={{
+              hidden: {
+                y: "120%",
+                filter: "blur(8px)",
+              },
+              visible: {
+                y: "0%",
+                filter: "blur(0px)",
+              },
             }}
             transition={{
               duration: 0.2,
@@ -43,6 +51,6 @@ export default function SplitReveal({ children = "Split Reveal" }: SplitRevealPr
           </motion.span>
         </span>
       ))}
-    </div>
+    </motion.div>
   );
 }

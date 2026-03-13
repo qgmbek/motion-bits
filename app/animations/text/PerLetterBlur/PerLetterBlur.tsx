@@ -23,7 +23,8 @@ export default function PerLetterBlur({
         },
       }}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true }}
       style={{
         letterSpacing: "-0.02em",
       }}

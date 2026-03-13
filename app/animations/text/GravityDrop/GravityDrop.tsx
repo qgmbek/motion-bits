@@ -20,7 +20,8 @@ export default function GravityDrop({
     >
       <motion.div
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true }}
         variants={{
           visible: {
             transition: {

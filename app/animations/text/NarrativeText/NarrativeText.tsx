@@ -20,12 +20,13 @@ export default function NarrativeText({
     <div style={{ overflow: "hidden" }}>
       <motion.div
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true }}
         variants={{
           hidden: {},
           visible: {
             transition: {
-              staggerChildren: 0.18, // story timing
+              staggerChildren: 0.18,
             },
           },
         }}

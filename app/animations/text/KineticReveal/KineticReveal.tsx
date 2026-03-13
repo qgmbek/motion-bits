@@ -22,7 +22,8 @@ export default function KineticText({
         },
       }}
       initial="hidden"
-      animate="show"
+      whileInView="show"
+      viewport={{ once: true }}
       style={{
         gap: "0.08em",
         letterSpacing: "-0.04em",

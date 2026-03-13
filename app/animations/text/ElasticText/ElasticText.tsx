@@ -25,7 +25,8 @@ export default function ElasticText({
             whiteSpace: "pre",
           }}
           initial={{ y: 0, scaleY: 1 }}
-          animate={{ y: -28, scaleY: 1.25 }}
+          whileInView={{ y: -28, scaleY: 1.25 }}
+          viewport={{ once: true }}
           transition={{
             type: "spring",
             stiffness: 220,
