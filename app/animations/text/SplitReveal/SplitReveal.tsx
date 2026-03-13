@@ -1,10 +1,14 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Split Reveal";
+type SplitRevealProps = {
+  children?: ReactNode;
+};
 
-export default function SplitReveal() {
+export default function SplitReveal({ children = "Split Reveal" }: SplitRevealProps) {
+  const text = typeof children === "string" ? children : "Split Reveal";
   return (
     <div
       style={{

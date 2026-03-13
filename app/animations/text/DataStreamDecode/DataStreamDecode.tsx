@@ -1,25 +1,36 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 
 const FINAL_TEXT = "Data Stream Decode";
 const CHARS =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*";
 
-export default function DataStreamDecode() {
+type DataStreamDecodeProps = {
+  children?: ReactNode;
+};
+
+export default function DataStreamDecode({
+  children = FINAL_TEXT,
+}: DataStreamDecodeProps) {
+  const finalText = useMemo(
+    () => (typeof children === "string" ? children : FINAL_TEXT),
+    [children],
+  );
   const [displayText, setDisplayText] = useState(
-    FINAL_TEXT.split("").map(() => ""),
+    finalText.split("").map(() => ""),
   );
 
   useEffect(() => {
+    setDisplayText(finalText.split("").map(() => ""));
     let frame = 0;
     const totalFrames = 40;
     const interval = setInterval(() => {
       setDisplayText(() =>
-        FINAL_TEXT.split("").map((char, i) => {
+        finalText.split("").map((char, i) => {
           if (char === " ") return " ";
 
-          if (frame / totalFrames > i / FINAL_TEXT.length) {
+          if (frame / totalFrames > i / finalText.length) {
             return char; // lock character
           }
 
@@ -32,7 +43,7 @@ export default function DataStreamDecode() {
     }, 40);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [finalText]);
 
   return (
     <div

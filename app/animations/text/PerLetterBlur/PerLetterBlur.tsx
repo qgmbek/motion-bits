@@ -1,10 +1,17 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Per Letter Animation";
+type PerLetterBlurProps = {
+  children?: ReactNode;
+};
 
-export default function PerLetterBlur() {
+export default function PerLetterBlur({
+  children = "Per Letter Animation",
+}: PerLetterBlurProps) {
+  const text =
+    typeof children === "string" ? children : "Per Letter Animation";
   return (
     <motion.div
       variants={{

@@ -1,9 +1,14 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function Severance() {
-  const text = "SEVERANCE";
+type SeveranceProps = {
+  children?: ReactNode;
+};
+
+export default function Severance({ children = "SEVERANCE" }: SeveranceProps) {
+  const text = typeof children === "string" ? children : "SEVERANCE";
 
   const containerVariants = {
     hidden: { opacity: 0 },

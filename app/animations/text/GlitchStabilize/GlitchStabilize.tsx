@@ -1,8 +1,17 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function GlitchStabilize() {
+type GlitchStabilizeProps = {
+  children?: ReactNode;
+};
+
+export default function GlitchStabilize({
+  children = "Glitch Stabilize",
+}: GlitchStabilizeProps) {
+  const text =
+    typeof children === "string" ? children : "Glitch Stabilize";
   return (
     <motion.div
       initial="glitch"
@@ -61,7 +70,7 @@ export default function GlitchStabilize() {
           mixBlendMode: "screen",
         }}
       >
-        Glitch Stabilize
+        {text}
       </motion.span>
 
       {/* BLUE SLICE */}
@@ -85,7 +94,7 @@ export default function GlitchStabilize() {
           mixBlendMode: "screen",
         }}
       >
-        Glitch Stabilize
+        {text}
       </motion.span>
 
       {/* GREEN TELEPORT FLICKER */}
@@ -107,7 +116,7 @@ export default function GlitchStabilize() {
           mixBlendMode: "screen",
         }}
       >
-        Glitch Stabilize
+        {text}
       </motion.span>
 
       {/* FINAL TEXT */}
@@ -120,7 +129,7 @@ export default function GlitchStabilize() {
           zIndex: 1,
         }}
       >
-        Glitch Stabilize
+        {text}
       </motion.span>
     </motion.div>
   );

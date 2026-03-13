@@ -1,10 +1,16 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Elastic Text";
+type ElasticTextProps = {
+  children?: ReactNode;
+};
 
-export default function ElasticText() {
+export default function ElasticText({
+  children = "Elastic Text",
+}: ElasticTextProps) {
+  const text = typeof children === "string" ? children : "Elastic Text";
   return (
     <div
       style={{

@@ -1,8 +1,16 @@
 "use client";
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function PerLetterHover() {
-  const text = "Per Letter Hover";
+type PerLetterHoverProps = {
+  children?: ReactNode;
+};
+
+export default function PerLetterHover({
+  children = "Per Letter Hover",
+}: PerLetterHoverProps) {
+  const text =
+    typeof children === "string" ? children : "Per Letter Hover";
 
   return (
     <div>

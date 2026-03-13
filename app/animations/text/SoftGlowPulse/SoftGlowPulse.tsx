@@ -1,8 +1,16 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function SoftGlowPulse() {
+type SoftGlowPulseProps = {
+  children?: ReactNode;
+};
+
+export default function SoftGlowPulse({
+  children = "Soft Glow Pulse",
+}: SoftGlowPulseProps) {
+  const text = typeof children === "string" ? children : "Soft Glow Pulse";
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
@@ -26,7 +34,7 @@ export default function SoftGlowPulse() {
         filter: "blur(0.2px)", // kills harsh digital edges
       }}
     >
-      Soft Glow Pulse
+      {text}
     </motion.div>
   );
 }

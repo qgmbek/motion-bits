@@ -1,15 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 
 const ASCII = "!<>-_\\/[]{}—=+*^?#________";
 
-export default function ASCIIMorph() {
-  const text = "ASCII Morph";
+type ASCIIMorphProps = {
+  children?: ReactNode;
+};
+
+export default function ASCIIMorph({ children = "ASCII Morph" }: ASCIIMorphProps) {
+  const text = useMemo(
+    () => (typeof children === "string" ? children : "ASCII Morph"),
+    [children],
+  );
   const [output, setOutput] = useState(text);
 
   useEffect(() => {
+    setOutput(text);
     let frame = 0;
     const totalFrames = 40;
 
@@ -33,7 +41,7 @@ export default function ASCIIMorph() {
     }, 40);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [text]);
 
   return (
     <motion.div

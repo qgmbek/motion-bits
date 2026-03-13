@@ -1,9 +1,17 @@
 "use client";
 
 import { motion, useAnimationFrame } from "framer-motion";
-import { useRef } from "react";
+import { ReactNode, useRef } from "react";
 
-export default function DistortedText() {
+type DistortedTextProps = {
+  children?: ReactNode;
+};
+
+export default function DistortedText({
+  children = "Distorted Text",
+}: DistortedTextProps) {
+  const text =
+    typeof children === "string" ? children : "Distorted Text";
   const turbulenceRef = useRef<SVGFETurbulenceElement | null>(null);
 
   useAnimationFrame((t) => {
@@ -15,7 +23,7 @@ export default function DistortedText() {
   });
 
   return (
-    <section>
+    <div>
       <svg style={{ position: "absolute", width: 0, height: 0 }}>
         <filter id="distortionFilter">
           <feTurbulence
@@ -48,8 +56,8 @@ export default function DistortedText() {
           filter: "url(#distortionFilter)",
         }}
       >
-        Distorted Text
+        {text}
       </motion.h1>
-    </section>
+    </div>
   );
 }

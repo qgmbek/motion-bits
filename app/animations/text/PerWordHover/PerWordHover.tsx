@@ -1,8 +1,13 @@
 "use client";
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function PerWordHover() {
-  const text = "Per Word Hover";
+type PerWordHoverProps = {
+  children?: ReactNode;
+};
+
+export default function PerWordHover({ children = "Per Word Hover" }: PerWordHoverProps) {
+  const text = typeof children === "string" ? children : "Per Word Hover";
 
   return (
     <div>

@@ -1,9 +1,14 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function LedText() {
-  const text = "Led Text";
+type LedTextProps = {
+  children?: ReactNode;
+};
+
+export default function LedText({ children = "Led Text" }: LedTextProps) {
+  const text = typeof children === "string" ? children : "Led Text";
   const letters = text.split("");
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const WORDS = ["Good", "Bad", "Devil", "Doom", "Hell", "Angel"];
@@ -8,16 +8,24 @@ const WORDS = ["Good", "Bad", "Devil", "Doom", "Hell", "Angel"];
 const TRANSITION_DURATION = 0.8;
 const STAGGER_DELAY = 0.025;
 
-export default function WordMorph() {
+type WordMorphProps = {
+  children?: ReactNode;
+};
+
+export default function WordMorph({ children }: WordMorphProps) {
+  const words =
+    typeof children === "string" && children.trim().length
+      ? [children]
+      : WORDS;
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % WORDS.length);
+      setIndex((prev) => (prev + 1) % words.length);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [words.length]);
 
   const getCharacters = (word: string) => {
     const chars = word.split("");
@@ -35,7 +43,7 @@ export default function WordMorph() {
     });
   };
 
-  const characters = getCharacters(WORDS[index]);
+  const characters = getCharacters(words[index]);
 
   return (
     <div
@@ -60,7 +68,7 @@ export default function WordMorph() {
           borderWidth: "0",
         }}
       >
-        {WORDS[index]}
+        {words[index]}
       </span>
 
       <AnimatePresence mode="popLayout">

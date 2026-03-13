@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useInView } from "framer-motion";
+import { ReactNode } from "react";
 
 const AnimatedCounter = ({
   end,
@@ -51,6 +52,17 @@ const AnimatedCounter = ({
   );
 };
 
-export default function Counter({ value = 100 }: { value?: number }) {
-  return <AnimatedCounter end={value} duration={50} />;
+type CounterProps = {
+  value?: number;
+  children?: ReactNode;
+};
+
+export default function Counter({ value = 100, children }: CounterProps) {
+  const resolvedValue =
+    typeof children === "number"
+      ? children
+      : typeof children === "string" && Number.isFinite(Number(children))
+        ? Number(children)
+        : value;
+  return <AnimatedCounter end={resolvedValue} duration={50} />;
 }

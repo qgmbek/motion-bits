@@ -1,8 +1,14 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function Wednesday() {
+type WednesdayProps = {
+  children?: ReactNode;
+};
+
+export default function Wednesday({ children = "Wednesday" }: WednesdayProps) {
+  const text = typeof children === "string" ? children : "Wednesday";
   return (
     <motion.div
       initial={{
@@ -31,7 +37,7 @@ export default function Wednesday() {
         textShadow: "0 0 12px rgba(255,255,255,0.05), 0 0 40px rgba(0,0,0,0.9)",
       }}
     >
-      Wednesday
+      {text}
       <motion.span
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}

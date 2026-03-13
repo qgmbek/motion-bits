@@ -1,9 +1,17 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function BlueprintWireframe() {
-  const text = "Blueprint Wireframe Text";
+type BlueprintWireframeProps = {
+  children?: ReactNode;
+};
+
+export default function BlueprintWireframe({
+  children = "Blueprint Wireframe Text",
+}: BlueprintWireframeProps) {
+  const text =
+    typeof children === "string" ? children : "Blueprint Wireframe Text";
 
   return (
     <svg

@@ -1,10 +1,16 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Gravity Drop";
+type GravityDropProps = {
+  children?: ReactNode;
+};
 
-export default function GravityDrop() {
+export default function GravityDrop({
+  children = "Gravity Drop",
+}: GravityDropProps) {
+  const text = typeof children === "string" ? children : "Gravity Drop";
   return (
     <div
       style={{

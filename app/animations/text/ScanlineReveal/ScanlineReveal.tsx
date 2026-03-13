@@ -1,10 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 
-export default function ScanlineReveal() {
-  const text = "Scanline Reveal";
+type ScanlineRevealProps = {
+  children?: ReactNode;
+};
+
+export default function ScanlineReveal({
+  children = "Scanline Reveal",
+}: ScanlineRevealProps) {
+  const text = typeof children === "string" ? children : "Scanline Reveal";
 
   const chars = useMemo(() => text.split(""), [text]);
 

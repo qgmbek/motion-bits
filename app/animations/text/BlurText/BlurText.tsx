@@ -1,8 +1,13 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
-
-export default function BlurText() {
+type BlurTextProps = {
+  children?: ReactNode;
+};
+export default function BlurText({
+  children = "Blur Text Animation",
+}: BlurTextProps) {
   return (
     <motion.div
       initial={{
@@ -23,7 +28,7 @@ export default function BlurText() {
         letterSpacing: "-0.02em",
       }}
     >
-      Blur Text Animation
+      {children}
     </motion.div>
   );
 }

@@ -1,10 +1,16 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Kinetic Reveal";
+type KineticRevealProps = {
+  children?: ReactNode;
+};
 
-export default function KineticText() {
+export default function KineticText({
+  children = "Kinetic Reveal",
+}: KineticRevealProps) {
+  const text = typeof children === "string" ? children : "Kinetic Reveal";
   return (
     <motion.div
       variants={{

@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 type BackspaceMode = "none" | "word" | "full" | "smart";
 
@@ -12,7 +12,15 @@ const PHRASES = [
   "Everyone has one - make yours unforgettable.",
 ];
 
-export default function Typewriter() {
+type TypewriterProps = {
+  children?: ReactNode;
+};
+
+export default function Typewriter({ children }: TypewriterProps) {
+  const phrases =
+    typeof children === "string" && children.trim().length
+      ? [children]
+      : PHRASES;
   const [display, setDisplay] = useState("");
   const [cursor, setCursor] = useState(true);
   const phraseIndex = useRef(0);
@@ -30,7 +38,8 @@ export default function Typewriter() {
     let timeout: NodeJS.Timeout;
 
     const type = async () => {
-      const phrase = PHRASES[phraseIndex.current];
+      phraseIndex.current = phraseIndex.current % phrases.length;
+      const phrase = phrases[phraseIndex.current];
       const words = phrase.split(" ");
 
       let current = prevWords.current.join(" ");
@@ -86,7 +95,7 @@ export default function Typewriter() {
 
       await wait(1400);
 
-      phraseIndex.current = (phraseIndex.current + 1) % PHRASES.length;
+      phraseIndex.current = (phraseIndex.current + 1) % phrases.length;
       type();
     };
 

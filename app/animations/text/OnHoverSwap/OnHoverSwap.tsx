@@ -1,10 +1,26 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ReactNode, useMemo } from "react";
 
-export default function OnHoverSwap() {
-  const from = "Hover Character Swap";
-  const to = "Design and Build";
+type OnHoverSwapProps = {
+  children?: ReactNode;
+};
+
+export default function OnHoverSwap({
+  children = "Hover Character Swap|Design and Build",
+}: OnHoverSwapProps) {
+  const { from, to } = useMemo(() => {
+    if (typeof children !== "string") {
+      return { from: "Hover Character Swap", to: "Design and Build" };
+    }
+
+    const [a, b] = children.split("|");
+    return {
+      from: (a ?? "").trim() || "Hover Character Swap",
+      to: (b ?? "").trim() || "Design and Build",
+    };
+  }, [children]);
   const maxLength = Math.max(from.length, to.length);
 
   return (
