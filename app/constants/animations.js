@@ -30,6 +30,8 @@ export const ANIMATIONS_DATA = {
       { id: "glitch-stabilize", name: "Glitch Stabilize" },
       { id: "distored-text", name: "Distorted Text" },
       { id: "word-morph", name: "Word Morph" },
+      { id: "reveal", name: "Reveal" },
+      { id: "positional-reveal", name: "Positional Reveal" },
     ],
   },
   components: {

@@ -44,6 +44,9 @@ import counter from "./text/Counter/Counter.code";
 import perLetterHover from "./text/PerLetterHover/PerLetterHover.code";
 import perWordHover from "./text/PerWordHover/PerWordHover.code";
 
+import Reveal from "./text/Reveal/Reveal";
+import PositonalReveal from "./text/PositionalReveal/PositionalReveal";
+
 // components
 import CodeGrid from "./components/CodeGrid/CodeGrid";
 import BorderShard from "./components/BorderShard/BorderShard";
@@ -157,6 +160,14 @@ export const ANIMATIONS_REGISTRY = {
   },
   "word-morph": {
     component: WordMorph,
+    code: "",
+  },
+  reveal: {
+    component: Reveal,
+    code: "",
+  },
+  "positional-reveal": {
+    component: PositonalReveal,
     code: "",
   },
   "code-grid": {
