@@ -27,7 +27,7 @@
   max-width: 680px;
   margin: 10px auto 0;
   font-weight: 500;
-  font-size: clamp(16px, 3.2vw, 22px);
+  font-size: 22px;
   color: #d6d6d6;
   text-align: center;
 }
@@ -39,5 +39,9 @@
 
   .title {
     gap: 12px;
+  }
+
+  .subtitle {
+    font-size: 20px;
   }
 }

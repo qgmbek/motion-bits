@@ -109,7 +109,7 @@ export default function Typewriter({ array }: TypewriterProps) {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       style={{
-        fontSize: "26px",
+        // fontSize: "26px",
         fontWeight: 400,
         letterSpacing: "-0.02em",
         fontFamily: "ui-sans-serif, system-ui",

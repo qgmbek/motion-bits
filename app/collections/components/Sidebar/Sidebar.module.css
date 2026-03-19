@@ -58,7 +58,7 @@
 .navItemCircle {
   width: 4px;
   height: 4px;
-  background-color: #43d6d6;
+  background-color: #d643cc;
   border-radius: 50%;
 }
 
@@ -101,9 +101,9 @@
     padding: 8px 12px;
     border-radius: 999px;
     border: 1px solid #27272a;
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(110, 18, 144, 0.3);
     color: #e4e4e7;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
   }
 
@@ -121,7 +121,7 @@
     margin-bottom: 8px;
     border-radius: 999px;
     border: 1px solid #27272a;
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(110, 18, 144, 0.3);
     color: #e4e4e7;
     cursor: pointer;
   }
