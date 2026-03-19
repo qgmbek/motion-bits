@@ -3,6 +3,7 @@
 import styles from "./OpenSource.module.css";
 import { Github, StarIcon } from "lucide-react";
 import GravityDrop from "@/app/animations/text/GravityDrop/GravityDrop";
+import PositonalReveal from "@/app/animations/text/PositionalReveal/PositionalReveal";
 
 export default function OpenSource() {
   return (
@@ -14,10 +15,12 @@ export default function OpenSource() {
           <GravityDrop>Open Source</GravityDrop>
         </h2>
 
-        <p className={styles.text}>
-          Motion Bits is free and open source. Star the project on GitHub and
-          help it grow.
-        </p>
+        <PositonalReveal>
+          <p className={styles.text}>
+            Motion Bits is free and open source. Star the project on GitHub and
+            help it grow.
+          </p>
+        </PositonalReveal>
 
         <a
           href="https://github.com/qgmbek/motion-bits"

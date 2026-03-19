@@ -22,11 +22,10 @@ export default function PositonalReveal({
         display: "inline-block",
       }}
     >
-      <motion.p
+      <motion.div
         style={{
           fontSize: "1.5rem",
           lineHeight: 1.6,
-          color: "#eaeaea",
           maxWidth: "600px",
           margin: 0,
         }}
@@ -38,7 +37,7 @@ export default function PositonalReveal({
         }}
       >
         {children}
-      </motion.p>
+      </motion.div>
 
       <motion.div
         style={{
