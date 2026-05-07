@@ -81,7 +81,7 @@ export default function CollectionsPage() {
             </div>
           )}
 
-          <div className={styles.fadingBorderTop} />
+          <div className={styles.fadingBorderBottom} />
           <div className={styles.footerContent}>
             Created with <span className={styles.heartIcon}>💜</span> by
             <a href="https://github.com/qgmbek" className={styles.userLink}>
