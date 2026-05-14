@@ -2,7 +2,11 @@
 
 import { motion, useAnimation } from "framer-motion";
 import { useState } from "react";
-export default function PixelDissolveButton({ children }: { children: string }) {
+export default function PixelDissolveButton({
+  children,
+}: {
+  children: string;
+}) {
   const controls = useAnimation();
   const [isHover, setIsHover] = useState(false);
 
@@ -33,7 +37,7 @@ export default function PixelDissolveButton({ children }: { children: string }) 
         letterSpacing: "0.15em",
         textTransform: "uppercase",
         background: "transparent",
-        color: "#9e11ea",
+        color: "var(--primary-color)",
         border: "1px solid rgba(255,255,255,0.35)",
         overflow: "hidden",
         cursor: "pointer",
@@ -81,9 +85,7 @@ export default function PixelDissolveButton({ children }: { children: string }) 
             initial="initial"
             animate={controls}
             style={{
-              background: isHover
-                ? "rgb(255, 255, 255)"
-                : "rgb(255, 255, 255)",
+              background: isHover ? "rgb(255, 255, 255)" : "rgb(255, 255, 255)",
               zIndex: -1,
             }}
           />

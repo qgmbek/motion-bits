@@ -59,7 +59,10 @@ import PurpleTrails from "./components/PurpleTrail/PurpleTrail";
 
 import codegrid from "./components/CodeGrid/CodeGrid.code";
 import borderShard from "./components/BorderShard/BorderShard.code";
+import gradientBorder from "./components/GradientBorder/GradientBorder.code";
 import gradientCard from "./components/GradientCard/GradientCard.code";
+import scrambleScreen from "./components/ScrambleScreen/ScrambleScreen.code";
+import ludwigHover from "./components/LudwigHover/LudwigHover.code";
 
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
@@ -180,7 +183,7 @@ export const ANIMATIONS_REGISTRY = {
   },
   "gradient-border": {
     component: GradientBorder,
-    code: "",
+    code: gradientBorder,
   },
   "gradient-card": {
     component: GradientCard,
@@ -188,11 +191,11 @@ export const ANIMATIONS_REGISTRY = {
   },
   "scramble-screen": {
     component: ScrambleScreen,
-    code: "",
+    code: scrambleScreen,
   },
   "ludwig-hover": {
     component: LudwigHover,
-    code: "",
+    code: ludwigHover,
   },
   "glow-stars": {
     component: GlowStars,
