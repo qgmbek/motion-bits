@@ -57,12 +57,12 @@ import LudwigHover from "./components/LudwigHover/LudwigHover";
 import GlowStars from "./components/GlowStars/GlowStars";
 import PurpleTrails from "./components/PurpleTrail/PurpleTrail";
 
-import codegrid from "./components/CodeGrid/CodeGrid.code";
-import borderShard from "./components/BorderShard/BorderShard.code";
+import codegrid, { css as codegridCss } from "./components/CodeGrid/CodeGrid.code";
+import borderShard, { css as borderShardCss } from "./components/BorderShard/BorderShard.code";
 import gradientBorder from "./components/GradientBorder/GradientBorder.code";
-import gradientCard from "./components/GradientCard/GradientCard.code";
-import scrambleScreen from "./components/ScrambleScreen/ScrambleScreen.code";
-import ludwigHover from "./components/LudwigHover/LudwigHover.code";
+import gradientCard, { css as gradientCardCss } from "./components/GradientCard/GradientCard.code";
+import scrambleScreen, { css as scrambleScreenCss } from "./components/ScrambleScreen/ScrambleScreen.code";
+import ludwigHover, { css as ludwigHoverCss } from "./components/LudwigHover/LudwigHover.code";
 
 export const ANIMATIONS_REGISTRY = {
   "blur-text": {
@@ -176,10 +176,12 @@ export const ANIMATIONS_REGISTRY = {
   "code-grid": {
     component: CodeGrid,
     code: codegrid,
+    css: codegridCss,
   },
   "border-shard": {
     component: BorderShard,
     code: borderShard,
+    css: borderShardCss,
   },
   "gradient-border": {
     component: GradientBorder,
@@ -188,14 +190,17 @@ export const ANIMATIONS_REGISTRY = {
   "gradient-card": {
     component: GradientCard,
     code: gradientCard,
+    css: gradientCardCss,
   },
   "scramble-screen": {
     component: ScrambleScreen,
     code: scrambleScreen,
+    css: scrambleScreenCss,
   },
   "ludwig-hover": {
     component: LudwigHover,
     code: ludwigHover,
+    css: ludwigHoverCss,
   },
   "glow-stars": {
     component: GlowStars,

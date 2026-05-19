@@ -25,6 +25,7 @@ export default function CollectionsPage() {
   const activeEntry = ANIMATIONS_REGISTRY[currentSlug];
   const ActiveDemo = activeEntry?.component;
   const activeCode = activeEntry?.code;
+  const activeCss = activeEntry?.css;
 
   return (
     <>
@@ -78,6 +79,9 @@ export default function CollectionsPage() {
           {tab === "code" && (
             <div className={styles.code}>
               <CodeBlock code={activeCode} language="jsx" />
+              {activeCss ? (
+                <CodeBlock code={activeCss} language="css" />
+              ) : null}
             </div>
           )}
 
