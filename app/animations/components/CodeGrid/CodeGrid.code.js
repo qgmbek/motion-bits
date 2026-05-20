@@ -12,6 +12,7 @@ export default function CodeGrid() {
     const cardsContainer = cardsRef.current;
     if (!cardsContainer) return;
 
+    // Helper to create a single dust particle
     const createDustParticle = (
       card: HTMLElement,
       mouseX: number,
@@ -19,7 +20,8 @@ export default function CodeGrid() {
     ) => {
       const particle = document.createElement("span");
 
-      const isGlobal = Math.random() < 0.25;
+      // We want most particles near the mouse (Gaussian-ish), but some randomly everywhere.
+      const isGlobal = Math.random() < 0.25; // 25% chance to appear anywhere on the card
       const rect = card.getBoundingClientRect();
 
       let startX, startY;
@@ -28,6 +30,7 @@ export default function CodeGrid() {
         startX = Math.random() * rect.width;
         startY = Math.random() * rect.height;
       } else {
+        // Localized "dust" dispersion (mostly within 40px of cursor)
         const dispersion = 40;
         startX = mouseX + (Math.random() - 0.5) * dispersion;
         startY = mouseY + (Math.random() - 0.5) * dispersion;
@@ -36,18 +39,18 @@ export default function CodeGrid() {
       particle.style.position = "absolute";
       particle.style.left = \`\${startX}px\`;
       particle.style.top = \`\${startY}px\`;
-      particle.style.width = \`\${Math.random() * 2 + 1}px\`;
+      particle.style.width = \`\${Math.random() * 2 + 1}px\`; // Random size 1px-3px
       particle.style.height = particle.style.width;
       particle.style.backgroundColor = "rgba(100, 245, 255, 0.6)";
       particle.style.borderRadius = "50%";
-      particle.style.pointerEvents = "none";
+      particle.style.pointerEvents = "none"; // Essential so it doesn't block mouse events
       particle.style.zIndex = "10";
       particle.style.boxShadow = "0 0 2px rgba(255, 255, 255, 0.4)";
 
       card.appendChild(particle);
 
       const destinationX = startX + (Math.random() - 0.5) * 50;
-      const destinationY = startY - Math.random() * 80;
+      const destinationY = startY - Math.random() * 80; // Tendency to float up
 
       const animation = particle.animate(
         [
@@ -58,11 +61,12 @@ export default function CodeGrid() {
           },
         ],
         {
-          duration: Math.random() * 1000 + 1000,
+          duration: Math.random() * 1000 + 1000, // Random duration
           easing: "ease-out",
         },
       );
 
+      // Remove element from DOM immediately after animation finishes
       animation.onfinish = () => {
         particle.remove();
       };
@@ -76,16 +80,20 @@ export default function CodeGrid() {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
+        // spotlight logic
         card.style.setProperty("--mouse-x", \`\${x}px\`);
         card.style.setProperty("--mouse-y", \`\${y}px\`);
 
+        // Only spawn particles if the mouse is actually INSIDE this specific card
         const isHovering =
           x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
 
         if (isHovering) {
-          if (card.style.overflow !== "hidden")
-            card.style.overflow = "hidden";
+          // Apply overflow hidden dynamically to ensure dust doesn't fly out of borders
+          if (card.style.overflow !== "hidden") card.style.overflow = "hidden";
 
+          // Spawn rate: only spawn occasionally to prevent lag, or multiple per frame for density.
+          // Spawning 2 particles per move event creates a nice trail.
           createDustParticle(card, x, y);
           createDustParticle(card, x, y);
         }

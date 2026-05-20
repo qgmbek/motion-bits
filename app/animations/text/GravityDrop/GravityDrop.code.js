@@ -1,10 +1,16 @@
 const code = `"use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Gravity Drop";
+type GravityDropProps = {
+  children?: ReactNode;
+};
 
-export default function GravityDrop() {
+export default function GravityDrop({
+  children = "Gravity Drop",
+}: GravityDropProps) {
+  const text = typeof children === "string" ? children : "Gravity Drop";
   return (
     <div
       style={{
@@ -14,7 +20,8 @@ export default function GravityDrop() {
     >
       <motion.div
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true }}
         variants={{
           visible: {
             transition: {
@@ -23,7 +30,6 @@ export default function GravityDrop() {
             },
           },
         }}
-        style={{ display: "flex" }}
       >
         {text.split("").map((char, i) => (
           <motion.span
@@ -55,7 +61,6 @@ export default function GravityDrop() {
       </motion.div>
     </div>
   );
-}
-`;
+}`;
 
 export default code;

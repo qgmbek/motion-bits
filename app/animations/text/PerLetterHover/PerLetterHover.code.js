@@ -1,8 +1,16 @@
 const code = `"use client";
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function PerLetterHover() {
-  const text = "Per Letter Hover";
+type PerLetterHoverProps = {
+  children?: ReactNode;
+};
+
+export default function PerLetterHover({
+  children = "Per Letter Hover",
+}: PerLetterHoverProps) {
+  const text =
+    typeof children === "string" ? children : "Per Letter Hover";
 
   return (
     <div>
@@ -24,7 +32,7 @@ export default function PerLetterHover() {
             textShadow: "0 0 20px currentColor",
           }}
         >
-          {char === " " ? "\u00A0" : char}
+          {char === " " ? "\\u00A0" : char}
         </motion.span>
       ))}
     </div>

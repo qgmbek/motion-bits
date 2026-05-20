@@ -43,6 +43,15 @@ import wednesday from "./text/Wednesday/Wednesday.code";
 import counter from "./text/Counter/Counter.code";
 import perLetterHover from "./text/PerLetterHover/PerLetterHover.code";
 import perWordHover from "./text/PerWordHover/PerWordHover.code";
+import dataStreamDecodeCode from "./text/DataStreamDecode/DataStreamDecode.code";
+import blueprintWireframeCode from "./text/BlueprintWireframe/BlueprintWireframe.code";
+import ledTextCode from "./text/LedText/LedText.code";
+import scanlineRevealCode from "./text/ScanlineReveal/ScanlineReveal.code";
+import distortedTextCode from "./text/DistortedText/DistortedText.code";
+import wordMorphCode from "./text/WordMorph/WordMorph.code";
+import revealCode from "./text/Reveal/Reveal.code";
+import positionalRevealCode from "./text/PositionalReveal/PositionalReveal.code";
+import severanceCode from "./text/Severance/Severance.code";
 
 import Reveal from "./text/Reveal/Reveal";
 import PositonalReveal from "./text/PositionalReveal/PositionalReveal";
@@ -57,14 +66,32 @@ import LudwigHover from "./components/LudwigHover/LudwigHover";
 import GlowStars from "./components/GlowStars/GlowStars";
 import PurpleTrails from "./components/PurpleTrail/PurpleTrail";
 
-import codegrid, { css as codegridCss } from "./components/CodeGrid/CodeGrid.code";
-import borderShard, { css as borderShardCss } from "./components/BorderShard/BorderShard.code";
+import codegrid, {
+  css as codegridCss,
+} from "./components/CodeGrid/CodeGrid.code";
+import borderShard, {
+  css as borderShardCss,
+} from "./components/BorderShard/BorderShard.code";
 import gradientBorder from "./components/GradientBorder/GradientBorder.code";
-import gradientCard, { css as gradientCardCss } from "./components/GradientCard/GradientCard.code";
-import scrambleScreen, { css as scrambleScreenCss } from "./components/ScrambleScreen/ScrambleScreen.code";
-import ludwigHover, { css as ludwigHoverCss } from "./components/LudwigHover/LudwigHover.code";
+import gradientCard, {
+  css as gradientCardCss,
+} from "./components/GradientCard/GradientCard.code";
+import scrambleScreen, {
+  css as scrambleScreenCss,
+} from "./components/ScrambleScreen/ScrambleScreen.code";
+import ludwigHover, {
+  css as ludwigHoverCss,
+} from "./components/LudwigHover/LudwigHover.code";
+import glowStarsCode from "./components/GlowStars/GlowStars.code";
+import purpleTrailCode from "./components/PurpleTrail/PurpleTrail.code";
 
-export const ANIMATIONS_REGISTRY = {
+type RegistryEntry = {
+  component: React.ComponentType<any>;
+  code: string;
+  css?: string;
+};
+
+export const ANIMATIONS_REGISTRY: Record<string, RegistryEntry> = {
   "blur-text": {
     component: BlurText,
     code: blurTextCode,
@@ -111,19 +138,19 @@ export const ANIMATIONS_REGISTRY = {
   },
   "data-stream-decode": {
     component: DataStreamDecode,
-    code: "",
+    code: dataStreamDecodeCode,
   },
   "blueprint-wireframe": {
     component: BlueprintWireframe,
-    code: "",
+    code: blueprintWireframeCode,
   },
   "led-text": {
     component: LedText,
-    code: "",
+    code: ledTextCode,
   },
   "scanline-reveal": {
     component: ScanlineReveal,
-    code: "",
+    code: scanlineRevealCode,
   },
   "on-hover-swap": {
     component: OnHoverSwap,
@@ -151,7 +178,7 @@ export const ANIMATIONS_REGISTRY = {
   },
   severance: {
     component: Severance,
-    code: "!",
+    code: severanceCode,
   },
   "glitch-stabilize": {
     component: GlitchStabilize,
@@ -159,19 +186,19 @@ export const ANIMATIONS_REGISTRY = {
   },
   "distored-text": {
     component: DistortedText,
-    code: "",
+    code: distortedTextCode,
   },
   "word-morph": {
     component: WordMorph,
-    code: "",
+    code: wordMorphCode,
   },
   reveal: {
     component: Reveal,
-    code: "",
+    code: revealCode,
   },
   "positional-reveal": {
     component: PositonalReveal,
-    code: "",
+    code: positionalRevealCode,
   },
   "code-grid": {
     component: CodeGrid,
@@ -204,10 +231,10 @@ export const ANIMATIONS_REGISTRY = {
   },
   "glow-stars": {
     component: GlowStars,
-    code: "",
+    code: glowStarsCode,
   },
   "purple-trails": {
     component: PurpleTrails,
-    code: "",
+    code: purpleTrailCode,
   },
 };

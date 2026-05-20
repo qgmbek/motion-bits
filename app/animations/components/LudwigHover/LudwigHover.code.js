@@ -57,7 +57,6 @@ export default function LudwigHover() {
     </div>
   );
 }
-
 `;
 
 export default code;

@@ -1,5 +1,6 @@
 const code = `"use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
 type Direction = "left" | "right" | "up" | "down";
@@ -8,13 +9,16 @@ interface GradientFlowProps {
   text?: string;
   speed?: number;
   direction?: Direction;
+  children?: ReactNode;
 }
 
 export default function GradientFlow({
   text = "Gradient Flow",
   speed = 6,
   direction = "right",
+  children,
 }: GradientFlowProps) {
+  const displayText = typeof children === "string" ? children : text;
   const directionMap: Record<Direction, string[]> = {
     right: ["0%", "200%"],
     left: ["200%", "0%"],
@@ -34,7 +38,8 @@ export default function GradientFlow({
 
   return (
     <motion.div
-      animate={backgroundPosition}
+      whileInView={backgroundPosition}
+      viewport={{ once: true }}
       transition={{
         duration: speed,
         ease: "linear",
@@ -53,7 +58,7 @@ export default function GradientFlow({
         willChange: "background-position",
       }}
     >
-      {text}
+      {displayText}
     </motion.div>
   );
 }

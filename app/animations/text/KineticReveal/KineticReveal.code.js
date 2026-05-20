@@ -1,10 +1,16 @@
 const code = `"use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Kinetic Reveal";
+type KineticRevealProps = {
+  children?: ReactNode;
+};
 
-export default function KineticText() {
+export default function KineticText({
+  children = "Kinetic Reveal",
+}: KineticRevealProps) {
+  const text = typeof children === "string" ? children : "Kinetic Reveal";
   return (
     <motion.div
       variants={{
@@ -16,7 +22,8 @@ export default function KineticText() {
         },
       }}
       initial="hidden"
-      animate="show"
+      whileInView="show"
+      viewport={{ once: true }}
       style={{
         gap: "0.08em",
         letterSpacing: "-0.04em",
@@ -57,12 +64,11 @@ export default function KineticText() {
             ease: "easeInOut",
           }}
         >
-          {char === " " ? "\u00A0" : char}
+          {char === " " ? "\\u00A0" : char}
         </motion.span>
       ))}
     </motion.div>
   );
-}
-`;
+}`;
 
 export default code;

@@ -50,7 +50,6 @@ export default function GradientBorder() {
     </div>
   );
 }
-
 `;
 
 export default code;

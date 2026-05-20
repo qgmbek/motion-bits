@@ -6,19 +6,27 @@ import { useEffect, useRef, useState } from "react";
 
 type BackspaceMode = "none" | "word" | "full" | "smart";
 
+type TypewriterProps = {
+  array?: string[];
+};
+
 const PHRASES = [
   "Everyone has one - make yours nice.",
   "Everyone has one - make yours beautiful.",
   "Everyone has one - make yours unforgettable.",
 ];
 
-export default function Typewriter() {
+export default function Typewriter({ array }: TypewriterProps) {
+  const phrases = array ?? PHRASES;
+
   const [display, setDisplay] = useState("");
   const [cursor, setCursor] = useState(true);
   const phraseIndex = useRef(0);
   const prevWords = useRef<string[]>([]);
 
   const [backspaceMode] = useState<BackspaceMode>("smart");
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   /* Cursor blink */
   useEffect(() => {
@@ -26,16 +34,36 @@ export default function Typewriter() {
     return () => clearInterval(blink);
   }, []);
 
+  /* Detect when element is in viewport */
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
+
+    if (ref.current) observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  /* Typing effect */
+  useEffect(() => {
+    if (!inView) return;
+
     let timeout: NodeJS.Timeout;
 
     const type = async () => {
-      const phrase = PHRASES[phraseIndex.current];
+      phraseIndex.current = phraseIndex.current % phrases.length;
+      const phrase = phrases[phraseIndex.current];
       const words = phrase.split(" ");
 
       let current = prevWords.current.join(" ");
 
-      /* SMART BACKSPACE */
       if (backspaceMode === "smart") {
         let i = 0;
         while (words[i] === prevWords.current[i]) i++;
@@ -51,34 +79,14 @@ export default function Typewriter() {
         current = unchanged;
       }
 
-      /* FULL / WORD BACKSPACE */
-      if (backspaceMode === "full") {
-        for (let i = display.length; i >= 0; i--) {
-          setDisplay(display.slice(0, i));
-          await wait(15);
-        }
-        current = "";
-      }
-
-      if (backspaceMode === "word") {
-        const parts = display.split(" ");
-        while (parts.length) {
-          parts.pop();
-          setDisplay(parts.join(" "));
-          await wait(80);
-        }
-        current = "";
-      }
-
-      /* TYPE */
       for (let i = current.length; i < phrase.length; i++) {
         const char = phrase[i];
         setDisplay(phrase.slice(0, i + 1));
 
         if (",.—!".includes(char)) {
-          await wait(350); // punctuation pause
+          await wait(350);
         } else {
-          await wait(random(35, 90)); // variable speed
+          await wait(random(35, 90));
         }
       }
 
@@ -86,20 +94,22 @@ export default function Typewriter() {
 
       await wait(1400);
 
-      phraseIndex.current = (phraseIndex.current + 1) % PHRASES.length;
+      phraseIndex.current = (phraseIndex.current + 1) % phrases.length;
       type();
     };
 
     timeout = setTimeout(type, 600);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [inView, phrases]);
 
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
       style={{
-        fontSize: "26px",
+        // fontSize: "26px",
         fontWeight: 400,
         letterSpacing: "-0.02em",
         fontFamily: "ui-sans-serif, system-ui",

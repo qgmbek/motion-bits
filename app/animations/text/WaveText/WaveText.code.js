@@ -1,10 +1,16 @@
 const code = `"use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Wave Text Animation";
+type WaveTextProps = {
+  children?: ReactNode;
+};
 
-export default function WaveText() {
+export default function WaveText({
+  children = "Wave Text Animation",
+}: WaveTextProps) {
+  const text = typeof children === "string" ? children : "Wave Text Animation";
   return (
     <div
       style={{
@@ -18,11 +24,12 @@ export default function WaveText() {
             display: "inline-block",
             whiteSpace: "pre",
           }}
-          animate={{
+          whileInView={{
             y: [0, -20, 0],
             rotate: [0, -4, 0],
             opacity: [0.7, 1, 0.7],
           }}
+          viewport={{ once: true }}
           transition={{
             duration: 1.8,
             repeat: Infinity,

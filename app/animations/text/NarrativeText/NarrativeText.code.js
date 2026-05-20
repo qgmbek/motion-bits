@@ -1,22 +1,32 @@
 const code = `"use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Narrative Cinematic Text Animation";
+type NarrativeTextProps = {
+  children?: ReactNode;
+};
 
-export default function NarrativeText() {
+export default function NarrativeText({
+  children = "Narrative Cinematic Text Animation",
+}: NarrativeTextProps) {
+  const text =
+    typeof children === "string"
+      ? children
+      : "Narrative Cinematic Text Animation";
   const words = text.split(" ");
 
   return (
     <div style={{ overflow: "hidden" }}>
       <motion.div
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true }}
         variants={{
           hidden: {},
           visible: {
             transition: {
-              staggerChildren: 0.18, // story timing
+              staggerChildren: 0.18,
             },
           },
         }}

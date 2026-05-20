@@ -1,10 +1,16 @@
 const code = `"use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Elastic Text";
+type ElasticTextProps = {
+  children?: ReactNode;
+};
 
-export default function ElasticText() {
+export default function ElasticText({
+  children = "Elastic Text",
+}: ElasticTextProps) {
+  const text = typeof children === "string" ? children : "Elastic Text";
   return (
     <div
       style={{
@@ -19,7 +25,8 @@ export default function ElasticText() {
             whiteSpace: "pre",
           }}
           initial={{ y: 0, scaleY: 1 }}
-          animate={{ y: -28, scaleY: 1.25 }}
+          whileInView={{ y: -28, scaleY: 1.25 }}
+          viewport={{ once: true }}
           transition={{
             type: "spring",
             stiffness: 220,

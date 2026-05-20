@@ -1,15 +1,20 @@
 const code = `"use client";
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function PerWordHover() {
-  const text = "Per Word Hover";
+type PerWordHoverProps = {
+  children?: ReactNode;
+};
+
+export default function PerWordHover({ children = "Per Word Hover" }: PerWordHoverProps) {
+  const text = typeof children === "string" ? children : "Per Word Hover";
 
   return (
     <div>
       {text.split(" ").map((word, wi) => (
         <motion.span
           key={wi}
-          style={{ marginRight: "0.4rem" }}
+          style={{ marginRight: "1.2rem" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

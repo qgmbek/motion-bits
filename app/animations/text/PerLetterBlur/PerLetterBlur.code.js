@@ -1,10 +1,17 @@
 const code = `"use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-const text = "Per Letter Animation";
+type PerLetterBlurProps = {
+  children?: ReactNode;
+};
 
-export default function PerLetterBlur() {
+export default function PerLetterBlur({
+  children = "Per Letter Animation",
+}: PerLetterBlurProps) {
+  const text =
+    typeof children === "string" ? children : "Per Letter Animation";
   return (
     <motion.div
       variants={{
@@ -16,7 +23,8 @@ export default function PerLetterBlur() {
         },
       }}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true }}
       style={{
         letterSpacing: "-0.02em",
       }}
@@ -50,7 +58,6 @@ export default function PerLetterBlur() {
       ))}
     </motion.div>
   );
-}
-`;
+}`;
 
 export default code;
