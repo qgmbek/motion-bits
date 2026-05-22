@@ -85,6 +85,16 @@ import ludwigHover, {
 import glowStarsCode from "./components/GlowStars/GlowStars.code";
 import purpleTrailCode from "./components/PurpleTrail/PurpleTrail.code";
 
+// buttons
+import BorderRevealButton from "./buttons/BorderRevealButton";
+import PixelDissolveButton from "./buttons/PixelDissolveButton";
+import LiquidFillButton from "./buttons/LiquidFillButton";
+import MagneticFieldButton from "./buttons/MagneticFieldButton";
+import borderRevealButtonCode from "./buttons/BorderRevealButton.code";
+import pixelDissolveButtonCode from "./buttons/PixelDissolveButton.code";
+import liquidFillButtonCode from "./buttons/LiquidFillButton.code";
+import magneticFieldButtonCode from "./buttons/MagneticFieldButton.code";
+
 type RegistryEntry = {
   component: React.ComponentType<any>;
   code: string;
@@ -236,5 +246,21 @@ export const ANIMATIONS_REGISTRY: Record<string, RegistryEntry> = {
   "purple-trails": {
     component: PurpleTrails,
     code: purpleTrailCode,
+  },
+  "border-reveal-button": {
+    component: BorderRevealButton,
+    code: borderRevealButtonCode,
+  },
+  "pixel-dissolve-button": {
+    component: PixelDissolveButton,
+    code: pixelDissolveButtonCode,
+  },
+  "liquid-fill-button": {
+    component: LiquidFillButton,
+    code: liquidFillButtonCode,
+  },
+  "magnetic-field-button": {
+    component: MagneticFieldButton,
+    code: magneticFieldButtonCode,
   },
 };

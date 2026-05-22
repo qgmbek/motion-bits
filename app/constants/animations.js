@@ -1,4 +1,4 @@
-import { Type, Square } from "lucide-react";
+import { Type, Square, MousePointerClick } from "lucide-react";
 
 export const ANIMATIONS_DATA = {
   "text-animations": {
@@ -46,6 +46,16 @@ export const ANIMATIONS_DATA = {
       { id: "ludwig-hover", name: "Ludwig Hover" },
       { id: "glow-stars", name: "Glow Stars" },
       { id: "purple-trails", name: "Purple Trails" },
+    ],
+  },
+  buttons: {
+    title: "Buttons",
+    icon: <MousePointerClick size={18} />,
+    items: [
+      { id: "border-reveal-button", name: "Border Reveal Button" },
+      { id: "pixel-dissolve-button", name: "Pixel Dissolve Button" },
+      { id: "liquid-fill-button", name: "Liquid Fill Button" },
+      { id: "magnetic-field-button", name: "Magnetic Field Button" },
     ],
   },
 };
