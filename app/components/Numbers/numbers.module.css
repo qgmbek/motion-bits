@@ -56,7 +56,7 @@
 }
 
 .numberName {
-  font-size: clamp(18px, 3vw, 26px);
+  font-size: 26px;
   color: aliceblue;
 }
 
@@ -76,7 +76,7 @@
   .container {
     flex-direction: column;
     align-items: center;
-    margin: 96px auto;
+    margin: 80px auto;
   }
 
   .one,

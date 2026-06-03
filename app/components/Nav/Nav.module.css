@@ -70,7 +70,7 @@
 @media (max-width: 640px) {
   .navWrap {
     max-width: calc(100vw - 24px);
-    margin-top: 18px;
+    margin-top: 30px;
     font-size: 16px;
     overflow-x: auto;
     overscroll-behavior-x: contain;

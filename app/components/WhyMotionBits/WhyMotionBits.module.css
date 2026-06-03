@@ -88,6 +88,7 @@
 @media (max-width: 900px) {
   .section {
     padding: 72px 20px;
+    margin: 50px auto;
   }
 
   .container {
@@ -123,6 +124,16 @@
     right: auto;
     bottom: auto;
     left: auto;
+  }
+
+  .card h3 {
+    font-size: 20px;
+    margin-top: 14px;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 17px;
   }
 }
 

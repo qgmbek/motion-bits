@@ -40,9 +40,12 @@
   margin-bottom: 10px;
 }
 
-
 @media (max-width: 900px) {
-  .titel {
-    font-size: 38px;
+  .page {
+    padding: 60px 24px;
+  }
+
+  .title {
+    font-size: 36px;
   }
 }
