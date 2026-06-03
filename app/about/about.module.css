@@ -39,3 +39,10 @@
 .list li {
   margin-bottom: 10px;
 }
+
+
+@media (max-width: 900px) {
+  .titel {
+    font-size: 38px;
+  }
+}

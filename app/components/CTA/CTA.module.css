@@ -61,6 +61,10 @@
   font-weight: 500;
 }
 
+.button:hover {
+  color: var(--primary-color);
+}
+
 @media (max-width: 768px) {
   .section {
     width: calc(100% - 32px);

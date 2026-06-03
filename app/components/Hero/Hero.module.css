@@ -1,7 +1,7 @@
 .main {
   width: 100%;
   min-height: 100svh;
-  padding: 0 20px 180px;
+  padding: 0 20px 200px;
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -25,16 +25,16 @@
 .subtitle {
   width: 100%;
   max-width: 740px;
-  margin: 10px auto 0;
+  margin: 20px auto 15px;
   font-weight: 500;
   font-size: 22px;
-  color: #d6d6d6;
+  color: #e7e5e5;
   text-align: center;
 }
 
 @media (max-width: 768px) {
   .main {
-    padding-bottom: 160px;
+    padding-bottom: 230px;
   }
 
   .title {

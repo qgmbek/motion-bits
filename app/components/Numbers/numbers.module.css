@@ -12,7 +12,7 @@
   min-height: 360px;
 
   border-radius: 24px;
-  border: 1px solid #59595b;
+  border: 2px solid #6a6a6b;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
   display: flex;
@@ -37,7 +37,7 @@
   width: 100%;
   min-height: 160px;
   border-radius: 24px;
-  border: 1px solid #59595b;
+  border: 2px solid #6a6a6b;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
   display: flex;
@@ -62,7 +62,7 @@
 
 .numberDesc {
   font-size: 16px;
-  color: #9d9d9d;
+  color: #b7b6b6;
 }
 
 .icon {

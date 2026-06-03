@@ -16,7 +16,8 @@ export default function Home() {
       <WhyMotionBits />
       <OpenSource />
       <CTA />
-      <div className={styles.fadingBorderTop} />
+
+      <div className={styles.fadingBorderTop}></div>
 
       <footer className={styles.footer}>
         <div className={styles.left}>

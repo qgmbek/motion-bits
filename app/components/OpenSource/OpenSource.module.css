@@ -9,7 +9,7 @@
   max-width: 520px;
   width: 100%;
   text-align: center;
-  border: 1px solid #59595b;
+  border: 2px solid #6a6a6b;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   border-radius: 14px;
   padding: 40px;
@@ -22,10 +22,10 @@
 }
 
 .text {
-  opacity: 0.7;
+  color: #b7b6b6;
   line-height: 1.6;
   margin-bottom: 24px;
-  font-size: 16px;
+  font-size: 17px;
 }
 
 @media (max-width: 768px) {

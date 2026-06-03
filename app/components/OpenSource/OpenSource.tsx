@@ -9,7 +9,7 @@ export default function OpenSource() {
   return (
     <section className={styles.section}>
       <div className={styles.box}>
-        <Github size={28} />
+        <Github size={38} />
 
         <h2 className={styles.title}>
           <GravityDrop>Open Source</GravityDrop>
