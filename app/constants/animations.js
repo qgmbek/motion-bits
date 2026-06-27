@@ -65,6 +65,9 @@ export const ANIMATIONS_DATA = {
       { id: "pixel-dissolve-button", name: "Pixel Dissolve Button" },
       { id: "liquid-fill-button", name: "Liquid Fill Button" },
       { id: "magnetic-field-button", name: "Magnetic Field Button" },
+      { id: "glitch-hover-button", name: "Glitch Hover Button" },
+      { id: "split-expand-button", name: "Split Expand Button" },
+      { id: "particle-burst-button", name: "Particle Burst Button" },
     ],
   },
 };

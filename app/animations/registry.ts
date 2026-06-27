@@ -108,10 +108,30 @@ import BorderRevealButton from "./buttons/BorderRevealButton";
 import PixelDissolveButton from "./buttons/PixelDissolveButton";
 import LiquidFillButton from "./buttons/LiquidFillButton";
 import MagneticFieldButton from "./buttons/MagneticFieldButton";
+import ShineSweepButton from "./buttons/ShineSweepButton";
+import RippleClickButton from "./buttons/RippleClickButton";
+import SlideArrowButton from "./buttons/SlideArrowButton";
+import NeonPulseButton from "./buttons/NeonPulseButton";
+import GlitchHoverButton from "./buttons/GlitchHoverButton";
+import ElasticPopButton from "./buttons/ElasticPopButton";
+import GhostFillButton from "./buttons/GhostFillButton";
+import SuccessMorphButton from "./buttons/SuccessMorphButton";
+import SplitExpandButton from "./buttons/SplitExpandButton";
+import ParticleBurstButton from "./buttons/ParticleBurstButton";
 import borderRevealButtonCode from "./buttons/BorderRevealButton.code";
 import pixelDissolveButtonCode from "./buttons/PixelDissolveButton.code";
 import liquidFillButtonCode from "./buttons/LiquidFillButton.code";
 import magneticFieldButtonCode from "./buttons/MagneticFieldButton.code";
+import shineSweepButtonCode from "./buttons/ShineSweepButton.code";
+import rippleClickButtonCode from "./buttons/RippleClickButton.code";
+import slideArrowButtonCode from "./buttons/SlideArrowButton.code";
+import neonPulseButtonCode from "./buttons/NeonPulseButton.code";
+import glitchHoverButtonCode from "./buttons/GlitchHoverButton.code";
+import elasticPopButtonCode from "./buttons/ElasticPopButton.code";
+import ghostFillButtonCode from "./buttons/GhostFillButton.code";
+import successMorphButtonCode from "./buttons/SuccessMorphButton.code";
+import splitExpandButtonCode from "./buttons/SplitExpandButton.code";
+import particleBurstButtonCode from "./buttons/ParticleBurstButton.code";
 
 type RegistryEntry = {
   component: React.ComponentType<any>;
@@ -316,5 +336,17 @@ export const ANIMATIONS_REGISTRY: Record<string, RegistryEntry> = {
   "magnetic-field-button": {
     component: MagneticFieldButton,
     code: magneticFieldButtonCode,
+  },
+  "glitch-hover-button": {
+    component: GlitchHoverButton,
+    code: glitchHoverButtonCode,
+  },
+  "split-expand-button": {
+    component: SplitExpandButton,
+    code: splitExpandButtonCode,
+  },
+  "particle-burst-button": {
+    component: ParticleBurstButton,
+    code: particleBurstButtonCode,
   },
 };
