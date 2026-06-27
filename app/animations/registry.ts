@@ -52,9 +52,15 @@ import wordMorphCode from "./text/WordMorph/WordMorph.code";
 import revealCode from "./text/Reveal/Reveal.code";
 import positionalRevealCode from "./text/PositionalReveal/PositionalReveal.code";
 import severanceCode from "./text/Severance/Severance.code";
+import clipPathRevealCode from "./text/ClipPathReveal/ClipPathReveal.code";
+import shimmerTextCode from "./text/ShimmerText/ShimmerText.code";
+import magneticLettersCode from "./text/MagneticLetters/MagneticLetters.code";
 
 import Reveal from "./text/Reveal/Reveal";
 import PositonalReveal from "./text/PositionalReveal/PositionalReveal";
+import ClipPathReveal from "./text/ClipPathReveal/ClipPathReveal";
+import ShimmerText from "./text/ShimmerText/ShimmerText";
+import MagneticLetters from "./text/MagneticLetters/MagneticLetters";
 
 // components
 import CodeGrid from "./components/CodeGrid/CodeGrid";
@@ -65,6 +71,12 @@ import ScrambleScreen from "./components/ScrambleScreen/ScrambleScreen";
 import LudwigHover from "./components/LudwigHover/LudwigHover";
 import GlowStars from "./components/GlowStars/GlowStars";
 import PurpleTrails from "./components/PurpleTrail/PurpleTrail";
+import SpotlightCard from "./components/SpotlightCard/SpotlightCard";
+import FlipCard from "./components/FlipCard/FlipCard";
+import MarqueeStrip from "./components/MarqueeStrip/MarqueeStrip";
+import RippleSurface from "./components/RippleSurface/RippleSurface";
+import PulseRing from "./components/PulseRing/PulseRing";
+import FloatingLabel from "./components/FloatingLabel/FloatingLabel";
 
 import codegrid, {
   css as codegridCss,
@@ -84,6 +96,12 @@ import ludwigHover, {
 } from "./components/LudwigHover/LudwigHover.code";
 import glowStarsCode from "./components/GlowStars/GlowStars.code";
 import purpleTrailCode from "./components/PurpleTrail/PurpleTrail.code";
+import spotlightCardCode from "./components/SpotlightCard/SpotlightCard.code";
+import flipCardCode from "./components/FlipCard/FlipCard.code";
+import marqueeStripCode from "./components/MarqueeStrip/MarqueeStrip.code";
+import rippleSurfaceCode from "./components/RippleSurface/RippleSurface.code";
+import pulseRingCode from "./components/PulseRing/PulseRing.code";
+import floatingLabelCode from "./components/FloatingLabel/FloatingLabel.code";
 
 // buttons
 import BorderRevealButton from "./buttons/BorderRevealButton";
@@ -210,6 +228,18 @@ export const ANIMATIONS_REGISTRY: Record<string, RegistryEntry> = {
     component: PositonalReveal,
     code: positionalRevealCode,
   },
+  "clip-path-reveal": {
+    component: ClipPathReveal,
+    code: clipPathRevealCode,
+  },
+  "shimmer-text": {
+    component: ShimmerText,
+    code: shimmerTextCode,
+  },
+  "magnetic-letters": {
+    component: MagneticLetters,
+    code: magneticLettersCode,
+  },
   "code-grid": {
     component: CodeGrid,
     code: codegrid,
@@ -246,6 +276,30 @@ export const ANIMATIONS_REGISTRY: Record<string, RegistryEntry> = {
   "purple-trails": {
     component: PurpleTrails,
     code: purpleTrailCode,
+  },
+  "spotlight-card": {
+    component: SpotlightCard,
+    code: spotlightCardCode,
+  },
+  "flip-card": {
+    component: FlipCard,
+    code: flipCardCode,
+  },
+  "marquee-strip": {
+    component: MarqueeStrip,
+    code: marqueeStripCode,
+  },
+  "ripple-surface": {
+    component: RippleSurface,
+    code: rippleSurfaceCode,
+  },
+  "pulse-ring": {
+    component: PulseRing,
+    code: pulseRingCode,
+  },
+  "floating-label": {
+    component: FloatingLabel,
+    code: floatingLabelCode,
   },
   "border-reveal-button": {
     component: BorderRevealButton,

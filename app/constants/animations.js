@@ -32,6 +32,9 @@ export const ANIMATIONS_DATA = {
       { id: "word-morph", name: "Word Morph" },
       { id: "reveal", name: "Reveal" },
       { id: "positional-reveal", name: "Positional Reveal" },
+      { id: "clip-path-reveal", name: "Clip Path Reveal" },
+      { id: "shimmer-text", name: "Shimmer Text" },
+      { id: "magnetic-letters", name: "Magnetic Letters" },
     ],
   },
   components: {
@@ -46,6 +49,12 @@ export const ANIMATIONS_DATA = {
       { id: "ludwig-hover", name: "Ludwig Hover" },
       { id: "glow-stars", name: "Glow Stars" },
       { id: "purple-trails", name: "Purple Trails" },
+      { id: "spotlight-card", name: "Spotlight Card" },
+      { id: "flip-card", name: "Flip Card" },
+      { id: "marquee-strip", name: "Marquee Strip" },
+      { id: "ripple-surface", name: "Ripple Surface" },
+      { id: "pulse-ring", name: "Pulse Ring" },
+      { id: "floating-label", name: "Floating Label" },
     ],
   },
   buttons: {
