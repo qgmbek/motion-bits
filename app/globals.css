@@ -1,7 +1,10 @@
 :root {
   --primary-font: var(--font-red-hat-text), sans-serif;
   --primary-color: #b01eff;
+  --subtle-purple: #ae00ff38;
   --bg-color: #060606;
+  --border-value: 1px solid #3b3b3d;
+  --main-white: #f1f1f4;
 
   --gray: #262626;
   --black: #0f0f0f;

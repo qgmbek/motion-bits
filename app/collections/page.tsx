@@ -31,7 +31,7 @@ export default function CollectionsPage() {
     <>
       <div className={styles.fadingBorderTop} />
 
-      <div className={styles.collectionContainer}>
+      <div className={styles.container}>
         <Sidebar currentSlug={currentSlug} onNavigate={setCurrentSlug} />
 
         <div className={styles.collectionWrapper}>
@@ -87,7 +87,7 @@ export default function CollectionsPage() {
 
           <div className={styles.fadingBorderBottom} />
           <div className={styles.footerContent}>
-            Created with <span className={styles.heartIcon}>💜</span> by
+            Created with💜 by
             <a href="https://github.com/qgmbek" className={styles.userLink}>
               qgmbek
             </a>

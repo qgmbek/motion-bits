@@ -1,9 +1,9 @@
-.collectionContainer {
+.container {
   display: flex;
   width: fit-content;
   height: fit-content;
-  background-color: hsl(0, 0%, 2%);
-  color: #f4f4f5;
+  background-color: var(--bg-color);
+  color: var(--main-white);
   font-family: var(--font-red-hat-text), sans-serif;
   overflow: hidden;
 }
@@ -14,7 +14,7 @@
   flex-direction: column;
   padding: 3rem;
   padding-top: 0;
-  width: 1000px;
+  width: 70vw;
   margin: 0 auto;
 }
 
@@ -31,10 +31,10 @@
 
 .tabButton {
   padding: 10px 18px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 400;
-  color: #f4f4f5;
-  border: 1px solid #27272a;
+  color: var(--main-white);
+  border: var(--border-value);
   border-radius: 16px;
   background: transparent;
   display: flex;
@@ -43,30 +43,20 @@
 }
 
 .tabButton:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--subtle-purple);
 }
 
-.active {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.code {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  width: 100%;
-  max-width: 900px;
+.tabButton.active {
+  background: var(--primary-color);
+  color: #000;
+  pointer-events: none;
 }
 
 .demo {
-  width: 900px;
-  height: 480px;
+  width: 90%;
+  height: 66vh;
   border-radius: 24px;
-  border: 1px solid #27272a;
-  /* background-color: #0d0d0d;
-  background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
-  background-size: 24px 24px; */
+  border: var(--border-value);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,33 +66,37 @@
   font-size: 56px;
   font-weight: 400;
   position: relative;
-
   background-image: radial-gradient(
-    rgba(255, 255, 255, 0.1) 1px,
+    rgba(255, 255, 255, 0.24) 1px,
     transparent 1px
   );
   background-position: 50% 50%;
-  background-size: 1.1rem 1.1rem;
-
+  background-size: 14px 14px;
   overflow: hidden;
+}
+
+.code {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
 
 .replayButton {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-
-  padding: 8px 10px;
+  padding: 8px 13px;
   border-radius: 30px;
-
   position: absolute;
   right: 6;
   top: 6;
-
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 15px;
+  font-weight: 300;
+  background: rgba(255, 255, 255, 0.1);
+  border: var(--border-value);
   color: inherit;
-
   cursor: pointer;
   transition:
     transform 0.15s ease,
@@ -110,7 +104,7 @@
 }
 
 .replayButton:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--subtle-purple);
 }
 
 .replayButton:active {
@@ -125,39 +119,41 @@
   transform: rotate(-180deg);
 }
 .replayButton:active svg {
-  transform: rotate(-360deg);
+  transform: rotate(-180deg);
 }
 
 .fadingBorderTop {
   width: 100%;
-  height: 1px;
-  margin-top: 10px;
+  height: 0.5px;
+  margin-top: 22px;
+  margin-bottom: 10px;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
+    rgba(217, 0, 255, 0) 0%,
+    #b01eff8b 50%,
     rgba(255, 255, 255, 0) 100%
   );
-  margin-bottom: 10px;
 }
 
 .fadingBorderBottom {
   width: 100%;
-  height: 1px;
-  margin-top: 30px;
+  height: 0.5px;
+  margin-top: 40px;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
+    #b01eff8b 50%,
     rgba(255, 255, 255, 0) 100%
   );
   margin-bottom: 24px;
 }
 
 .footerContent {
-  color: #7c7c7c;
-  font-size: 14px;
+  color: #cecece;
+  font-size: 16px;
   font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -170,13 +166,8 @@
   font-weight: 500;
 }
 
-.userLink:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-
 @media (max-width: 768px) {
-  .collectionContainer {
+  .container {
     flex-direction: column;
     width: 100%;
   }

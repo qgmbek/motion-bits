@@ -1,7 +1,8 @@
 .codeblock-container {
-  width: 900px;
+  width: 100%;
   height: auto;
   margin: 10px;
+  margin-top: 0;
   margin-left: 0;
 }
 
@@ -13,17 +14,13 @@
   overflow-x: auto;
   font-size: 14px;
   line-height: 1.6;
-  /* background-color: #0d0d0d !important;
-  background-image: radial-gradient(#1a1a1a 1px, transparent 1px) !important;
-  background-size: 24px 24px !important; */
-  border: 1px solid #27272a;
-
+  border: var(--border-value);
   background-image: radial-gradient(
-    rgba(255, 255, 255, 0.1) 1px,
+    rgba(255, 255, 255, 0.24) 1px,
     transparent 1px
-  ) !important;
-  background-position: 50% 50% !important;
-  background-size: 1.1rem 1.1rem !important;
+  );
+  background-position: 50% 50%;
+  background-size: 14px 14px;
 }
 
 .shiki .line {
@@ -57,18 +54,16 @@
   top: 6px;
   right: 6px;
   z-index: 10;
-
   display: flex;
   align-items: center;
+  font-size: 15px;
+  font-weight: 300;
   gap: 6px;
-
-  padding: 8px 10px;
+  padding: 8px 13px;
   border-radius: 30px;
-
-  background: rgba(255, 255, 255, 0.06);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--main-white);
+  border: var(--border-value);
   cursor: pointer;
   backdrop-filter: blur(6px);
   transition:
@@ -77,7 +72,7 @@
 }
 
 .copy-button:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--subtle-purple);
 }
 
 .copy-button:active {

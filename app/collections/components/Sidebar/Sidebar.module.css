@@ -1,11 +1,8 @@
 .sidebar {
-  margin: 12px;
-  margin-top: 0;
   width: 15vw;
-  padding: 5px;
-  padding-top: 0;
-
   height: 80vh;
+  margin: 0 12px 12px;
+  padding: 0px 5px 5px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -23,20 +20,18 @@
   gap: 8px;
   margin-top: 6px;
   margin-bottom: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #71717a;
+  font-size: 16px;
+  font-weight: 400;
+  color: #cbcaca;
   letter-spacing: 0.1px;
 }
 
 .navItem {
   width: 100%;
   margin-top: 6px;
-  padding: 0.4rem 0.75rem;
-  border-radius: 0.375rem;
+  padding: 0.2rem 0.6rem;
   text-align: left;
-  font-size: 0.875rem;
-  color: #a1a1aa;
+  font-size: 0.9rem;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -44,15 +39,13 @@
   justify-content: space-between;
   align-items: center;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #bbc0c4;
+  color: var(--main-white);
+
 }
 
 .navItem:hover {
-  color: #f4f4f5;
+  color: var(--primary-color);
   margin-left: 4px;
-}
-.navItem.active {
-  color: #eaf5f9;
 }
 
 .navItemCircle {
