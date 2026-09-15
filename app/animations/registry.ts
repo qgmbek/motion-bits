@@ -1,3 +1,6 @@
+import { Type, Square, MousePointerClick } from "lucide-react";
+import type { ComponentType } from "react";
+
 import BlurText from "./text/BlurText/BlurText";
 import PerLetterBlur from "./text/PerLetterBlur/PerLetterBlur";
 import WaveText from "./text/WaveText/WaveText";
@@ -16,7 +19,6 @@ import Wednesday from "./text/Wednesday/Wednesday";
 import Counter from "./text/Counter/Counter";
 import PerLetterHover from "./text/PerLetterHover/PerLetterHover";
 import PerWordHover from "./text/PerWordHover/PerWordHover";
-
 import Severance from "./text/Severance/Severance";
 import BlueprintWireframe from "./text/BlueprintWireframe/BlueprintWireframe";
 import LedText from "./text/LedText/LedText";
@@ -24,6 +26,11 @@ import DataStreamDecode from "./text/DataStreamDecode/DataStreamDecode";
 import ScanlineReveal from "./text/ScanlineReveal/ScanlineReveal";
 import DistortedText from "./text/DistortedText/DistortedText";
 import WordMorph from "./text/WordMorph/WordMorph";
+import Reveal from "./text/Reveal/Reveal";
+import PositonalReveal from "./text/PositionalReveal/PositionalReveal";
+import ClipPathReveal from "./text/ClipPathReveal/ClipPathReveal";
+import ShimmerText from "./text/ShimmerText/ShimmerText";
+import MagneticLetters from "./text/MagneticLetters/MagneticLetters";
 
 import blurTextCode from "./text/BlurText/BlurText.code";
 import perLetterBlurCode from "./text/PerLetterBlur/PerLetterBlur.code";
@@ -56,13 +63,6 @@ import clipPathRevealCode from "./text/ClipPathReveal/ClipPathReveal.code";
 import shimmerTextCode from "./text/ShimmerText/ShimmerText.code";
 import magneticLettersCode from "./text/MagneticLetters/MagneticLetters.code";
 
-import Reveal from "./text/Reveal/Reveal";
-import PositonalReveal from "./text/PositionalReveal/PositionalReveal";
-import ClipPathReveal from "./text/ClipPathReveal/ClipPathReveal";
-import ShimmerText from "./text/ShimmerText/ShimmerText";
-import MagneticLetters from "./text/MagneticLetters/MagneticLetters";
-
-// components
 import CodeGrid from "./components/CodeGrid/CodeGrid";
 import BorderShard from "./components/BorderShard/BorderShard";
 import GradientBorder from "./components/GradientBorder/GradientBorder";
@@ -103,250 +103,315 @@ import rippleSurfaceCode from "./components/RippleSurface/RippleSurface.code";
 import pulseRingCode from "./components/PulseRing/PulseRing.code";
 import floatingLabelCode from "./components/FloatingLabel/FloatingLabel.code";
 
-// buttons
 import BorderRevealButton from "./buttons/BorderRevealButton";
 import PixelDissolveButton from "./buttons/PixelDissolveButton";
 import LiquidFillButton from "./buttons/LiquidFillButton";
 import MagneticFieldButton from "./buttons/MagneticFieldButton";
-import ShineSweepButton from "./buttons/ShineSweepButton";
-import RippleClickButton from "./buttons/RippleClickButton";
-import SlideArrowButton from "./buttons/SlideArrowButton";
-import NeonPulseButton from "./buttons/NeonPulseButton";
 import GlitchHoverButton from "./buttons/GlitchHoverButton";
-import ElasticPopButton from "./buttons/ElasticPopButton";
-import GhostFillButton from "./buttons/GhostFillButton";
-import SuccessMorphButton from "./buttons/SuccessMorphButton";
 import SplitExpandButton from "./buttons/SplitExpandButton";
 import ParticleBurstButton from "./buttons/ParticleBurstButton";
 import borderRevealButtonCode from "./buttons/BorderRevealButton.code";
 import pixelDissolveButtonCode from "./buttons/PixelDissolveButton.code";
 import liquidFillButtonCode from "./buttons/LiquidFillButton.code";
 import magneticFieldButtonCode from "./buttons/MagneticFieldButton.code";
-import shineSweepButtonCode from "./buttons/ShineSweepButton.code";
-import rippleClickButtonCode from "./buttons/RippleClickButton.code";
-import slideArrowButtonCode from "./buttons/SlideArrowButton.code";
-import neonPulseButtonCode from "./buttons/NeonPulseButton.code";
 import glitchHoverButtonCode from "./buttons/GlitchHoverButton.code";
-import elasticPopButtonCode from "./buttons/ElasticPopButton.code";
-import ghostFillButtonCode from "./buttons/GhostFillButton.code";
-import successMorphButtonCode from "./buttons/SuccessMorphButton.code";
 import splitExpandButtonCode from "./buttons/SplitExpandButton.code";
 import particleBurstButtonCode from "./buttons/ParticleBurstButton.code";
 
-type RegistryEntry = {
-  component: React.ComponentType<any>;
+export type AnimationEntry = {
+  name: string;
+  component: ComponentType<any>;
   code: string;
   css?: string;
 };
 
-export const ANIMATIONS_REGISTRY: Record<string, RegistryEntry> = {
-  "blur-text": {
-    component: BlurText,
-    code: blurTextCode,
+export const ANIMATIONS = {
+  "text-animations": {
+    title: "Text Animations",
+    icon: Type,
+    items: {
+      "blur-text": {
+        name: "Blur Text",
+        component: BlurText,
+        code: blurTextCode,
+      },
+      "per-letter-blur": {
+        name: "Per Letter Blur",
+        component: PerLetterBlur,
+        code: perLetterBlurCode,
+      },
+      "split-reveal": {
+        name: "Split Reveal",
+        component: SplitReveal,
+        code: splitRevealCode,
+      },
+      "kinetic-reveal": {
+        name: "Kinetic Reveal",
+        component: KineticReveal,
+        code: kineticRevealCode,
+      },
+      "narrative-text": {
+        name: "Narrative Text",
+        component: NarrativeText,
+        code: narrativeText,
+      },
+      "wave-text": {
+        name: "Wave Text",
+        component: WaveText,
+        code: waveTextCode,
+      },
+      "elastic-text": {
+        name: "Elastic Text",
+        component: ElasticText,
+        code: elasticTextCode,
+      },
+      "gravity-drop": {
+        name: "Gravity Drop",
+        component: GravityDrop,
+        code: gravityDrop,
+      },
+      typewriter: {
+        name: "Typewriter",
+        component: Typewriter,
+        code: typewriterCode,
+      },
+      counter: {
+        name: "Counter",
+        component: Counter,
+        code: counter,
+      },
+      "ascii-morph": {
+        name: "ASCII Morph",
+        component: ASCIIMorph,
+        code: asmiiMorphCode,
+      },
+      "data-stream-decode": {
+        name: "Data Stream Decode",
+        component: DataStreamDecode,
+        code: dataStreamDecodeCode,
+      },
+      "blueprint-wireframe": {
+        name: "Blueprint Wireframe Text",
+        component: BlueprintWireframe,
+        code: blueprintWireframeCode,
+      },
+      "led-text": {
+        name: "Led Text",
+        component: LedText,
+        code: ledTextCode,
+      },
+      "scanline-reveal": {
+        name: "Scanline Reveal",
+        component: ScanlineReveal,
+        code: scanlineRevealCode,
+      },
+      "on-hover-swap": {
+        name: "On Hover Swap",
+        component: OnHoverSwap,
+        code: onHoverSwapCode,
+      },
+      "per-letter-hover": {
+        name: "Per Letter Hover",
+        component: PerLetterHover,
+        code: perLetterHover,
+      },
+      "per-word-hover": {
+        name: "Per Word Hover",
+        component: PerWordHover,
+        code: perWordHover,
+      },
+      "soft-glow-pulse": {
+        name: "Soft Glow Pulse",
+        component: SoftGlowPulse,
+        code: softGlowPulse,
+      },
+      "gradient-flow": {
+        name: "Gradient Flow",
+        component: GradientFlow,
+        code: gradientFlow,
+      },
+      wednesday: {
+        name: "Wednesday",
+        component: Wednesday,
+        code: wednesday,
+      },
+      severance: {
+        name: "Severance",
+        component: Severance,
+        code: severanceCode,
+      },
+      "glitch-stabilize": {
+        name: "Glitch Stabilize",
+        component: GlitchStabilize,
+        code: glitchStabilize,
+      },
+      "distored-text": {
+        name: "Distorted Text",
+        component: DistortedText,
+        code: distortedTextCode,
+      },
+      "word-morph": {
+        name: "Word Morph",
+        component: WordMorph,
+        code: wordMorphCode,
+      },
+      reveal: {
+        name: "Reveal",
+        component: Reveal,
+        code: revealCode,
+      },
+      "positional-reveal": {
+        name: "Positional Reveal",
+        component: PositonalReveal,
+        code: positionalRevealCode,
+      },
+      "clip-path-reveal": {
+        name: "Clip Path Reveal",
+        component: ClipPathReveal,
+        code: clipPathRevealCode,
+      },
+      "shimmer-text": {
+        name: "Shimmer Text",
+        component: ShimmerText,
+        code: shimmerTextCode,
+      },
+      "magnetic-letters": {
+        name: "Magnetic Letters",
+        component: MagneticLetters,
+        code: magneticLettersCode,
+      },
+    },
   },
-  "per-letter-blur": {
-    component: PerLetterBlur,
-    code: perLetterBlurCode,
+  components: {
+    title: "Components",
+    icon: Square,
+    items: {
+      "code-grid": {
+        name: "Code Grid",
+        component: CodeGrid,
+        code: codegrid,
+        css: codegridCss,
+      },
+      "border-shard": {
+        name: "Border Shard",
+        component: BorderShard,
+        code: borderShard,
+        css: borderShardCss,
+      },
+      "gradient-border": {
+        name: "Gradient Border",
+        component: GradientBorder,
+        code: gradientBorder,
+      },
+      "gradient-card": {
+        name: "Gradient Card",
+        component: GradientCard,
+        code: gradientCard,
+        css: gradientCardCss,
+      },
+      "scramble-screen": {
+        name: "Scramble Screen",
+        component: ScrambleScreen,
+        code: scrambleScreen,
+        css: scrambleScreenCss,
+      },
+      "ludwig-hover": {
+        name: "Ludwig Hover",
+        component: LudwigHover,
+        code: ludwigHover,
+        css: ludwigHoverCss,
+      },
+      "glow-stars": {
+        name: "Glow Stars",
+        component: GlowStars,
+        code: glowStarsCode,
+      },
+      "purple-trails": {
+        name: "Purple Trails",
+        component: PurpleTrails,
+        code: purpleTrailCode,
+      },
+      "spotlight-card": {
+        name: "Spotlight Card",
+        component: SpotlightCard,
+        code: spotlightCardCode,
+      },
+      "flip-card": {
+        name: "Flip Card",
+        component: FlipCard,
+        code: flipCardCode,
+      },
+      "marquee-strip": {
+        name: "Marquee Strip",
+        component: MarqueeStrip,
+        code: marqueeStripCode,
+      },
+      "ripple-surface": {
+        name: "Ripple Surface",
+        component: RippleSurface,
+        code: rippleSurfaceCode,
+      },
+      "pulse-ring": {
+        name: "Pulse Ring",
+        component: PulseRing,
+        code: pulseRingCode,
+      },
+      "floating-label": {
+        name: "Floating Label",
+        component: FloatingLabel,
+        code: floatingLabelCode,
+      },
+    },
   },
-  "split-reveal": {
-    component: SplitReveal,
-    code: splitRevealCode,
-  },
-  "kinetic-reveal": {
-    component: KineticReveal,
-    code: kineticRevealCode,
-  },
-  "narrative-text": {
-    component: NarrativeText,
-    code: narrativeText,
-  },
-  "wave-text": {
-    component: WaveText,
-    code: waveTextCode,
-  },
-  "elastic-text": {
-    component: ElasticText,
-    code: elasticTextCode,
-  },
-  "gravity-drop": {
-    component: GravityDrop,
-    code: gravityDrop,
-  },
-  counter: {
-    component: Counter,
-    code: counter,
-  },
-  typewriter: {
-    component: Typewriter,
-    code: typewriterCode,
-  },
-  "ascii-morph": {
-    component: ASCIIMorph,
-    code: asmiiMorphCode,
-  },
-  "data-stream-decode": {
-    component: DataStreamDecode,
-    code: dataStreamDecodeCode,
-  },
-  "blueprint-wireframe": {
-    component: BlueprintWireframe,
-    code: blueprintWireframeCode,
-  },
-  "led-text": {
-    component: LedText,
-    code: ledTextCode,
-  },
-  "scanline-reveal": {
-    component: ScanlineReveal,
-    code: scanlineRevealCode,
-  },
-  "on-hover-swap": {
-    component: OnHoverSwap,
-    code: onHoverSwapCode,
-  },
-  "per-letter-hover": {
-    component: PerLetterHover,
-    code: perLetterHover,
-  },
-  "per-word-hover": {
-    component: PerWordHover,
-    code: perWordHover,
-  },
-  "soft-glow-pulse": {
-    component: SoftGlowPulse,
-    code: softGlowPulse,
-  },
-  "gradient-flow": {
-    component: GradientFlow,
-    code: gradientFlow,
-  },
-  wednesday: {
-    component: Wednesday,
-    code: wednesday,
-  },
-  severance: {
-    component: Severance,
-    code: severanceCode,
-  },
-  "glitch-stabilize": {
-    component: GlitchStabilize,
-    code: glitchStabilize,
-  },
-  "distored-text": {
-    component: DistortedText,
-    code: distortedTextCode,
-  },
-  "word-morph": {
-    component: WordMorph,
-    code: wordMorphCode,
-  },
-  reveal: {
-    component: Reveal,
-    code: revealCode,
-  },
-  "positional-reveal": {
-    component: PositonalReveal,
-    code: positionalRevealCode,
-  },
-  "clip-path-reveal": {
-    component: ClipPathReveal,
-    code: clipPathRevealCode,
-  },
-  "shimmer-text": {
-    component: ShimmerText,
-    code: shimmerTextCode,
-  },
-  "magnetic-letters": {
-    component: MagneticLetters,
-    code: magneticLettersCode,
-  },
-  "code-grid": {
-    component: CodeGrid,
-    code: codegrid,
-    css: codegridCss,
-  },
-  "border-shard": {
-    component: BorderShard,
-    code: borderShard,
-    css: borderShardCss,
-  },
-  "gradient-border": {
-    component: GradientBorder,
-    code: gradientBorder,
-  },
-  "gradient-card": {
-    component: GradientCard,
-    code: gradientCard,
-    css: gradientCardCss,
-  },
-  "scramble-screen": {
-    component: ScrambleScreen,
-    code: scrambleScreen,
-    css: scrambleScreenCss,
-  },
-  "ludwig-hover": {
-    component: LudwigHover,
-    code: ludwigHover,
-    css: ludwigHoverCss,
-  },
-  "glow-stars": {
-    component: GlowStars,
-    code: glowStarsCode,
-  },
-  "purple-trails": {
-    component: PurpleTrails,
-    code: purpleTrailCode,
-  },
-  "spotlight-card": {
-    component: SpotlightCard,
-    code: spotlightCardCode,
-  },
-  "flip-card": {
-    component: FlipCard,
-    code: flipCardCode,
-  },
-  "marquee-strip": {
-    component: MarqueeStrip,
-    code: marqueeStripCode,
-  },
-  "ripple-surface": {
-    component: RippleSurface,
-    code: rippleSurfaceCode,
-  },
-  "pulse-ring": {
-    component: PulseRing,
-    code: pulseRingCode,
-  },
-  "floating-label": {
-    component: FloatingLabel,
-    code: floatingLabelCode,
-  },
-  "border-reveal-button": {
-    component: BorderRevealButton,
-    code: borderRevealButtonCode,
-  },
-  "pixel-dissolve-button": {
-    component: PixelDissolveButton,
-    code: pixelDissolveButtonCode,
-  },
-  "liquid-fill-button": {
-    component: LiquidFillButton,
-    code: liquidFillButtonCode,
-  },
-  "magnetic-field-button": {
-    component: MagneticFieldButton,
-    code: magneticFieldButtonCode,
-  },
-  "glitch-hover-button": {
-    component: GlitchHoverButton,
-    code: glitchHoverButtonCode,
-  },
-  "split-expand-button": {
-    component: SplitExpandButton,
-    code: splitExpandButtonCode,
-  },
-  "particle-burst-button": {
-    component: ParticleBurstButton,
-    code: particleBurstButtonCode,
+  buttons: {
+    title: "Buttons",
+    icon: MousePointerClick,
+    items: {
+      "border-reveal-button": {
+        name: "Border Reveal Button",
+        component: BorderRevealButton,
+        code: borderRevealButtonCode,
+      },
+      "pixel-dissolve-button": {
+        name: "Pixel Dissolve Button",
+        component: PixelDissolveButton,
+        code: pixelDissolveButtonCode,
+      },
+      "liquid-fill-button": {
+        name: "Liquid Fill Button",
+        component: LiquidFillButton,
+        code: liquidFillButtonCode,
+      },
+      "magnetic-field-button": {
+        name: "Magnetic Field Button",
+        component: MagneticFieldButton,
+        code: magneticFieldButtonCode,
+      },
+      "glitch-hover-button": {
+        name: "Glitch Hover Button",
+        component: GlitchHoverButton,
+        code: glitchHoverButtonCode,
+      },
+      "split-expand-button": {
+        name: "Split Expand Button",
+        component: SplitExpandButton,
+        code: splitExpandButtonCode,
+      },
+      "particle-burst-button": {
+        name: "Particle Burst Button",
+        component: ParticleBurstButton,
+        code: particleBurstButtonCode,
+      },
+    },
   },
 };
+
+export type AnimationSlug = {
+  [Category in keyof typeof ANIMATIONS]: keyof (typeof ANIMATIONS)[Category]["items"];
+}[keyof typeof ANIMATIONS];
+
+export const ANIMATIONS_BY_ID = Object.fromEntries(
+  Object.values(ANIMATIONS).flatMap((category) =>
+    Object.entries(category.items),
+  ),
+) as Record<AnimationSlug, AnimationEntry>;

@@ -1,31 +1,26 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { RotateCcw, Eye, Code } from "lucide-react";
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import CodeBlock from "./components/CodeBlock/CodeBlock";
 import styles from "./collections.module.css";
 
-import { ANIMATIONS_DATA } from "../constants/animations";
-import { ANIMATIONS_REGISTRY } from "../animations/registry";
-
-type AnimationSlug = keyof typeof ANIMATIONS_REGISTRY;
+import {
+  ANIMATIONS_BY_ID,
+  type AnimationSlug,
+} from "../animations/registry";
 
 export default function CollectionsPage() {
   const [currentSlug, setCurrentSlug] = useState<AnimationSlug>("blur-text");
   const [tab, setTab] = useState("demo");
   const [replayKey, setReplayKey] = useState(0);
 
-  const activeItem = useMemo(() => {
-    const allItems = Object.values(ANIMATIONS_DATA).flatMap((cat) => cat.items);
-    return allItems.find((item) => item.id === currentSlug) || allItems[0];
-  }, [currentSlug]);
-
-  const activeEntry = ANIMATIONS_REGISTRY[currentSlug];
-  const ActiveDemo = activeEntry?.component;
-  const activeCode = activeEntry?.code;
-  const activeCss = activeEntry?.css;
+  const activeEntry = ANIMATIONS_BY_ID[currentSlug];
+  const ActiveDemo = activeEntry.component;
+  const activeCode = activeEntry.code;
+  const activeCss = activeEntry.css;
 
   return (
     <>
@@ -35,7 +30,7 @@ export default function CollectionsPage() {
         <Sidebar currentSlug={currentSlug} onNavigate={setCurrentSlug} />
 
         <div className={styles.collectionWrapper}>
-          <div className={styles.collectionName}>{activeItem.name}</div>
+          <div className={styles.collectionName}>{activeEntry.name}</div>
           <div className={styles.tab}>
             <button
               onClick={() => setTab("demo")}

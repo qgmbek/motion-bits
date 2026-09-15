@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-import { ANIMATIONS_DATA } from "../../../constants/animations";
+import { ANIMATIONS } from "../../../animations/registry";
 import styles from "./Sidebar.module.css";
 
 export const Sidebar = ({ currentSlug, onNavigate }) => {
@@ -35,28 +35,32 @@ export const Sidebar = ({ currentSlug, onNavigate }) => {
         </button>
 
         <nav>
-          {Object.entries(ANIMATIONS_DATA).map(([key, cat]) => (
-            <div key={key} style={{ marginBottom: "2rem" }}>
-              <div className={styles.categoryLabel}>
-                {cat.icon} {cat.title}
-              </div>
+          {Object.entries(ANIMATIONS).map(([key, cat]) => {
+            const Icon = cat.icon;
 
-              {cat.items.map((item) => (
-                <button
-                  key={item.id}
-                  className={`${styles.navItem} ${
-                    currentSlug === item.id ? styles.active : ""
-                  }`}
-                  onClick={() => handleNavigate(item.id)}
-                >
-                  {item.name}
-                  {currentSlug === item.id && (
-                    <div className={styles.navItemCircle} />
-                  )}
-                </button>
-              ))}
-            </div>
-          ))}
+            return (
+              <div key={key} style={{ marginBottom: "2rem" }}>
+                <div className={styles.categoryLabel}>
+                  <Icon size={18} /> {cat.title}
+                </div>
+
+                {Object.entries(cat.items).map(([id, item]) => (
+                  <button
+                    key={id}
+                    className={`${styles.navItem} ${
+                      currentSlug === id ? styles.active : ""
+                    }`}
+                    onClick={() => handleNavigate(id)}
+                  >
+                    {item.name}
+                    {currentSlug === id && (
+                      <div className={styles.navItemCircle} />
+                    )}
+                  </button>
+                ))}
+              </div>
+            );
+          })}
         </nav>
       </aside>
     </>
