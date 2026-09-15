@@ -1,5 +1,5 @@
 .navWrap {
-  border: 1px solid var(--gray);
+  border: var(--border-value);
   width: fit-content;
   margin: 20px auto 0;
   border-radius: 500px;
@@ -62,8 +62,8 @@
 
 .hover {
   z-index: 1;
-  background: linear-gradient(180deg, var(--gray), #212121);
-  box-shadow: inset 0 2px 7px #ffffff29;
+  background: linear-gradient(180deg, rgba(183, 0, 255, 0.104), #b700ff15);
+  box-shadow: inset 0 2px 7px #b700ff48;
   position-anchor: --nav;
 }
 

@@ -22,10 +22,14 @@
   letter-spacing: -0.02em;
 }
 
+.bottomTitle {
+  color: var(--primary-color);
+}
+
 .subtitle {
   width: 100%;
   max-width: 740px;
-  margin: 20px auto 15px;
+  margin: 20px auto 25px;
   font-weight: 500;
   font-size: 22px;
   color: #e7e5e5;

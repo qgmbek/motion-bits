@@ -24,7 +24,7 @@ export default function Hero() {
       </BlurText>
 
       <BlurText>
-        <div className={styles.title}>
+        <div className={`${styles.title} ${styles.bottomTitle}`}>
           <span>For</span>
           <Code2 className={styles.icon} size={44} />
           <span>Free</span>

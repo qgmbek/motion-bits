@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import Hero from "./components/Hero/Hero";
 import Numbers from "./components/Numbers/Numbers";
-import WhyMotionBits from "./components/WhyMotionBits/WhyMotionBits";
+// import WhyMotionBits from "./components/WhyMotionBits/WhyMotionBits";
 import OpenSource from "./components/OpenSource/OpenSource";
 import CTA from "./components/CTA/CTA";
 import { Heart } from "lucide-react";
@@ -13,7 +13,7 @@ export default function Home() {
     <div className={styles.page}>
       <Hero />
       <Numbers />
-      <WhyMotionBits />
+      {/* <WhyMotionBits /> */}
       <OpenSource />
       <CTA />
 
