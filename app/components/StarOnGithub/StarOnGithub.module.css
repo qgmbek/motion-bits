@@ -30,7 +30,7 @@
   width: 17px;
 }
 
-.icon:hover {
+.button:hover .icon {
   color: var(--primary-color);
 }
 

@@ -7,8 +7,8 @@ import styles from "./Nav.module.css";
 const links = [
   { label: "Home", href: "/" },
   { label: "Collections", href: "/collections" },
-  { label: "About", href: "/about" },
-  { label: "Donate", href: "/donate" },
+  { label: "About", href: "/us/about" },
+  { label: "Donate", href: "/us/donate" },
 ];
 
 export default function Nav() {

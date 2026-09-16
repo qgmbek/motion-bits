@@ -19,7 +19,7 @@
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
+    #b01eff8b 50%,
     rgba(255, 255, 255, 0) 100%
   );
 }
@@ -28,8 +28,8 @@
   width: min(76vw, 1200px);
   padding-left: 20px;
   padding-right: 20px;
-  margin: 20px auto 80px;
-  color: #c0c0c0;
+  margin: 50px auto 80px;
+  color: #ededed;
   display: flex;
   justify-content: space-between;
   gap: 24px;
@@ -56,7 +56,7 @@
 }
 
 .userLink:hover {
-  color: #fff;
+  color: var(--main-white);
   text-decoration: underline;
 }
 

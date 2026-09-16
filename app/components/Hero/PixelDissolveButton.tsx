@@ -2,6 +2,7 @@
 
 import { motion, useAnimation } from "framer-motion";
 import { useState } from "react";
+
 export default function PixelDissolveButton({
   children,
 }: {
@@ -38,7 +39,7 @@ export default function PixelDissolveButton({
         textTransform: "uppercase",
         fontWeight: "400",
         background: "transparent",
-        color: "var(--primary-color)",
+        color: isHover ? "#000" : "var(--main-white)",
         border: "1px solid var(--main-white)",
         borderRadius: "200px",
         overflow: "hidden",
@@ -46,7 +47,48 @@ export default function PixelDissolveButton({
         zIndex: 2,
       }}
     >
-      {children}
+      <span
+        style={{
+          position: "relative",
+          zIndex: 2,
+          display: "inline-flex",
+        }}
+      >
+        {children.split("").map((char, i) => (
+          <span
+            key={i}
+            style={{
+              display: "inline-block",
+              overflow: "hidden",
+              height: "1.2em",
+              lineHeight: "1.2em",
+              verticalAlign: "top",
+            }}
+          >
+            <motion.span
+              initial={{
+                y: "100%",
+                opacity: 0,
+              }}
+              animate={{
+                y: "0%",
+                opacity: 1,
+              }}
+              transition={{
+                delay: 0.3 + i * 0.06,
+                duration: 0.35,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              style={{
+                display: "inline-block",
+              }}
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          </span>
+        ))}
+      </span>
+
       <div
         style={{
           position: "absolute",
@@ -55,6 +97,7 @@ export default function PixelDissolveButton({
           gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
           gridTemplateRows: `repeat(${gridSize}, 1fr)`,
           pointerEvents: "none",
+          zIndex: 1,
         }}
       >
         {Array.from({ length: total }).map((_, i) => (
@@ -66,29 +109,30 @@ export default function PixelDissolveButton({
                 opacity: 0,
                 scale: 0.4,
               },
-              hover: () => ({
+
+              hover: {
                 opacity: 1,
                 scale: 1,
                 transition: {
                   delay: Math.random() * 0.15,
-                  duration: 0.25,
+                  duration: 0.5,
                   ease: [0.16, 1, 0.3, 1],
                 },
-              }),
-              collapse: () => ({
+              },
+
+              collapse: {
                 opacity: 0,
                 scale: 0,
                 transition: {
                   delay: Math.random() * 0.1,
                   duration: 0.2,
                 },
-              }),
+              },
             }}
             initial="initial"
             animate={controls}
             style={{
-              background: isHover ? "rgb(255, 255, 255)" : "rgb(255, 255, 255)",
-              zIndex: -1,
+              background: "rgb(255, 255, 255)",
             }}
           />
         ))}

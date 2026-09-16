@@ -4,6 +4,7 @@
   --subtle-purple: #ae00ff38;
   --bg-color: #060606;
   --border-value: 1px solid #3b3b3d;
+  --landing-page-border-color: #dedee0;
   --main-white: #f1f1f4;
 
   --gray: #262626;
@@ -74,6 +75,7 @@ button:hover {
   left: 25px;
   width: 200px;
   height: auto;
+  pointer-events: none;
 }
 
 @media (max-width: 640px) {

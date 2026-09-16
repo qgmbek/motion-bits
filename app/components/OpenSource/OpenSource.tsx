@@ -10,24 +10,21 @@ export default function OpenSource() {
     <section className={styles.section}>
       <div className={styles.box}>
         <Github size={38} />
-
         <h2 className={styles.title}>
           <GravityDrop>Open Source</GravityDrop>
         </h2>
-
         <PositonalReveal>
           <p className={styles.text}>
             Motion Bits is free and open source. Star the project on GitHub and
             help it grow.
           </p>
         </PositonalReveal>
-
         <a
           href="https://github.com/qgmbek/motion-bits"
           target="_blank"
           className={styles.button}
         >
-          <StarIcon /> Star on GitHub
+          <StarIcon className={styles.icon} /> Star on GitHub
         </a>
       </div>
     </section>
