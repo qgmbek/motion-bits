@@ -11,7 +11,6 @@ export default function GlitchHoverButton() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0a0a0a",
       }}
     >
       <motion.button
@@ -20,11 +19,11 @@ export default function GlitchHoverButton() {
         whileTap={{ scale: 0.98 }}
         style={{
           position: "relative",
-          padding: "16px 40px",
+          padding: "26px 52px",
           border: "1px solid rgba(255,255,255,0.2)",
           background: "#111",
           color: "#fff",
-          fontSize: 15,
+          fontSize: 28,
           fontWeight: 600,
           letterSpacing: "0.12em",
           textTransform: "uppercase",

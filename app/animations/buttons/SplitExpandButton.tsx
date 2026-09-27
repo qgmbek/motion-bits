@@ -11,7 +11,6 @@ export default function SplitExpandButton() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0a0a0a",
       }}
     >
       <motion.button
@@ -24,7 +23,7 @@ export default function SplitExpandButton() {
           border: "none",
           background: "transparent",
           color: "#fff",
-          fontSize: 15,
+          fontSize: 16,
           fontWeight: 600,
           letterSpacing: "0.1em",
           textTransform: "uppercase",

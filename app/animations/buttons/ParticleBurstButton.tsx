@@ -29,7 +29,6 @@ export default function ParticleBurstButton() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0a0a0a",
       }}
     >
       <motion.button
@@ -39,18 +38,18 @@ export default function ParticleBurstButton() {
         style={{
           position: "relative",
           padding: "16px 40px",
-          borderRadius: 12,
+          borderRadius: 8,
           border: "none",
           background: "linear-gradient(135deg, #8b5cf6, #d946ef)",
           color: "#fff",
-          fontSize: 15,
+          fontSize: 18,
           fontWeight: 600,
           letterSpacing: "0.06em",
           cursor: "pointer",
           overflow: "visible",
         }}
       >
-        Burst
+        Burst On Click
         <AnimatePresence>
           {particles.map((p) => (
             <motion.span
@@ -68,10 +67,10 @@ export default function ParticleBurstButton() {
                 position: "absolute",
                 left: "50%",
                 top: "50%",
-                width: 6,
-                height: 6,
+                width: 10,
+                height: 10,
                 borderRadius: "50%",
-                background: "#fff",
+                background: "#74ffbc",
                 pointerEvents: "none",
               }}
             />

@@ -22,7 +22,6 @@ export default function PixelDissolveButton() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0d0d0f",
       }}
     >
       <motion.button
@@ -42,7 +41,7 @@ export default function PixelDissolveButton() {
           letterSpacing: "0.15em",
           textTransform: "uppercase",
           background: "transparent",
-          color: "#ff0000",
+          color: "#3d0093",
           border: "1px solid rgba(255,255,255,0.2)",
           overflow: "hidden",
           cursor: "pointer",
@@ -92,8 +91,8 @@ export default function PixelDissolveButton() {
               animate={controls}
               style={{
                 background: isHover
-                  ? "rgba(255,255,255,0.9)"
-                  : "rgba(255,255,255,0.7)",
+                  ? "rgba(77, 255, 86, 0.6)"
+                  : "rgba(77, 255, 86, 0.6)",
                 zIndex: -1,
               }}
             />

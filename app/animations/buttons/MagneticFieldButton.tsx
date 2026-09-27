@@ -56,7 +56,6 @@ export default function MagneticFieldButton() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#0a0a0a",
       }}
     >
       <motion.div

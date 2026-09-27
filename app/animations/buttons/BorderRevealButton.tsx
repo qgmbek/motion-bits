@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 export default function BorderRevealButton() {
-  const width = 240;
+  const width = 300;
   const height = 64;
   const strokeWidth = 2;
   const radius = 12;
@@ -17,7 +17,6 @@ export default function BorderRevealButton() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        background: "#0e0e10",
       }}
     >
       <motion.button
