@@ -31,6 +31,16 @@ import PositonalReveal from "./text/PositionalReveal/PositionalReveal";
 import ClipPathReveal from "./text/ClipPathReveal/ClipPathReveal";
 import ShimmerText from "./text/ShimmerText/ShimmerText";
 import MagneticLetters from "./text/MagneticLetters/MagneticLetters";
+import NeonPulse from "./text/NeonPulse/NeonPulse";
+import LiquidFloat from "./text/LiquidFloat/LiquidFloat";
+import PixelDissolve from "./text/PixelDissolve/PixelDissolve";
+import CyberDecode from "./text/CyberDecode/CyberDecode";
+import ElasticBounce from "./text/ElasticBounce/ElasticBounce";
+import HologramFlicker from "./text/HologramFlicker/HologramFlicker";
+import ParticleAssemble from "./text/ParticleAssemble/ParticleAssemble";
+import BreathingType from "./text/BreathingType/BreathingType";
+import LiquidCursor from "./text/LiquidCursor/LiquidCursor";
+import ThreeDRotate from "./text/3DRotate/3DRotate";
 
 import blurTextCode from "./text/BlurText/BlurText.code";
 import perLetterBlurCode from "./text/PerLetterBlur/PerLetterBlur.code";
@@ -62,6 +72,16 @@ import severanceCode from "./text/Severance/Severance.code";
 import clipPathRevealCode from "./text/ClipPathReveal/ClipPathReveal.code";
 import shimmerTextCode from "./text/ShimmerText/ShimmerText.code";
 import magneticLettersCode from "./text/MagneticLetters/MagneticLetters.code";
+import neonPulseCode from "./text/NeonPulse/NeonPulse.code";
+import liquidFloatCode from "./text/LiquidFloat/LiquidFloat.code";
+import pixelDissolveCode from "./text/PixelDissolve/PixelDissolve.code";
+import cyberDecodeCode from "./text/CyberDecode/CyberDecode.code";
+import elasticBounceCode from "./text/ElasticBounce/ElasticBounce.code";
+import hologramFlickerCode from "./text/HologramFlicker/HologramFlicker.code";
+import particleAssembleCode from "./text/ParticleAssemble/ParticleAssemble.code";
+import breathingTypeCode from "./text/BreathingType/BreathingType.code";
+import liquidCursorCode from "./text/LiquidCursor/LiquidCursor.code";
+import threeDRotateCode from "./text/3DRotate/3DRotate.code";
 
 import CodeGrid from "./components/CodeGrid/CodeGrid";
 import BorderShard from "./components/BorderShard/BorderShard";
@@ -279,6 +299,56 @@ export const ANIMATIONS = {
         name: "Magnetic Letters",
         component: MagneticLetters,
         code: magneticLettersCode,
+      },
+      "neon-pulse": {
+        name: "Neon Pulse",
+        component: NeonPulse,
+        code: neonPulseCode,
+      },
+      "liquid-float": {
+        name: "Liquid Float",
+        component: LiquidFloat,
+        code: liquidFloatCode,
+      },
+      "pixel-dissolve": {
+        name: "Pixel Dissolve",
+        component: PixelDissolve,
+        code: pixelDissolveCode,
+      },
+      "cyber-decode": {
+        name: "Cyber Decode",
+        component: CyberDecode,
+        code: cyberDecodeCode,
+      },
+      "elastic-bounce": {
+        name: "Elastic Bounce",
+        component: ElasticBounce,
+        code: elasticBounceCode,
+      },
+      "hologram-flicker": {
+        name: "Hologram Flicker",
+        component: HologramFlicker,
+        code: hologramFlickerCode,
+      },
+      "particle-assemble": {
+        name: "Particle Assemble",
+        component: ParticleAssemble,
+        code: particleAssembleCode,
+      },
+      "breathing-type": {
+        name: "Breathing Type",
+        component: BreathingType,
+        code: breathingTypeCode,
+      },
+      "liquid-cursor": {
+        name: "Liquid Cursor",
+        component: LiquidCursor,
+        code: liquidCursorCode,
+      },
+      "3d-rotate": {
+        name: "3D Rotate",
+        component: ThreeDRotate,
+        code: threeDRotateCode,
       },
     },
   },
