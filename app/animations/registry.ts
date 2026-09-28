@@ -152,7 +152,7 @@ import rippleClickButtonCode from "./buttons/RippleClickButton.code";
 
 export type AnimationEntry = {
   name: string;
-  component: ComponentType<any>;
+  component: ComponentType<unknown>;
   code: string;
   css?: string;
 };
