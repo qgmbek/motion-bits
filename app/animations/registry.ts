@@ -130,6 +130,12 @@ import MagneticFieldButton from "./buttons/MagneticFieldButton";
 import GlitchHoverButton from "./buttons/GlitchHoverButton";
 import SplitExpandButton from "./buttons/SplitExpandButton";
 import ParticleBurstButton from "./buttons/ParticleBurstButton";
+import NeonPulseButton from "./buttons/NeonPulseButton";
+import GhostFillButton from "./buttons/GhostFillButton";
+import SlideArrowButton from "./buttons/SlideArrowButton";
+import SuccessMorphButton from "./buttons/SuccessMorphButton";
+import ElasticPopButton from "./buttons/ElasticPopButton";
+import RippleClickButton from "./buttons/RippleClickButton";
 import borderRevealButtonCode from "./buttons/BorderRevealButton.code";
 import pixelDissolveButtonCode from "./buttons/PixelDissolveButton.code";
 import liquidFillButtonCode from "./buttons/LiquidFillButton.code";
@@ -137,6 +143,12 @@ import magneticFieldButtonCode from "./buttons/MagneticFieldButton.code";
 import glitchHoverButtonCode from "./buttons/GlitchHoverButton.code";
 import splitExpandButtonCode from "./buttons/SplitExpandButton.code";
 import particleBurstButtonCode from "./buttons/ParticleBurstButton.code";
+import neonPulseButtonCode from "./buttons/NeonPulseButton.code";
+import ghostFillButtonCode from "./buttons/GhostFillButton.code";
+import slideArrowButtonCode from "./buttons/SlideArrowButton.code";
+import successMorphButtonCode from "./buttons/SuccessMorphButton.code";
+import elasticPopButtonCode from "./buttons/ElasticPopButton.code";
+import rippleClickButtonCode from "./buttons/RippleClickButton.code";
 
 export type AnimationEntry = {
   name: string;
@@ -471,6 +483,36 @@ export const ANIMATIONS = {
         name: "Particle Burst Button",
         component: ParticleBurstButton,
         code: particleBurstButtonCode,
+      },
+      "neon-pulse-button": {
+        name: "Neon Pulse Button",
+        component: NeonPulseButton,
+        code: neonPulseButtonCode,
+      },
+      "ghost-fill-button": {
+        name: "Ghost Fill Button",
+        component: GhostFillButton,
+        code: ghostFillButtonCode,
+      },
+      "slide-arrow-button": {
+        name: "Slide Arrow Button",
+        component: SlideArrowButton,
+        code: slideArrowButtonCode,
+      },
+      "success-morph-button": {
+        name: "Success Morph Button",
+        component: SuccessMorphButton,
+        code: successMorphButtonCode,
+      },
+      "elastic-pop-button": {
+        name: "Elastic Pop Button",
+        component: ElasticPopButton,
+        code: elasticPopButtonCode,
+      },
+      "ripple-click-button": {
+        name: "Ripple Click Button",
+        component: RippleClickButton,
+        code: rippleClickButtonCode,
       },
     },
   },
