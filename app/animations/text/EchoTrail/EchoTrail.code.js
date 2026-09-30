@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
@@ -10,8 +10,8 @@ export default function EchoTrail({ children = "Echo Trail" }: Props) {
       {[3, 2, 1].map(n => (
         <div key={n} aria-hidden style={{
           position: "absolute", inset: 0, pointerEvents: "none",
-          opacity: .06 * n, transform: `translate(${-n * 8}px, ${n * 2}px)`,
-          filter: `blur(${n}px)`,
+          opacity: .06 * n, transform: \`translate(\${-n * 8}px, \${n * 2}px)\`,
+          filter: \`blur(\${n}px)\`,
         }}>{children}</div>
       ))}
       <motion.div whileHover={{ x: 8 }} transition={{ type: "spring", stiffness: 260, damping: 18 }}>
@@ -20,3 +20,6 @@ export default function EchoTrail({ children = "Echo Trail" }: Props) {
     </div>
   );
 }
+`;
+
+export default code;

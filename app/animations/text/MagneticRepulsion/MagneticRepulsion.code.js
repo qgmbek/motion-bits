@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -24,3 +24,6 @@ export default function MagneticRepulsion({ children = "Attract / Repel" }: Prop
     </div>
   );
 }
+`;
+
+export default code;

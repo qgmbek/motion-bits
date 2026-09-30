@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useState } from "react";
@@ -23,3 +23,6 @@ export default function TextStretch({ children = "Stretch Me" }: Props) {
     </div>
   );
 }
+`;
+
+export default code;

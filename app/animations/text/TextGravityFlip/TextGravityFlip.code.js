@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
@@ -19,3 +19,6 @@ export default function TextGravityFlip({ children = "Gravity Flip" }: Props) {
     </div>
   );
 }
+`;
+
+export default code;

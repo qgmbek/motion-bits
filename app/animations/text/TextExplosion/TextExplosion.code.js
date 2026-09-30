@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
@@ -22,3 +22,6 @@ export default function TextExplosion({ children = "Explosion" }: Props) {
     </div>
   );
 }
+`;
+
+export default code;

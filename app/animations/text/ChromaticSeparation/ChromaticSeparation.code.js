@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
@@ -22,3 +22,6 @@ export default function ChromaticSeparation({ children = "Chromatic" }: Props) {
     </motion.div>
   );
 }
+`;
+
+export default code;

@@ -41,6 +41,28 @@ import ParticleAssemble from "./text/ParticleAssemble/ParticleAssemble";
 import BreathingType from "./text/BreathingType/BreathingType";
 import LiquidCursor from "./text/LiquidCursor/LiquidCursor";
 import ThreeDRotate from "./text/3DRotate/3DRotate";
+import CharacterOrbit from "./text/CharacterOrbit/CharacterOrbit";
+import ChromaticSeparation from "./text/ChromaticSeparation/ChromaticSeparation";
+import CursorDraw from "./text/CursorDraw/CursorDraw";
+import DeformField from "./text/DeformField/DeformField";
+import EchoTrail from "./text/EchoTrail/EchoTrail";
+import GlyphMorph from "./text/GlyphMorph/GlyphMorph";
+import InkBleed from "./text/InkBleed/InkBleed";
+import MagneticRepulsion from "./text/MagneticRepulsion/MagneticRepulsion";
+import PortalText from "./text/PortalText/PortalText";
+import RollingBaseline from "./text/RollingBaseline/RollingBaseline";
+import TextExplosion from "./text/TextExplosion/TextExplosion";
+import TextFold from "./text/TextFold/TextFold";
+import TextGravityFlip from "./text/TextGravityFlip/TextGravityFlip";
+import TextGravityWell from "./text/TextGravityWell/TextGravityWell";
+import TextMemoryType from "./text/TextMemoryType/TextMemoryType";
+import TextPortal from "./text/TextPortal/TextPortal";
+import TextSand from "./text/TextSand/TextSand";
+import TextStretch from "./text/TextStretch/TextStretch";
+import TextTumble from "./text/TextTumble/TextTumble";
+import TextTunnel from "./text/TextTunnel/TextTunnel";
+import TypographyShutter from "./text/TypographyShutter/TypographyShutter";
+import VerticalCascade from "./text/VerticalCascade/VerticalCascade";
 
 import blurTextCode from "./text/BlurText/BlurText.code";
 import perLetterBlurCode from "./text/PerLetterBlur/PerLetterBlur.code";
@@ -82,6 +104,28 @@ import particleAssembleCode from "./text/ParticleAssemble/ParticleAssemble.code"
 import breathingTypeCode from "./text/BreathingType/BreathingType.code";
 import liquidCursorCode from "./text/LiquidCursor/LiquidCursor.code";
 import threeDRotateCode from "./text/3DRotate/3DRotate.code";
+import characterOrbitCode from "./text/CharacterOrbit/CharacterOrbit.code";
+import chromaticSeparationCode from "./text/ChromaticSeparation/ChromaticSeparation.code";
+import cursorDrawCode from "./text/CursorDraw/CursorDraw.code";
+import deformFieldCode from "./text/DeformField/DeformField.code";
+import echoTrailCode from "./text/EchoTrail/EchoTrail.code";
+import glyphMorphCode from "./text/GlyphMorph/GlyphMorph.code";
+import inkBleedCode from "./text/InkBleed/InkBleed.code";
+import magneticRepulsionCode from "./text/MagneticRepulsion/MagneticRepulsion.code";
+import portalTextCode from "./text/PortalText/PortalText.code";
+import rollingBaselineCode from "./text/RollingBaseline/RollingBaseline.code";
+import textExplosionCode from "./text/TextExplosion/TextExplosion.code";
+import textFoldCode from "./text/TextFold/TextFold.code";
+import textGravityFlipCode from "./text/TextGravityFlip/TextGravityFlip.code";
+import textGravityWellCode from "./text/TextGravityWell/TextGravityWell.code";
+import textMemoryTypeCode from "./text/TextMemoryType/TextMemoryType.code";
+import textPortalCode from "./text/TextPortal/TextPortal.code";
+import textSandCode from "./text/TextSand/TextSand.code";
+import textStretchCode from "./text/TextStretch/TextStretch.code";
+import textTumbleCode from "./text/TextTumble/TextTumble.code";
+import textTunnelCode from "./text/TextTunnel/TextTunnel.code";
+import typographyShutterCode from "./text/TypographyShutter/TypographyShutter.code";
+import verticalCascadeCode from "./text/VerticalCascade/VerticalCascade.code";
 
 import CodeGrid from "./components/CodeGrid/CodeGrid";
 import BorderShard from "./components/BorderShard/BorderShard";
@@ -361,6 +405,116 @@ export const ANIMATIONS = {
         name: "3D Rotate",
         component: ThreeDRotate,
         code: threeDRotateCode,
+      },
+      "character-orbit": {
+        name: "Character Orbit",
+        component: CharacterOrbit,
+        code: characterOrbitCode,
+      },
+      "chromatic-separation": {
+        name: "Chromatic Separation",
+        component: ChromaticSeparation,
+        code: chromaticSeparationCode,
+      },
+      "cursor-draw": {
+        name: "Cursor Draw",
+        component: CursorDraw,
+        code: cursorDrawCode,
+      },
+      "deform-field": {
+        name: "Deform Field",
+        component: DeformField,
+        code: deformFieldCode,
+      },
+      "echo-trail": {
+        name: "Echo Trail",
+        component: EchoTrail,
+        code: echoTrailCode,
+      },
+      "glyph-morph": {
+        name: "Glyph Morph",
+        component: GlyphMorph,
+        code: glyphMorphCode,
+      },
+      "ink-bleed": {
+        name: "Ink Bleed",
+        component: InkBleed,
+        code: inkBleedCode,
+      },
+      "magnetic-repulsion": {
+        name: "Magnetic Repulsion",
+        component: MagneticRepulsion,
+        code: magneticRepulsionCode,
+      },
+      "portal-text": {
+        name: "Portal Text",
+        component: PortalText,
+        code: portalTextCode,
+      },
+      "rolling-baseline": {
+        name: "Rolling Baseline",
+        component: RollingBaseline,
+        code: rollingBaselineCode,
+      },
+      "text-explosion": {
+        name: "Text Explosion",
+        component: TextExplosion,
+        code: textExplosionCode,
+      },
+      "text-fold": {
+        name: "Text Fold",
+        component: TextFold,
+        code: textFoldCode,
+      },
+      "text-gravity-flip": {
+        name: "Text Gravity Flip",
+        component: TextGravityFlip,
+        code: textGravityFlipCode,
+      },
+      "text-gravity-well": {
+        name: "Text Gravity Well",
+        component: TextGravityWell,
+        code: textGravityWellCode,
+      },
+      "text-memory-type": {
+        name: "Text Memory Type",
+        component: TextMemoryType,
+        code: textMemoryTypeCode,
+      },
+      "text-portal": {
+        name: "Text Portal",
+        component: TextPortal,
+        code: textPortalCode,
+      },
+      "text-sand": {
+        name: "Text Sand",
+        component: TextSand,
+        code: textSandCode,
+      },
+      "text-stretch": {
+        name: "Text Stretch",
+        component: TextStretch,
+        code: textStretchCode,
+      },
+      "text-tumble": {
+        name: "Text Tumble",
+        component: TextTumble,
+        code: textTumbleCode,
+      },
+      "text-tunnel": {
+        name: "Text Tunnel",
+        component: TextTunnel,
+        code: textTunnelCode,
+      },
+      "typography-shutter": {
+        name: "Typography Shutter",
+        component: TypographyShutter,
+        code: typographyShutterCode,
+      },
+      "vertical-cascade": {
+        name: "Vertical Cascade",
+        component: VerticalCascade,
+        code: verticalCascadeCode,
       },
     },
   },

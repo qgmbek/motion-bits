@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
@@ -17,3 +17,6 @@ export default function TextSand({ children = "Text Sand" }: Props) {
     </motion.div>
   );
 }
+`;
+
+export default code;

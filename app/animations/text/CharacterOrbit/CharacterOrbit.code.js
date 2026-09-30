@@ -1,21 +1,24 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
 type Props = { children?: string };
 
-export default function VerticalCascade({ children = "Vertical Cascade" }: Props) {
+export default function CharacterOrbit({ children = "Character Orbit" }: Props) {
   return (
     <div style={{ display: "inline-block" }}>
       {children.split("").map((char, i) => (
         <motion.span key={i} style={{ display: "inline-block" }}
-          initial={{ y: -40, rotate: -90, opacity: 0 }}
-          whileInView={{ y: 0, rotate: 0, opacity: 1 }}
+          initial={{ x: 0, y: 0, rotate: 0 }}
+          whileInView={{ x: [0, 12, -8, 0], y: [0, -18, 10, 0], rotate: [0, 90, -35, 0] }}
           viewport={{ once: true }}
-          transition={{ delay: i * .05, duration: .7, ease: [0.22, 1, .36, 1] }}>
+          transition={{ delay: i * .04, duration: 1.1, ease: "easeInOut" }}>
           {char === " " ? "\u00A0" : char}
         </motion.span>
       ))}
     </div>
   );
 }
+`;
+
+export default code;

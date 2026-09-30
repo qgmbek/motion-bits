@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -25,3 +25,6 @@ export default function DeformField({ children = "Displacement Field" }: Props) 
     </motion.div>
   );
 }
+`;
+
+export default code;

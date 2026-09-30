@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion, useMotionValue } from "framer-motion";
 import { useRef } from "react";
@@ -29,3 +29,6 @@ export default function CursorDraw({ children = "Draw The Type" }: Props) {
     </div>
   );
 }
+`;
+
+export default code;

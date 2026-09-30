@@ -1,4 +1,4 @@
-"use client";
+const code = `"use client";
 
 import { motion } from "framer-motion";
 
@@ -26,3 +26,6 @@ export default function GlyphMorph({ from = "A", to = "B" }: Props) {
     </motion.span>
   );
 }
+`;
+
+export default code;
