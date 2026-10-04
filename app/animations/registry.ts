@@ -63,6 +63,7 @@ import TextTumble from "./text/TextTumble/TextTumble";
 import TextTunnel from "./text/TextTunnel/TextTunnel";
 import TypographyShutter from "./text/TypographyShutter/TypographyShutter";
 import VerticalCascade from "./text/VerticalCascade/VerticalCascade";
+import PrismaticShift from "./text/PrismaticShift/PrismaticShift";
 
 import blurTextCode from "./text/BlurText/BlurText.code";
 import perLetterBlurCode from "./text/PerLetterBlur/PerLetterBlur.code";
@@ -126,6 +127,7 @@ import textTumbleCode from "./text/TextTumble/TextTumble.code";
 import textTunnelCode from "./text/TextTunnel/TextTunnel.code";
 import typographyShutterCode from "./text/TypographyShutter/TypographyShutter.code";
 import verticalCascadeCode from "./text/VerticalCascade/VerticalCascade.code";
+import prismaticShiftCode from "./text/PrismaticShift/PrismaticShift.code.js";
 
 import CodeGrid from "./components/CodeGrid/CodeGrid";
 import BorderShard from "./components/BorderShard/BorderShard";
@@ -141,6 +143,31 @@ import MarqueeStrip from "./components/MarqueeStrip/MarqueeStrip";
 import RippleSurface from "./components/RippleSurface/RippleSurface";
 import PulseRing from "./components/PulseRing/PulseRing";
 import FloatingLabel from "./components/FloatingLabel/FloatingLabel";
+import BottomSheet from "./components/BottomSheet/BottomSheet";
+import CircleTransition from "./components/CircleTransition/CircleTransition";
+import CommandPalette from "./components/CommandPalette/CommandPalette";
+import CursorOriginTransition from "./components/CursorOriginTransition/CursorOriginTransition";
+import CurtainTransition from "./components/CurtainTransition/CurtainTransition";
+import ExpandableCard from "./components/ExpandableCard/ExpandableCard";
+import FullscreenMenu from "./components/FullscreenMenu/FullscreenMenu";
+import HorizontalGallery from "./components/HorizontalGallery/HorizontalGallery";
+import ImageMaskReveal from "./components/ImageMaskReveal/ImageMaskReveal";
+import ImageParallax from "./components/ImageParallax/ImageParallax";
+import LiquidTransition from "./components/LiquidTransition/LiquidTransition";
+import MagneticCard from "./components/MagneticCard/MagneticCard";
+import MagneticNav from "./components/MagneticNav/MagneticNav";
+import MorphMenu from "./components/MorphMenu/MorphMenu";
+import PhysicsModal from "./components/PhysicsModal/PhysicsModal";
+import SharedElementCard from "./components/SharedElementCard/SharedElementCard";
+import SlidingIndicator from "./components/SlidingIndicator/SlidingIndicator";
+import StackSpread from "./components/StackSpread/StackSpread";
+import TiltCard from "./components/TiltCard/TiltCard";
+import VelocityImage from "./components/VelocityImage/VelocityImage";
+import VelocitySkew from "./components/VelocitySkew/VelocitySkew";
+import VideoHoverPreview from "./components/VideoHoverPreview/VideoHoverPreview";
+import AmbientBloom from "./components/AmbientBloom/AmbientBloom";
+import AuroraBackground from "./components/AuroraBackground/AuroraBackground";
+import HoverImageSwitchCard from "./components/HoverImageSwitchCard/HoverImageSwitchCard";
 
 import codegrid, {
   css as codegridCss,
@@ -166,6 +193,31 @@ import marqueeStripCode from "./components/MarqueeStrip/MarqueeStrip.code";
 import rippleSurfaceCode from "./components/RippleSurface/RippleSurface.code";
 import pulseRingCode from "./components/PulseRing/PulseRing.code";
 import floatingLabelCode from "./components/FloatingLabel/FloatingLabel.code";
+import bottomSheetCode from "./components/BottomSheet/BottomSheet.code";
+import circleTransitionCode from "./components/CircleTransition/CircleTransition.code";
+import commandPaletteCode from "./components/CommandPalette/CommandPalette.code";
+import cursorOriginTransitionCode from "./components/CursorOriginTransition/CursorOriginTransition.code";
+import curtainTransitionCode from "./components/CurtainTransition/CurtainTransition.code";
+import expandableCardCode from "./components/ExpandableCard/ExpandableCard.code";
+import fullscreenMenuCode from "./components/FullscreenMenu/FullscreenMenu.code";
+import horizontalGalleryCode from "./components/HorizontalGallery/HorizontalGallery.code";
+import imageMaskRevealCode from "./components/ImageMaskReveal/ImageMaskReveal.code";
+import imageParallaxCode from "./components/ImageParallax/ImageParallax.code";
+import liquidTransitionCode from "./components/LiquidTransition/LiquidTransition.code";
+import magneticCardCode from "./components/MagneticCard/MagneticCard.code";
+import magneticNavCode from "./components/MagneticNav/MagneticNav.code";
+import morphMenuCode from "./components/MorphMenu/MorphMenu.code";
+import physicsModalCode from "./components/PhysicsModal/PhysicsModal.code";
+import sharedElementCardCode from "./components/SharedElementCard/SharedElementCard.code";
+import slidingIndicatorCode from "./components/SlidingIndicator/SlidingIndicator.code";
+import stackSpreadCode from "./components/StackSpread/StackSpread.code";
+import tiltCardCode from "./components/TiltCard/TiltCard.code";
+import velocityImageCode from "./components/VelocityImage/VelocityImage.code";
+import velocitySkewCode from "./components/VelocitySkew/VelocitySkew.code";
+import videoHoverPreviewCode from "./components/VideoHoverPreview/VideoHoverPreview.code";
+import ambientBloomCode from "./components/AmbientBloom/AmbientBloom.code";
+import auroraBackgroundCode from "./components/AuroraBackground/AuroraBackground.code";
+import hoverImageSwitchCardCode from "./components/HoverImageSwitchCard/HoverImageSwitchCard.code";
 
 import BorderRevealButton from "./buttons/BorderRevealButton/BorderRevealButton";
 import PixelDissolveButton from "./buttons/PixelDissolveButton/PixelDissolveButton";
@@ -516,6 +568,11 @@ export const ANIMATIONS = {
         component: VerticalCascade,
         code: verticalCascadeCode,
       },
+      "prismatic-shift": {
+        name: "Prismatic Shift",
+        component: PrismaticShift,
+        code: prismaticShiftCode,
+      },
     },
   },
   components: {
@@ -596,6 +653,131 @@ export const ANIMATIONS = {
         name: "Floating Label",
         component: FloatingLabel,
         code: floatingLabelCode,
+      },
+      "bottom-sheet": {
+        name: "Bottom Sheet",
+        component: BottomSheet,
+        code: bottomSheetCode,
+      },
+      "circle-transition": {
+        name: "Circle Transition",
+        component: CircleTransition,
+        code: circleTransitionCode,
+      },
+      "command-palette": {
+        name: "Command Palette",
+        component: CommandPalette,
+        code: commandPaletteCode,
+      },
+      "cursor-origin-transition": {
+        name: "Cursor Origin Transition",
+        component: CursorOriginTransition,
+        code: cursorOriginTransitionCode,
+      },
+      "curtain-transition": {
+        name: "Curtain Transition",
+        component: CurtainTransition,
+        code: curtainTransitionCode,
+      },
+      "expandable-card": {
+        name: "Expandable Card",
+        component: ExpandableCard,
+        code: expandableCardCode,
+      },
+      "fullscreen-menu": {
+        name: "Fullscreen Menu",
+        component: FullscreenMenu,
+        code: fullscreenMenuCode,
+      },
+      "horizontal-gallery": {
+        name: "Horizontal Gallery",
+        component: HorizontalGallery,
+        code: horizontalGalleryCode,
+      },
+      "image-mask-reveal": {
+        name: "Image Mask Reveal",
+        component: ImageMaskReveal,
+        code: imageMaskRevealCode,
+      },
+      "image-parallax": {
+        name: "Image Parallax",
+        component: ImageParallax,
+        code: imageParallaxCode,
+      },
+      "liquid-transition": {
+        name: "Liquid Transition",
+        component: LiquidTransition,
+        code: liquidTransitionCode,
+      },
+      "magnetic-card": {
+        name: "Magnetic Card",
+        component: MagneticCard,
+        code: magneticCardCode,
+      },
+      "magnetic-nav": {
+        name: "Magnetic Nav",
+        component: MagneticNav,
+        code: magneticNavCode,
+      },
+      "morph-menu": {
+        name: "Morph Menu",
+        component: MorphMenu,
+        code: morphMenuCode,
+      },
+      "physics-modal": {
+        name: "Physics Modal",
+        component: PhysicsModal,
+        code: physicsModalCode,
+      },
+      "shared-element-card": {
+        name: "Shared Element Card",
+        component: SharedElementCard,
+        code: sharedElementCardCode,
+      },
+      "sliding-indicator": {
+        name: "Sliding Indicator",
+        component: SlidingIndicator,
+        code: slidingIndicatorCode,
+      },
+      "stack-spread": {
+        name: "Stack Spread",
+        component: StackSpread,
+        code: stackSpreadCode,
+      },
+      "tilt-card": {
+        name: "Tilt Card",
+        component: TiltCard,
+        code: tiltCardCode,
+      },
+      "velocity-image": {
+        name: "Velocity Image",
+        component: VelocityImage,
+        code: velocityImageCode,
+      },
+      "velocity-skew": {
+        name: "Velocity Skew",
+        component: VelocitySkew,
+        code: velocitySkewCode,
+      },
+      "video-hover-preview": {
+        name: "Video Hover Preview",
+        component: VideoHoverPreview,
+        code: videoHoverPreviewCode,
+      },
+      "ambient-bloom": {
+        name: "Ambient Bloom",
+        component: AmbientBloom,
+        code: ambientBloomCode,
+      },
+      "aurora-background": {
+        name: "Aurora Background",
+        component: AuroraBackground,
+        code: auroraBackgroundCode,
+      },
+      "hover-image-switch-card": {
+        name: "Hover Image Switch Card",
+        component: HoverImageSwitchCard,
+        code: hoverImageSwitchCardCode,
       },
     },
   },
