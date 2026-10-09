@@ -64,6 +64,21 @@ import TextTunnel from "./text/TextTunnel/TextTunnel";
 import TypographyShutter from "./text/TypographyShutter/TypographyShutter";
 import VerticalCascade from "./text/VerticalCascade/VerticalCascade";
 import PrismaticShift from "./text/PrismaticShift/PrismaticShift";
+import TextSquish from "./text/TextSquish/TextSquish";
+import RainbowFlow from "./text/RainbowFlow/RainbowFlow";
+import TextWaveReveal from "./text/TextWaveReveal/TextWaveReveal";
+import MagneticFlow from "./text/MagneticFlow/MagneticFlow";
+import TextBreath from "./text/TextBreath/TextBreath";
+import TextGlow from "./text/TextGlow/TextGlow";
+import TextBounce from "./text/TextBounce/TextBounce";
+import TextSlide from "./text/TextSlide/TextSlide";
+import TextSpin from "./text/TextSpin/TextSpin";
+import TextJitter from "./text/TextJitter/TextJitter";
+import TextPulse from "./text/TextPulse/TextPulse";
+import TextFloat from "./text/TextFloat/TextFloat";
+import TextScatter from "./text/TextScatter/TextScatter";
+import TextGlitch from "./text/TextGlitch/TextGlitch";
+import TextRevealWave from "./text/TextRevealWave/TextRevealWave";
 
 import blurTextCode from "./text/BlurText/BlurText.code";
 import perLetterBlurCode from "./text/PerLetterBlur/PerLetterBlur.code";
@@ -128,6 +143,21 @@ import textTunnelCode from "./text/TextTunnel/TextTunnel.code";
 import typographyShutterCode from "./text/TypographyShutter/TypographyShutter.code";
 import verticalCascadeCode from "./text/VerticalCascade/VerticalCascade.code";
 import prismaticShiftCode from "./text/PrismaticShift/PrismaticShift.code.js";
+import textSquishCode from "./text/TextSquish/TextSquish.code.js";
+import rainbowFlowCode from "./text/RainbowFlow/RainbowFlow.code.js";
+import textWaveRevealCode from "./text/TextWaveReveal/TextWaveReveal.code.js";
+import magneticFlowCode from "./text/MagneticFlow/MagneticFlow.code.js";
+import textBreathCode from "./text/TextBreath/TextBreath.code.js";
+import textGlowCode from "./text/TextGlow/TextGlow.code.js";
+import textBounceCode from "./text/TextBounce/TextBounce.code.js";
+import textSlideCode from "./text/TextSlide/TextSlide.code.js";
+import textSpinCode from "./text/TextSpin/TextSpin.code.js";
+import textJitterCode from "./text/TextJitter/TextJitter.code.js";
+import textPulseCode from "./text/TextPulse/TextPulse.code.js";
+import textFloatCode from "./text/TextFloat/TextFloat.code.js";
+import textScatterCode from "./text/TextScatter/TextScatter.code.js";
+import textGlitchCode from "./text/TextGlitch/TextGlitch.code.js";
+import textRevealWaveCode from "./text/TextRevealWave/TextRevealWave.code.js";
 
 import CodeGrid from "./components/CodeGrid/CodeGrid";
 import BorderShard from "./components/BorderShard/BorderShard";
@@ -572,6 +602,81 @@ export const ANIMATIONS = {
         name: "Prismatic Shift",
         component: PrismaticShift,
         code: prismaticShiftCode,
+      },
+      "text-squish": {
+        name: "Text Squish",
+        component: TextSquish,
+        code: textSquishCode,
+      },
+      "rainbow-flow": {
+        name: "Rainbow Flow",
+        component: RainbowFlow,
+        code: rainbowFlowCode,
+      },
+      "text-wave-reveal": {
+        name: "Text Wave Reveal",
+        component: TextWaveReveal,
+        code: textWaveRevealCode,
+      },
+      "magnetic-flow": {
+        name: "Magnetic Flow",
+        component: MagneticFlow,
+        code: magneticFlowCode,
+      },
+      "text-breath": {
+        name: "Text Breath",
+        component: TextBreath,
+        code: textBreathCode,
+      },
+      "text-glow": {
+        name: "Text Glow",
+        component: TextGlow,
+        code: textGlowCode,
+      },
+      "text-bounce": {
+        name: "Text Bounce",
+        component: TextBounce,
+        code: textBounceCode,
+      },
+      "text-slide": {
+        name: "Text Slide",
+        component: TextSlide,
+        code: textSlideCode,
+      },
+      "text-spin": {
+        name: "Text Spin",
+        component: TextSpin,
+        code: textSpinCode,
+      },
+      "text-jitter": {
+        name: "Text Jitter",
+        component: TextJitter,
+        code: textJitterCode,
+      },
+      "text-pulse": {
+        name: "Text Pulse",
+        component: TextPulse,
+        code: textPulseCode,
+      },
+      "text-float": {
+        name: "Text Float",
+        component: TextFloat,
+        code: textFloatCode,
+      },
+      "text-scatter": {
+        name: "Text Scatter",
+        component: TextScatter,
+        code: textScatterCode,
+      },
+      "text-glitch": {
+        name: "Text Glitch",
+        component: TextGlitch,
+        code: textGlitchCode,
+      },
+      "text-reveal-wave": {
+        name: "Text Reveal Wave",
+        component: TextRevealWave,
+        code: textRevealWaveCode,
       },
     },
   },
