@@ -262,6 +262,11 @@ import SlideArrowButton from "./buttons/SlideArrowButton/SlideArrowButton";
 import SuccessMorphButton from "./buttons/SuccessMorphButton/SuccessMorphButton";
 import ElasticPopButton from "./buttons/ElasticPopButton/ElasticPopButton";
 import RippleClickButton from "./buttons/RippleClickButton/RippleClickButton";
+import MorphShadeButton from "./buttons/MorphShadeButton/MorphShadeButton";
+import TwistButton from "./buttons/TwistButton/TwistButton";
+import ScaleSweepButton from "./buttons/ScaleSweepButton/ScaleSweepButton";
+import PressGlowButton from "./buttons/PressGlowButton/PressGlowButton";
+import SlideFillButton from "./buttons/SlideFillButton/SlideFillButton";
 import borderRevealButtonCode from "./buttons/BorderRevealButton/BorderRevealButton.code";
 import pixelDissolveButtonCode from "./buttons/PixelDissolveButton/PixelDissolveButton.code";
 import liquidFillButtonCode from "./buttons/LiquidFillButton/LiquidFillButton.code";
@@ -275,6 +280,11 @@ import slideArrowButtonCode from "./buttons/SlideArrowButton/SlideArrowButton.co
 import successMorphButtonCode from "./buttons/SuccessMorphButton/SuccessMorphButton.code";
 import elasticPopButtonCode from "./buttons/ElasticPopButton/ElasticPopButton.code";
 import rippleClickButtonCode from "./buttons/RippleClickButton/RippleClickButton.code";
+import morphShadeButtonCode from "./buttons/MorphShadeButton/MorphShadeButton.code.js";
+import twistButtonCode from "./buttons/TwistButton/TwistButton.code.js";
+import scaleSweepButtonCode from "./buttons/ScaleSweepButton/ScaleSweepButton.code.js";
+import pressGlowButtonCode from "./buttons/PressGlowButton/PressGlowButton.code.js";
+import slideFillButtonCode from "./buttons/SlideFillButton/SlideFillButton.code.js";
 
 export type AnimationEntry = {
   name: string;
@@ -954,6 +964,31 @@ export const ANIMATIONS = {
         name: "Ripple Click Button",
         component: RippleClickButton,
         code: rippleClickButtonCode,
+      },
+      "morph-shade-button": {
+        name: "Morph Shade Button",
+        component: MorphShadeButton,
+        code: morphShadeButtonCode,
+      },
+      "twist-button": {
+        name: "Twist Button",
+        component: TwistButton,
+        code: twistButtonCode,
+      },
+      "scale-sweep-button": {
+        name: "Scale Sweep Button",
+        component: ScaleSweepButton,
+        code: scaleSweepButtonCode,
+      },
+      "press-glow-button": {
+        name: "Press Glow Button",
+        component: PressGlowButton,
+        code: pressGlowButtonCode,
+      },
+      "slide-fill-button": {
+        name: "Slide Fill Button",
+        component: SlideFillButton,
+        code: slideFillButtonCode,
       },
     },
   },
