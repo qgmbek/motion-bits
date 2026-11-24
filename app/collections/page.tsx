@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RotateCcw, Eye, Code } from "lucide-react";
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
@@ -17,6 +17,24 @@ export default function CollectionsPage() {
   const [tab, setTab] = useState("demo");
   const [replayKey, setReplayKey] = useState(0);
 
+  useEffect(() => {
+    const syncSelection = () => {
+      const slug = window.location.hash.slice(1);
+      if (Object.hasOwn(ANIMATIONS_BY_ID, slug)) {
+        setCurrentSlug(slug as AnimationSlug);
+        setTab("demo");
+      }
+    };
+    syncSelection();
+    window.addEventListener("hashchange", syncSelection);
+    return () => window.removeEventListener("hashchange", syncSelection);
+  }, []);
+
+  const selectAnimation = (slug: AnimationSlug) => {
+    setCurrentSlug(slug);
+    window.history.replaceState(window.history.state, "", `#${slug}`);
+  };
+
   const activeEntry = ANIMATIONS_BY_ID[currentSlug];
   const ActiveDemo = activeEntry.component;
   const activeCode = activeEntry.code;
@@ -27,7 +45,7 @@ export default function CollectionsPage() {
       <div className={styles.fadingBorderTop} />
 
       <div className={styles.container}>
-        <Sidebar currentSlug={currentSlug} onNavigate={setCurrentSlug} />
+        <Sidebar currentSlug={currentSlug} onNavigate={selectAnimation} />
 
         <div className={styles.collectionWrapper}>
           <div className={styles.collectionName}>{activeEntry.name}</div>

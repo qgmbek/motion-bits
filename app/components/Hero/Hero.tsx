@@ -3,7 +3,6 @@ import styles from "./Hero.module.css";
 import { Sparkles, Boxes, Code2 } from "lucide-react";
 
 import PixelDissolveButton from "./PixelDissolveButton";
-import { SpiderCursor } from "./SpiderCursor";
 import Link from "next/link";
 
 import BlurText from "../../animations/text/BlurText/BlurText";
@@ -12,7 +11,6 @@ import Typewriter from "@/app/animations/text/Typewriter/Typewriter";
 export default function Hero() {
   return (
     <div className={styles.main}>
-      <SpiderCursor />
       <BlurText>
         <div className={styles.title}>
           <span>React</span>
