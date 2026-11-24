@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef } from "react";
 
 interface Particle {
   x: number;
@@ -10,209 +10,154 @@ interface Particle {
   radius: number;
 }
 
-type SpiderCursorProps = {
-  scopeRef?: RefObject<HTMLElement | null>;
-  accent?: string;
-  paused?: boolean;
-  className?: string;
-};
-
-export function SpiderCursor({
-  scopeRef,
-  accent = "#d2cefa",
-  paused = false,
-  className,
-}: SpiderCursorProps = {}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const settings = useRef({ accent, paused });
-  const invalidate = useRef<(() => void) | null>(null);
-
-  useEffect(() => {
-    settings.current = { accent, paused };
-    invalidate.current?.();
-  }, [accent, paused]);
+export function SpiderCursor() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const scope = scopeRef?.current;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const finePointer = window.matchMedia("(pointer: fine)");
-    let width = 1;
-    let height = 1;
-    let frame = 0;
-    let previous = 0;
-    let visible = true;
-    let cursorStrength = 0;
-    let particles: Particle[] = [];
-    const mouse = { x: 0, y: 0, active: false, quiet: false };
-    const eased = { x: 0, y: 0 };
-    const isQuietTarget = (target: EventTarget | null) =>
-      target instanceof Element && !!target.closest(
-        "a, button, input, textarea, select, [contenteditable], pre, code, h1, h2, h3, p, [data-cursor-quiet]",
-      );
 
-    const resize = () => {
-      const bounds = scope?.getBoundingClientRect();
-      width = bounds?.width || window.innerWidth;
-      height = bounds?.height || window.innerHeight;
-      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.round(width * ratio);
-      canvas.height = Math.round(height * ratio);
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const count = Math.min(85, Math.max(32, Math.round(width * height / 13000)));
-      particles = Array.from({ length: count }, (_, index) => ({
-        x: ((Math.sin(index * 127.1 + 1) * 43758.5453) % 1 + 1) % 1 * width,
-        y: ((Math.sin(index * 311.7 + 2) * 17381.287) % 1 + 1) % 1 * height,
-        vx: Math.sin(index * 1.7) * 0.12,
-        vy: Math.cos(index * 2.3) * 0.1,
-        radius: index % 7 === 0 ? 1.5 : 0.75,
-      }));
-      requestDraw();
+    let animationFrameId: number;
+    let previousTime: number | null = null;
+
+    const mouse: { x: number | null; y: number | null } = { x: null, y: null };
+    const eased = { x: 0, y: 0 };
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
 
-    const draw = (now: number) => {
-      frame = 0;
-      ctx.clearRect(0, 0, width, height);
-      if (!visible || document.hidden || !finePointer.matches || reducedMotion.matches) {
-        previous = 0;
-        return;
-      }
-      const config = settings.current;
-      const step = previous ? Math.min((now - previous) / 16.67, 2) : 1;
-      previous = now;
-      const ease = 1 - Math.pow(0.84, step);
-      const active = mouse.active && !config.paused;
-      cursorStrength += ((active ? (mouse.quiet ? 0.13 : 1) : 0) - cursorStrength) * ease;
-      eased.x += (mouse.x - eased.x) * ease;
-      eased.y += (mouse.y - eased.y) * ease;
-      const rgb = config.accent.slice(1).match(/.{2}/g)?.map((part) => parseInt(part, 16)).join(",") || "210,206,250";
-      const reach = Math.min(210, width * 0.25);
-      const nearby: { particle: Particle; distance: number }[] = [];
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-      particles.forEach((particle, index) => {
-        if (!config.paused) {
-          particle.x += particle.vx * step;
-          particle.y += particle.vy * step;
-          if (particle.x < 0 || particle.x > width) particle.vx *= -1;
-          if (particle.y < 0 || particle.y > height) particle.vy *= -1;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (mouse.x === null || mouse.y === null) {
+        eased.x = e.clientX;
+        eased.y = e.clientY;
+      }
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    const handleMouseOut = (e: MouseEvent) => {
+      if (e.relatedTarget !== null) return;
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseout", handleMouseOut);
+
+    const particles: Particle[] = [];
+    const numParticles = 80;
+    const maxDistance = 150;
+
+    for (let i = 0; i < numParticles; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 1,
+        vy: (Math.random() - 0.5) * 1,
+        radius: 2,
+      });
+    }
+
+    const draw = (now: number) => {
+      const delta = previousTime === null ? 1000 / 60 : Math.min(now - previousTime, 32);
+      previousTime = now;
+      const step = delta / (1000 / 60);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (mouse.x !== null && mouse.y !== null) {
+        // A light, frame-rate-independent ease with a short leash for fast moves.
+        const ease = 1 - Math.exp(-delta / 28);
+        eased.x += (mouse.x - eased.x) * ease;
+        eased.y += (mouse.y - eased.y) * ease;
+        const dx = mouse.x - eased.x;
+        const dy = mouse.y - eased.y;
+        const lag = Math.hypot(dx, dy);
+        if (lag > 24) {
+          eased.x = mouse.x - (dx / lag) * 24;
+          eased.y = mouse.y - (dy / lag) * 24;
         }
-        const distance = Math.hypot(eased.x - particle.x, eased.y - particle.y);
-        const proximity = Math.max(0, 1 - distance / reach) * cursorStrength;
-        // Leave the headline readable; the open art area holds most of the web.
-        const quietArea = scope && particle.x < width * 0.48 && particle.y < height * 0.8 ? 0.32 : 1;
+      }
+
+      particles.forEach((p, index) => {
+        p.x += p.vx * step;
+        p.y += p.vy * step;
+
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius + proximity * 1.1, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb},${(0.12 + proximity * 0.65) * quietArea})`;
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
         ctx.fill();
-        if (distance < reach && cursorStrength > 0.01) nearby.push({ particle, distance });
+
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = eased.x - p.x;
+          const dy = eased.y - p.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < maxDistance) {
+            ctx.beginPath();
+            ctx.moveTo(eased.x, eased.y);
+            ctx.lineTo(p.x, p.y);
+
+            const opacity = 1 - distance / maxDistance;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
 
         for (let j = index + 1; j < particles.length; j++) {
-          const other = particles[j];
-          const length = Math.hypot(particle.x - other.x, particle.y - other.y);
-          if (length > 115) continue;
-          const alpha = (1 - length / 115) * (0.035 + proximity * 0.24) * quietArea;
-          ctx.beginPath();
-          ctx.moveTo(particle.x, particle.y);
-          ctx.lineTo(other.x, other.y);
-          ctx.strokeStyle = `rgba(${rgb},${alpha})`;
-          ctx.lineWidth = 0.6;
-          ctx.stroke();
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < maxDistance * 0.7) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            const opacity = 0.3 * (1 - distance / (maxDistance * 0.7));
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
         }
       });
 
-      if (cursorStrength > 0.01) {
-        nearby.sort((a, b) => a.distance - b.distance).slice(0, 8).forEach(({ particle, distance }) => {
-          const strength = (1 - distance / reach) * cursorStrength;
-          const gradient = ctx.createLinearGradient(eased.x, eased.y, particle.x, particle.y);
-          gradient.addColorStop(0, `rgba(${rgb},${strength * 0.55})`);
-          gradient.addColorStop(1, `rgba(${rgb},${strength * 0.12})`);
-          ctx.beginPath();
-          ctx.moveTo(eased.x, eased.y);
-          ctx.lineTo(particle.x, particle.y);
-          ctx.strokeStyle = gradient;
-          ctx.lineWidth = 0.7;
-          ctx.stroke();
-        });
-        ctx.beginPath();
-        ctx.arc(eased.x, eased.y, 3, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${rgb},${cursorStrength * 0.7})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-      if (!config.paused || cursorStrength > 0.01) frame = requestAnimationFrame(draw);
+      animationFrameId = requestAnimationFrame(draw);
     };
 
-    function requestDraw() {
-      if (!frame && visible && !document.hidden) frame = requestAnimationFrame(draw);
-    }
-    invalidate.current = requestDraw;
-    const move = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
-      const bounds = scope?.getBoundingClientRect();
-      const x = event.clientX - (bounds?.left || 0);
-      const y = event.clientY - (bounds?.top || 0);
-      const inside = x >= 0 && x <= width && y >= 0 && y <= height;
-      if (!mouse.active && inside) { eased.x = x; eased.y = y; }
-      mouse.x = x;
-      mouse.y = y;
-      mouse.active = inside;
-      mouse.quiet = isQuietTarget(event.target);
-      requestDraw();
-    };
-    const leave = () => { mouse.active = false; };
-    const scroll = () => {
-      if (scope) {
-        mouse.active = false;
-      } else if (mouse.active) {
-        // The global web stays with the pointer as new sections scroll underneath.
-        mouse.quiet = isQuietTarget(document.elementFromPoint(mouse.x, mouse.y));
-      }
-      requestDraw();
-    };
-    const visibility = () => { previous = 0; mouse.active = false; requestDraw(); };
-    const resizeObserver = new ResizeObserver(resize);
-    if (scope) resizeObserver.observe(scope);
-    else window.addEventListener("resize", resize);
-    const intersectionObserver = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      previous = 0;
-      if (visible) requestDraw();
-    });
-    intersectionObserver.observe(scope || canvas);
-    window.addEventListener("pointermove", move, { passive: true });
-    window.addEventListener("blur", leave);
-    window.addEventListener("scroll", scroll, { passive: true });
-    document.documentElement.addEventListener("pointerleave", leave);
-    document.addEventListener("visibilitychange", visibility);
-    reducedMotion.addEventListener("change", requestDraw);
-    finePointer.addEventListener("change", requestDraw);
-    resize();
+    animationFrameId = requestAnimationFrame(draw);
 
     return () => {
-      cancelAnimationFrame(frame);
-      invalidate.current = null;
-      resizeObserver.disconnect();
-      intersectionObserver.disconnect();
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("blur", leave);
-      window.removeEventListener("scroll", scroll);
-      document.documentElement.removeEventListener("pointerleave", leave);
-      document.removeEventListener("visibilitychange", visibility);
-      reducedMotion.removeEventListener("change", requestDraw);
-      finePointer.removeEventListener("change", requestDraw);
+      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseout", handleMouseOut);
+      cancelAnimationFrame(animationFrameId);
     };
-  }, [scopeRef]);
+  }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className={className}
-      aria-hidden="true"
-      style={{ position: scopeRef ? "absolute" : "fixed", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: scopeRef ? 3 : 9999 }}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        pointerEvents: "none",
+        zIndex: 9999,
+      }}
     />
   );
 }

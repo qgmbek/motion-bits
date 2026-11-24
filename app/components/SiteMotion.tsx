@@ -31,7 +31,7 @@ export function SiteMotionProvider({ children }: { children: ReactNode }) {
   return (
     <SiteMotionContext.Provider value={settings}>
       {children}
-      <SpiderCursor accent={accent} paused={paused} />
+      {!paused && <SpiderCursor />}
     </SiteMotionContext.Provider>
   );
 }

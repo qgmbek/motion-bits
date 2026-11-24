@@ -7,13 +7,13 @@ import {
   Atom, Check, Code2, Copy, Github, Layers3, Menu, MousePointer2,
   Pause, Play, RotateCcw, SlidersHorizontal, Sparkles, Star, Type as TypeGlyph, X,
 } from "lucide-react";
-import type { SculptureMaterial } from "./MotionSculpture";
+import type { SculptureView } from "./MotionSculpture";
 import { useSiteMotion } from "../SiteMotion";
 import styles from "./Landing.module.css";
 
 const MotionSculpture = dynamic(() => import("./MotionSculpture"), {
   ssr: false,
-  loading: () => <div className={styles.sculpture} aria-hidden="true"><div className={styles.sculptureFallback}><i /><i /><i /></div></div>,
+  loading: () => <div className={styles.sculpture}><div className={styles.artifactFallback} role="status"><span>MECHANICAL ANATOMY</span><small>Loading sculpture…</small></div></div>,
 });
 
 const repository = "https://github.com/qgmbek/motion-bits";
@@ -169,8 +169,8 @@ export default function Landing() {
   const pageRef = useRef<HTMLDivElement>(null);
   const { accent, setAccent, paused, setPaused } = useSiteMotion();
   const activeColor = colors.findIndex((color) => color.value === accent);
-  const [material, setMaterial] = useState<SculptureMaterial>("chrome");
-  const [speed, setSpeed] = useState(0.75);
+  const [view, setView] = useState<SculptureView>("three-quarter");
+  const [light, setLight] = useState(1.1);
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState<Filter>("All experiments");
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
@@ -265,23 +265,20 @@ export default function Landing() {
             <div className={styles.heroFootnote}><span className={styles.componentGlyphs} aria-hidden="true"><TypeGlyph /><Layers3 size={12} /><MousePointer2 size={12} /></span><span><strong>130+</strong> ways to make it yours.</span><span className={styles.freeLabel}>Always free</span></div>
           </div>
 
-          <div className={styles.heroStage}>
+          <div className={styles.heroStage} data-artifact="skull">
             <div className={styles.stageHalo} aria-hidden="true" />
             <div className={styles.stageCrosshair} aria-hidden="true" />
-            <div className={styles.stageLabel}><span className={styles.liveDot} /> THE MOTION STUDY</div>
-            <div className={styles.materialSwitch} role="group" aria-label="Sculpture material">
-              <button type="button" aria-pressed={material === "chrome"} onClick={() => setMaterial("chrome")}>Chrome</button>
-              <button type="button" aria-pressed={material === "glass"} onClick={() => setMaterial("glass")}>Glass</button>
+            <div className={styles.stageLabel}>MECHANICAL ANATOMY</div>
+            <div className={styles.materialSwitch} role="group" aria-label="Skull viewing angle">
+              <button type="button" aria-pressed={view === "three-quarter"} onClick={() => setView("three-quarter")}>Three-quarter</button>
+              <button type="button" aria-pressed={view === "front"} onClick={() => setView("front")}>Front</button>
             </div>
-            <MotionSculpture accent={accent} speed={speed} paused={motionPaused} material={material} />
-            <div className={styles.floatingTag} aria-hidden="true"><span className={styles.tagSpark}>✳</span><div>A little unexpected.<br /><span>A lot more memorable.</span></div></div>
-            <div className={styles.curveTag} aria-hidden="true"><span>GOOD MOTION HAS FEELING</span><svg viewBox="0 0 150 48" fill="none"><path d="M1 41H149M1 1V47" className={styles.curveAxis} /><path d="M1 41C43 41 35 2 76 9S116 26 149 9" className={styles.curvePath} /><circle cx="149" cy="9" r="3" /></svg><span>That just-right kind of spring.</span></div>
+            <MotionSculpture accent={accent} light={light} view={view} />
             <div className={styles.inspector}>
               <div className={styles.inspectorControls}>
                 <div className={styles.colorControl}><span>Accent</span><div className={styles.swatches} role="group" aria-label="Sculpture accent color">{colors.map((color, index) => <button key={color.name} type="button" aria-label={color.name} aria-pressed={activeColor === index} style={{ "--swatch": color.value } as CSSProperties} onClick={() => setAccent(color.value)}>{activeColor === index && <Check size={11} strokeWidth={3} />}</button>)}</div></div>
                 <div className={styles.controlDivider} />
-                <label className={styles.speedControl}><span>Speed <output>{speed.toFixed(2)}×</output></span><input aria-label="Animation speed" type="range" min="0.25" max="1.5" step="0.25" value={speed} disabled={motionPaused} onChange={(event) => setSpeed(Number(event.target.value))} /></label>
-                <button type="button" className={styles.pauseButton} aria-label={reduced ? "Motion reduced by system preference" : paused ? "Play animations" : "Pause animations"} title={reduced ? "Following your reduced-motion preference" : paused ? "Play animations" : "Pause animations"} aria-pressed={motionPaused} disabled={reduced} onClick={() => setPaused((value) => !value)}>{motionPaused ? <Play size={14} /> : <Pause size={14} />}</button>
+                <label className={styles.speedControl}><span>Studio light <output>{light.toFixed(1)}</output></span><input aria-label="Studio light brightness" type="range" min="0.6" max="1.6" step="0.1" value={light} onChange={(event) => setLight(Number(event.target.value))} /></label>
               </div>
             </div>
             <div className={styles.stageNote}><MousePointer2 size={12} /> Drag to explore. Double-click to reset.</div>
