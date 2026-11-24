@@ -735,7 +735,7 @@
   .footerTop > div { width: 100%; margin-left: 0; }
 }
 
-.heroStage[data-artifact="skull"] .sculpture { inset: 65px -12px 128px; }
+.heroStage[data-artifact="skull"] .sculpture { inset: 55px -12px 118px; }
 .heroStage[data-artifact="skull"] .stageCrosshair { opacity: .45; }
 .heroStage[data-artifact="skull"] .stageLabel { left: 8px; font-size: .6875rem; letter-spacing: 1px; }
 .heroStage[data-artifact="skull"] .materialSwitch { right: 0; }
@@ -756,6 +756,7 @@
 @media (max-width: 380px) {
   .heroStage[data-artifact="skull"] .stageLabel { top: 68px; max-width: none; }
   .heroStage[data-artifact="skull"] .sculpture { top: 96px; }
+  .heroStage[data-artifact="skull"] .materialSwitch button { padding-inline: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

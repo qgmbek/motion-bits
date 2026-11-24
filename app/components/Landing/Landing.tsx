@@ -272,6 +272,7 @@ export default function Landing() {
             <div className={styles.materialSwitch} role="group" aria-label="Skull viewing angle">
               <button type="button" aria-pressed={view === "three-quarter"} onClick={() => setView("three-quarter")}>Three-quarter</button>
               <button type="button" aria-pressed={view === "front"} onClick={() => setView("front")}>Front</button>
+              <button type="button" aria-pressed={view === "profile"} onClick={() => setView("profile")}>Profile</button>
             </div>
             <MotionSculpture accent={accent} light={light} view={view} />
             <div className={styles.inspector}>

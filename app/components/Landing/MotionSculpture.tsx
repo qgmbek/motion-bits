@@ -3,15 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import {
   ACESFilmicToneMapping, AmbientLight, Box3, DirectionalLight,
-  PCFSoftShadowMap, PerspectiveCamera, PlaneGeometry, Mesh,
+  OrthographicCamera, PCFShadowMap, PlaneGeometry, Mesh,
   PMREMGenerator, Scene, ShadowMaterial, SRGBColorSpace, Vector3, WebGLRenderer,
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { createMechanicalSkull } from "./MechanicalSkull";
+import { loadSkullAnatomy, type SkullAnatomy } from "./skullAnatomy";
 import styles from "./Landing.module.css";
 
-export type SculptureView = "three-quarter" | "front";
+export type SculptureView = "three-quarter" | "front" | "profile";
 type Props = { accent: string; light: number; view: SculptureView };
+const viewYaw: Record<SculptureView, number> = { "three-quarter": -0.47, front: 0, profile: Math.PI / 2 };
 
 export default function MotionSculpture({ accent, light, view }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -20,6 +22,7 @@ export default function MotionSculpture({ accent, light, view }: Props) {
   const [ready, setReady] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const [contextVersion, setContextVersion] = useState(0);
+  const [anatomy, setAnatomy] = useState<SkullAnatomy | null>(null);
 
   useEffect(() => {
     settings.current = { accent, light, view };
@@ -27,8 +30,31 @@ export default function MotionSculpture({ accent, light, view }: Props) {
   }, [accent, light, view]);
 
   useEffect(() => {
+    const controller = new AbortController();
+    let loaded: SkullAnatomy | undefined;
+    function release(model: SkullAnatomy) {
+      model.cranium.dispose();
+      model.mandible.dispose();
+    }
+    loadSkullAnatomy(controller.signal).then((model) => {
+      if (controller.signal.aborted) {
+        release(model);
+        return;
+      }
+      loaded = model;
+      setAnatomy(model);
+    }).catch(() => {
+      if (!controller.signal.aborted) setUnavailable(true);
+    });
+    return () => {
+      controller.abort();
+      if (loaded) release(loaded);
+    };
+  }, []);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !anatomy) return;
     let renderer: WebGLRenderer;
     try {
       renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power" });
@@ -41,10 +67,10 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     renderer.outputColorSpace = SRGBColorSpace;
     renderer.toneMapping = ACESFilmicToneMapping;
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = PCFSoftShadowMap;
+    renderer.shadowMap.type = PCFShadowMap;
 
     const scene = new Scene();
-    const camera = new PerspectiveCamera(32, 1, 0.1, 50);
+    const camera = new OrthographicCamera(-3, 3, 3, -3, 0.1, 30);
     const room = new RoomEnvironment();
     const pmrem = new PMREMGenerator(renderer);
     const environment = pmrem.fromScene(room, 0.04);
@@ -53,16 +79,14 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     room.dispose();
     pmrem.dispose();
 
-    const artifact = createMechanicalSkull();
+    const artifact = createMechanicalSkull(anatomy);
     scene.add(artifact.root);
-    const neutralYaw = (selected: SculptureView) => selected === "front" ? 0 : -0.36;
-    artifact.root.rotation.y = neutralYaw(settings.current.view);
     const bounds = new Box3().setFromObject(artifact.root);
     const size = bounds.getSize(new Vector3());
     artifact.root.position.y = -bounds.getCenter(new Vector3()).y;
 
-    scene.add(new AmbientLight(0xc1d0dc, 0.3));
-    const key = new DirectionalLight(0xe5edf3, 3.6);
+    scene.add(new AmbientLight(0xc1cad6, 0.23));
+    const key = new DirectionalLight(0xfff3e7, 3.25);
     key.position.set(-3.5, 5, 5);
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
@@ -72,14 +96,15 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     key.shadow.camera.bottom = -3;
     key.shadow.camera.near = 0.5;
     key.shadow.camera.far = 15;
+    key.shadow.camera.updateProjectionMatrix();
     key.shadow.bias = -0.0002;
     key.shadow.normalBias = 0.012;
     key.shadow.radius = 3;
     scene.add(key);
-    const fill = new DirectionalLight(0x93a9b9, 0.65);
+    const fill = new DirectionalLight(0xafc1d5, 0.52);
     fill.position.set(4, 0.5, 3);
     scene.add(fill);
-    const rim = new DirectionalLight(0xcadbe5, 2.6);
+    const rim = new DirectionalLight(0xc9d9eb, 2.2);
     rim.position.set(2, 3, -3);
     scene.add(rim);
     const accentRim = new DirectionalLight(accent, 0.3);
@@ -87,7 +112,7 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     scene.add(accentRim);
 
     const floorGeometry = new PlaneGeometry(12, 12);
-    const floorMaterial = new ShadowMaterial({ opacity: 0.22 });
+    const floorMaterial = new ShadowMaterial({ opacity: 0.14 });
     const floor = new Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = bounds.min.y + artifact.root.position.y - 0.015;
@@ -103,7 +128,7 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     let dragging: number | null = null;
     let downX = 0;
     let downY = 0;
-    const rotation = { x: 0, y: neutralYaw(currentView) };
+    const rotation = { x: 0, y: viewYaw[currentView] };
 
     // Render only when the view, lighting, or viewport changes. There is no idle animation.
     const render = () => {
@@ -113,14 +138,17 @@ export default function MotionSculpture({ accent, light, view }: Props) {
       if (config.view !== currentView) {
         currentView = config.view;
         rotation.x = 0;
-        rotation.y = neutralYaw(currentView);
+        rotation.y = viewYaw[currentView];
       }
       if (currentAccent !== config.accent) {
         accentRim.color.set(config.accent);
         artifact.setAccent(config.accent);
         currentAccent = config.accent;
       }
-      artifact.root.rotation.set(rotation.x, rotation.y, 0);
+      artifact.root.rotation.y = rotation.y;
+      const pitch = 0.035 + rotation.x;
+      camera.position.set(0, Math.sin(pitch) * 9, Math.cos(pitch) * 9);
+      camera.lookAt(0, 0, 0);
       renderer.toneMappingExposure = config.light;
       renderer.render(scene, camera);
       if (firstFrame) {
@@ -138,11 +166,12 @@ export default function MotionSculpture({ accent, light, view }: Props) {
       const { width, height } = canvas.getBoundingClientRect();
       if (!width || !height) return;
       renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      const tangent = Math.tan(camera.fov * Math.PI / 360);
-      const distance = Math.max(size.y / (2 * tangent), size.x / (2 * tangent * camera.aspect));
-      camera.position.set(0, 0.08, distance * 1.08 + size.z / 2);
-      camera.lookAt(0, 0, 0);
+      const aspect = width / height;
+      const halfHeight = Math.max(size.y * 0.55, Math.max(size.x, size.z) * 0.57 / aspect);
+      camera.left = -halfHeight * aspect;
+      camera.right = halfHeight * aspect;
+      camera.top = halfHeight;
+      camera.bottom = -halfHeight;
       camera.updateProjectionMatrix();
       requestRender();
     };
@@ -170,7 +199,7 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     };
     const reset = () => {
       rotation.x = 0;
-      rotation.y = neutralYaw(settings.current.view);
+      rotation.y = viewYaw[settings.current.view];
       requestRender();
     };
     const keydown = (event: KeyboardEvent) => {
@@ -240,11 +269,11 @@ export default function MotionSculpture({ accent, light, view }: Props) {
       environment.dispose();
       renderer.dispose();
     };
-  }, [contextVersion]);
+  }, [anatomy, contextVersion]);
 
   return (
     <div className={styles.sculpture} data-ready={ready}>
-      {!ready && <div className={styles.artifactFallback} role="status"><span>MECHANICAL ANATOMY</span><small>{unavailable ? "3D is unavailable in this browser." : "Loading sculpture…"}</small></div>}
+      {!ready && <div className={styles.artifactFallback} role="status"><small>{unavailable ? "Sculpture unavailable." : "Loading sculpture…"}</small></div>}
       <canvas
         ref={canvasRef}
         className={styles.sculptureCanvas}

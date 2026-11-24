@@ -1,0 +1,18 @@
+Hero skull anatomy
+
+Adapted from the Visible Human Male cranium/maxilla and mandible in:
+Seyed Hamidreza Alavi and Malte Asseln (2026), Visible Human Full-Skeleton 3D Bone Models (BoneHub).
+https://doi.org/10.57967/hf/10464
+https://huggingface.co/datasets/BoneHub/visible-human-3d-models
+
+The dataset derives from the aligned Visible Human CT release by:
+T. E. Andreassen, D. R. Hume, L. D. Hamilton, K. E. Walker, S. E. Higinbotham,
+and K. B. Shelburne (2023), Three Dimensional Lower Extremity Musculoskeletal
+Geometry of the Visible Human Female and Male. Scientific Data 10, 34.
+https://doi.org/10.1038/s41597-022-01905-2
+
+Licensed under Creative Commons Attribution 4.0 International.
+https://creativecommons.org/licenses/by/4.0/
+
+Changes: reduced the meshes for the web, oriented and scaled them, posed the
+mandible open, and baked surface fitting and ambient occlusion data.

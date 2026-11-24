@@ -4,7 +4,8 @@ import {
   Mesh, MeshPhysicalMaterial, MeshStandardMaterial, Path, Shape, SphereGeometry,
   TorusGeometry, TubeGeometry, Vector2, Vector3,
 } from "three";
-import { createCraniumGeometry, createMandibleGeometry } from "./skullGeometry";
+import type { SkullAnatomy } from "./skullAnatomy";
+import { createBoneMaterial } from "./boneMaterial";
 
 type Point = readonly [number, number, number];
 type Point2 = readonly [number, number];
@@ -65,7 +66,7 @@ function weatheredMaterial(color: number, metalness: number, roughness: number, 
 }
 
 /** All pivots are deliberately named and independent; nothing in this factory animates. */
-export function createMechanicalSkull() {
+export function createMechanicalSkull(anatomy: SkullAnatomy) {
   const root = new Group();
   root.name = "mechanical-skull";
   const head = new Group();
@@ -73,18 +74,18 @@ export function createMechanicalSkull() {
   root.add(head);
   const jaw = new Group();
   jaw.name = "jaw-pivot";
-  jaw.position.set(0, -0.05, -0.18);
+  jaw.position.set(...anatomy.hinge);
   head.add(jaw);
   const jawParts = new Group();
   jawParts.position.copy(jaw.position).multiplyScalar(-1);
   jaw.add(jawParts);
   const gears: Group[] = [];
 
-  const bone = weatheredMaterial(0x7e898f, 0.25, 0.70, 1.25, 1);
+  const bone = createBoneMaterial();
   const steel = weatheredMaterial(0x4d5860, 0.64, 0.51, 0.32, 0.24);
   const darkSteel = weatheredMaterial(0x26323a, 0.78, 0.52, 0.4);
   const leather = weatheredMaterial(0x30383b, 0.12, 0.9, 1.7, 0.5);
-  const enamel = weatheredMaterial(0x9aa3a4, 0.28, 0.42, 0.24);
+  const enamel = weatheredMaterial(0xb3a58c, 0.0, 0.62, 0.13);
   const edge = new MeshStandardMaterial({ color: 0x98a5ac, metalness: 0.86, roughness: 0.32 });
   const recess = new MeshStandardMaterial({ color: 0x080e12, roughness: 0.84, metalness: 0.15 });
   const lensMaterial = new MeshPhysicalMaterial({
@@ -95,13 +96,6 @@ export function createMechanicalSkull() {
   const accent = new MeshStandardMaterial({ color: 0xc0d6d9, emissive: 0x8ebec5, emissiveIntensity: 0.25, metalness: 0.6, roughness: 0.32 });
   const materials: Material[] = [bone, steel, darkSteel, leather, enamel, edge, recess, lensMaterial, seam, accent];
   const sphere = new SphereGeometry(1, 28, 20);
-  const crownGeometry = new SphereGeometry(1, 24, 20);
-  const crownPositions = crownGeometry.getAttribute("position");
-  for (let i = 0; i < crownPositions.count; i++) {
-    const x = crownPositions.getX(i), y = crownPositions.getY(i), z = crownPositions.getZ(i);
-    crownPositions.setXYZ(i, Math.sign(x) * Math.abs(x) ** 0.72, Math.sign(y) * Math.abs(y) ** 0.65, Math.sign(z) * Math.abs(z) ** 0.8);
-  }
-  crownGeometry.computeVertexNormals();
   const boltGeometry = new CylinderGeometry(0.035, 0.035, 0.023, 6);
   boltGeometry.rotateX(Math.PI / 2);
   const washerGeometry = new TorusGeometry(0.037, 0.008, 6, 16);
@@ -210,36 +204,20 @@ export function createMechanicalSkull() {
     return assembly;
   }
 
-  mesh(head, "sculpted-bone-with-orbital-and-nasal-cavities", createCraniumGeometry(), bone);
-  mesh(jawParts, "open-mandible", createMandibleGeometry(), bone);
-
-  // Individual crowns follow a horseshoe dental arcade. The two tusks belong to the jaw.
-  for (const upper of [true, false]) {
-    const parent = upper ? head : jawParts;
-    for (let i = 0; i < 14; i++) {
-      const angle = (i - 6.5) / 6.5 * 1.25;
-      const x = Math.sin(angle) * (upper ? 0.57 : 0.54);
-      const z = 0.29 + Math.cos(angle) * (upper ? 0.76 : 0.57);
-      const y = upper ? -0.55 + Math.abs(angle) * 0.08 : -1.10 + Math.abs(angle) * 0.08;
-      const central = Math.abs(angle) < 0.4;
-      const crown = mesh(parent, `${upper ? "upper" : "lower"}-tooth-${i}`, crownGeometry, enamel, [x, y, z]);
-      crown.scale.set(central ? 0.053 : 0.05, central ? 0.145 : 0.12, 0.095);
-      crown.rotation.y = angle * 0.7;
-      crown.rotation.z = -angle * 0.06;
-    }
-  }
+  mesh(head, "ct-cranium-and-maxilla", anatomy.cranium, bone);
+  mesh(jawParts, "ct-mandible", anatomy.mandible, bone);
 
   function tusk(side: number) {
     const curve = new CatmullRomCurve3([
-      new Vector3(side * 0.48, -1.2, 0.74), new Vector3(side * 0.55, -1.02, 0.83),
-      new Vector3(side * 0.58, -0.78, 0.86), new Vector3(side * 0.54, -0.62, 0.83),
+      new Vector3(side * 0.322, -1.22, 0.44), new Vector3(side * 0.37, -1.08, 0.53),
+      new Vector3(side * 0.405, -0.87, 0.63), new Vector3(side * 0.388, -0.71, 0.66),
     ]);
     const points: number[] = [], indices: number[] = [];
     for (let i = 0; i <= 28; i++) {
       const t = i / 28, point = curve.getPoint(t), tangent = curve.getTangent(t);
       const normal = new Vector3(0, 0, 1).cross(tangent).normalize();
       const binormal = tangent.clone().cross(normal).normalize();
-      const radius = 0.099 * Math.pow(1 - t, 0.72) + 0.0015;
+      const radius = 0.082 * Math.pow(1 - t, 0.72) + 0.0015;
       for (let j = 0; j < 16; j++) {
         const a = j / 16 * Math.PI * 2;
         const vertex = point.clone().addScaledVector(normal, Math.cos(a) * radius).addScaledVector(binormal, Math.sin(a) * radius);
@@ -262,8 +240,8 @@ export function createMechanicalSkull() {
   // A recessed monocle with an actual open barrel, knurled bezel, and optical glass.
   const monocle = new Group();
   monocle.name = "monocle-pivot";
-  monocle.position.set(-0.49, 0.67, 0.93);
-  monocle.rotation.y = -0.12;
+  monocle.position.set(-0.518, 0.654, 1.02);
+  monocle.rotation.y = -0.21;
   head.add(monocle);
   const socketPlate = new Shape();
   socketPlate.moveTo(-0.46, 0.30);
@@ -325,10 +303,11 @@ export function createMechanicalSkull() {
   for (const side of [-1, 1]) {
     const transmission = new Group();
     transmission.name = `jaw-transmission-${side}`;
-    transmission.position.set(side * 0.88, -0.04, -0.08);
+    transmission.position.set(side * 0.985, anatomy.hinge[1] - axle[1] - 0.065, anatomy.hinge[2]);
     transmission.rotation.y = side * 1.43;
     transmission.scale.x = side;
     head.add(transmission);
+    rod(head, "temporal-axle-mount", [side * 0.81, 0.165, -0.10], [side * 1.01, 0.165, -0.10], 0.134, darkSteel);
     mesh(transmission, "cast-drive-back", driveBackGeometry, recess, [0, 0, -0.026]);
     mesh(transmission, "cast-drive-housing", driveCoverGeometry, steel, [0, 0, 0.014]);
     const upper = gear(transmission, `main-jaw-gear-${side}`, [...axle, 0.025], 0.355, 36, 0.058, 4, { secondaryPorts: true });
@@ -338,11 +317,11 @@ export function createMechanicalSkull() {
     ring(transmission, "lower-bearing-collar", [...pinion, 0.102], 0.14, 0.013, darkSteel);
     bolt(transmission, [-0.31, -0.76, 0.14], undefined, 0.8);
 
-    rod(jawParts, "jaw-piston-body", [side * 0.86, -0.30, 0.25], [side * 0.73, -0.92, 0.61], 0.062, steel);
-    rod(jawParts, "jaw-piston-rod", [side * 0.74, -0.85, 0.58], [side * 0.56, -1.30, 0.82], 0.029, edge);
-    rod(jawParts, "mandible-brace", [side * 0.88, -0.81, -0.02], [side * 0.50, -1.39, 0.78], 0.055, darkSteel);
-    orb(jawParts, "piston-ball-joint", [side * 0.56, -1.30, 0.82], [0.08, 0.08, 0.08], steel);
-    bolt(jawParts, [side * 0.55, -1.30, 0.88], undefined, 0.8);
+    rod(jawParts, "jaw-piston-body", [side * 0.86, -0.29, 0.15], [side * 0.62, -0.94, 0.29], 0.051, steel);
+    rod(jawParts, "jaw-piston-rod", [side * 0.65, -0.86, 0.27], [side * 0.39, -1.30, 0.32], 0.024, edge);
+    rod(jawParts, "mandible-brace", [side * 1.005, -0.64, 0.205], [side * 0.34, -1.41, 0.27], 0.046, darkSteel);
+    orb(jawParts, "piston-ball-joint", [side * 0.39, -1.30, 0.32], [0.064, 0.064, 0.064], steel);
+    bolt(jawParts, [side * 0.39, -1.30, 0.377], undefined, 0.7);
   }
 
   // Vented chin armor. The slots are holes through the plate.
@@ -364,19 +343,17 @@ export function createMechanicalSkull() {
   const chinPositions = chinGeometry.getAttribute("position");
   for (let i = 0; i < chinPositions.count; i++) {
     const x = chinPositions.getX(i), y = chinPositions.getY(i);
-    chinPositions.setZ(i, chinPositions.getZ(i) - 0.52 * x * x + y * 0.17);
+    chinPositions.setZ(i, chinPositions.getZ(i) - 0.86 * x * x + y * 0.86);
   }
   chinGeometry.computeVertexNormals();
-  orb(jawParts, "chin-vent-recess", [0, -1.43, 0.87], [0.335, 0.152, 0.039], recess);
-  mesh(jawParts, "vented-chin-guard", chinGeometry, steel, [0, -1.43, 0.925]);
-  for (const side of [-1, 1]) bolt(jawParts, [side * 0.39, -1.40, 0.891], new Vector3(side * 0.42, -0.17, 1), 0.68);
+  const guard = mesh(jawParts, "vented-chin-guard", chinGeometry, steel, [0, -1.426, 0.347]);
+  guard.scale.x = 0.84;
+  for (const side of [-1, 1]) bolt(jawParts, [side * 0.329, -1.394, 0.288], new Vector3(side * 0.42, -0.65, 1), 0.68);
 
-  function skullPoint(theta: number, phi: number, offset = 0): Point {
-    return [(1.036 + offset) * Math.sin(theta) * Math.sin(phi), 1.02 + (1.226 + offset) * Math.cos(theta), -0.12 + (0.909 + offset) * Math.sin(theta) * Math.cos(phi)];
-  }
+  const { skullPoint } = anatomy;
 
   function skullNormal(point: Point) {
-    return new Vector3(point[0], (point[1] - 1.02) / 1.45, (point[2] + 0.12) / 0.82).normalize();
+    return new Vector3(point[0], point[1] - 1.04, (point[2] + 0.27) * 0.75).normalize();
   }
 
   function patch(name: string, t0: number, t1: number, p0: number, p1: number, material: Material, offset = 0.016) {
@@ -441,14 +418,16 @@ export function createMechanicalSkull() {
   // A perforated service panel exposes a second train of gears behind the temple.
   const service = new Group();
   service.name = "temple-mechanism";
-  service.position.set(-1.015, 0.92, -0.12);
-  service.rotation.y = -Math.PI / 2;
+  service.position.set(-1.10, 0.93, -0.40);
+  service.rotation.y = -1.60;
   head.add(service);
   const cover = new Shape();
   cover.moveTo(-0.56, -0.32);
   cover.bezierCurveTo(-0.66, 0.0, -0.43, 0.50, 0, 0.53);
   cover.bezierCurveTo(0.42, 0.54, 0.61, 0.12, 0.52, -0.29);
   cover.quadraticCurveTo(0, -0.48, -0.56, -0.32);
+  const serviceBack = extrude(cover, 0.21, 0.016);
+  mesh(service, "cast-temple-gearbox", serviceBack, darkSteel, [0, 0, -0.22]);
   const upperWindow = new Path();
   upperWindow.moveTo(-0.42, 0.08);
   upperWindow.bezierCurveTo(-0.44, 0.26, -0.28, 0.36, -0.085, 0.30);
@@ -465,7 +444,6 @@ export function createMechanicalSkull() {
   lowerWindow.bezierCurveTo(0.155, -0.26, 0.017, -0.327, -0.13, -0.306);
   lowerWindow.bezierCurveTo(-0.222, -0.293, -0.308, -0.228, -0.255, -0.176);
   cover.holes.push(upperWindow, frontWindow, lowerWindow);
-  disc(service, "gearbox-shadow", [0, 0, -0.02], 0.45, 0.035, recess);
   gear(service, "temple-large-gear", [-0.23, 0.13, 0.01], 0.18, 24, 0.035, 5);
   gear(service, "temple-small-gear", [0.24, 0.04, 0.01], 0.18, 23, 0.03, 6);
   gear(service, "temple-idler", [-0.06, -0.24, 0.01], 0.107, 17, 0.035, 0);
@@ -482,10 +460,7 @@ export function createMechanicalSkull() {
     orb(monocle, "optical-index", [Math.cos(angle) * 0.419, Math.sin(angle) * 0.419, 0.199], [0.006, 0.006, 0.004], accent);
   }
 
-  // Hairline sutures and restrained tool marks, drawn as physical incisions.
-  const suture: Point[] = [];
-  for (let i = 0; i < 65; i++) suture.push(skullPoint(0.25 + i * 0.016, 0.36 + Math.sin(i * 2.3) * 0.015, 0.004));
-  tube(head, "cranial-suture", suture, 0.005, darkSteel);
+  // Restrained tool marks on the metal panels.
   for (let i = 0; i < 18; i++) {
     const theta = 0.42 + ((i * 0.137) % 0.69), phi = -0.15 - ((i * 0.219) % 1.1);
     tube(head, "plate-tool-mark", [skullPoint(theta, phi, 0.021), skullPoint(theta + 0.028, phi + 0.05, 0.021), skullPoint(theta + 0.052, phi + 0.04, 0.021)], 0.003, recess);
@@ -499,10 +474,11 @@ export function createMechanicalSkull() {
     [0.96, -2.02], [0.89, -1.98], [0.85, -1.94], [0.83, -1.86],
     [0.72, -1.80], [0.58, -1.72], [0.51, -1.64], [0.50, -1.57],
     [0.55, -1.51], [0.57, -1.45], [0.54, -1.39], [0.43, -1.34],
-    [0.39, -1.27], [0.39, -0.62], [0.46, -0.55], [0.48, -0.48], [0, -0.48],
+    [0.39, -1.27], [0.39, -0.39], [0.46, -0.32], [0.47, -0.25],
+    [0.31, -0.18], [0.225, 0.08], [0, 0.08],
   ].map(([radius, height]) => new Vector2(radius, height));
-  mesh(pedestal, "lathed-pedestal", new LatheGeometry(profile, 96), darkSteel, [0, 0, -0.32]);
-  const footTrim = ring(pedestal, "plinth-machined-edge", [0, -2.06, -0.32], 0.958, 0.012, steel);
+  mesh(pedestal, "lathed-pedestal", new LatheGeometry(profile, 96), darkSteel, [0, 0, -0.65]);
+  const footTrim = ring(pedestal, "plinth-machined-edge", [0, -2.06, -0.65], 0.958, 0.012, steel);
   footTrim.rotation.x = Math.PI / 2;
 
   return {
