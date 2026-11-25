@@ -14,6 +14,8 @@ type SurfaceProfile = {
 export type SkullAnatomy = {
   cranium: BufferGeometry;
   mandible: BufferGeometry;
+  upperTeeth: BufferGeometry;
+  lowerTeeth: BufferGeometry;
   hinge: Point;
   skullPoint: (theta: number, phi: number, clearance?: number) => Point;
 };
@@ -24,6 +26,8 @@ export async function loadSkullAnatomy(signal: AbortSignal): Promise<SkullAnatom
   const { scene } = await new GLTFLoader().parseAsync(await response.arrayBuffer(), "");
   const cranium = scene.getObjectByName("cranium");
   const mandible = scene.getObjectByName("mandible");
+  const upperTeeth = scene.getObjectByName("upper-teeth");
+  const lowerTeeth = scene.getObjectByName("lower-teeth");
   const profile = scene.userData.surfaceProfile as SurfaceProfile | undefined;
   const hinge = scene.userData.jawHinge as Point | undefined;
 
@@ -36,14 +40,18 @@ export async function loadSkullAnatomy(signal: AbortSignal): Promise<SkullAnatom
   });
   materials.forEach((material) => material.dispose());
 
-  if (!(cranium instanceof Mesh) || !(mandible instanceof Mesh) || !profile || !hinge) {
+  if (
+    !(cranium instanceof Mesh) || !(mandible instanceof Mesh) ||
+    !(upperTeeth instanceof Mesh) || !(lowerTeeth instanceof Mesh) || !profile || !hinge
+  ) {
     scene.traverse((object) => { if (object instanceof Mesh) object.geometry.dispose(); });
     throw new Error("The skull is missing an anatomy part or its fitting data");
   }
 
   scene.updateMatrixWorld(true);
-  cranium.geometry.applyMatrix4(cranium.matrixWorld);
-  mandible.geometry.applyMatrix4(mandible.matrixWorld);
+  for (const part of [cranium, mandible, upperTeeth, lowerTeeth]) {
+    part.geometry.applyMatrix4(part.matrixWorld);
+  }
   for (const { geometry } of [cranium, mandible]) {
     if (!geometry.hasAttribute("_bone_occlusion")) {
       geometry.setAttribute("_bone_occlusion", new BufferAttribute(new Uint8Array(geometry.getAttribute("position").count * 2), 2, true));
@@ -70,5 +78,12 @@ export async function loadSkullAnatomy(signal: AbortSignal): Promise<SkullAnatom
     ];
   }
 
-  return { cranium: cranium.geometry, mandible: mandible.geometry, hinge, skullPoint };
+  return {
+    cranium: cranium.geometry,
+    mandible: mandible.geometry,
+    upperTeeth: upperTeeth.geometry,
+    lowerTeeth: lowerTeeth.geometry,
+    hinge,
+    skullPoint,
+  };
 }

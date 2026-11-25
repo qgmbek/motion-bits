@@ -31,14 +31,6 @@ const noiseFunctions = /* glsl */ `
     return 1.0 - smoothstep(size * 0.18, size, distanceToCenter);
   }
 
-  float toothSurface(vec3 p) {
-    float front = smoothstep(0.64, 0.96, p.z);
-    float topArc = (1.0 - smoothstep(-0.47, -0.34, p.y)) * front;
-    float bottomArc = smoothstep(-1.19, -1.04, p.y)
-      * (1.0 - smoothstep(-0.96, -0.80, p.y))
-      * smoothstep(0.34, 0.56, p.z);
-    return max(topArc, bottomArc) * (1.0 - smoothstep(0.31, 0.47, abs(p.x)));
-  }
 `;
 
 export function createBoneMaterial() {
@@ -68,7 +60,6 @@ export function createBoneMaterial() {
       `)
       .replace("#include <color_fragment>", `#include <color_fragment>
         vec3 bonePoint = vBonePosition + vec3(2.7, 4.3, 7.1);
-        float enamel = toothSurface(vBonePosition);
         float drift = boneNoise(bonePoint * 4.6);
         float mineral = boneNoise(bonePoint * vec3(8.2, 5.9, 9.6) + drift * 1.04);
         float marbling = smoothstep(0.24, 0.76, 0.6 * drift + 0.4 * mineral);
@@ -76,21 +67,19 @@ export function createBoneMaterial() {
         float footprint = max(length(dFdx(bonePoint)), length(dFdy(bonePoint)));
         // Scale the fine detail down in distant views to avoid a speckled silhouette.
         float pinholes = bonePore(bonePoint * 48.0) * (1.0 - smoothstep(0.24, 0.86, footprint * 48.0));
-        float weathering = (1.0 - 0.87 * enamel) * grainMask;
+        float weathering = grainMask;
         float crevice = smoothstep(0.035, 0.58, vBoneOcclusion.x);
         float hollow = smoothstep(0.045, 0.76, vBoneOcclusion.y);
         vec3 aged = mix(vec3(0.77, 0.70, 0.60), vec3(1.09, 1.10, 1.11), marbling);
-        vec3 wornEnamel = vec3(1.09, 1.09, 1.04);
-        diffuseColor.rgb *= mix(aged, wornEnamel, enamel * 0.64);
+        diffuseColor.rgb *= aged;
         diffuseColor.rgb *= mix(vec3(1.0), vec3(0.69, 0.60, 0.50), crevice * 0.66);
         diffuseColor.rgb *= 1.0 - weathering * pinholes * 0.19;
       `)
       .replace("#include <roughnessmap_fragment>", `#include <roughnessmap_fragment>
-        roughnessFactor = clamp(roughnessFactor + (mineral - 0.5) * 0.14 - enamel * 0.17, 0.52, 0.93);
+        roughnessFactor = clamp(roughnessFactor + (mineral - 0.5) * 0.14, 0.61, 0.93);
       `)
       .replace("#include <normal_fragment_maps>", `#include <normal_fragment_maps>
-        float relief = (1.0 - 0.68 * enamel) * (mineral - 0.5) * 0.005
-          - weathering * pinholes * 0.0045;
+        float relief = (mineral - 0.5) * 0.005 - weathering * pinholes * 0.0045;
         vec3 surfaceX = dFdx(-vViewPosition);
         vec3 surfaceY = dFdy(-vViewPosition);
         vec3 tangentX = cross(surfaceY, normal);
@@ -104,6 +93,6 @@ export function createBoneMaterial() {
         reflectedLight.indirectSpecular *= 1.0 - hollow * 0.53;
       `);
   };
-  material.customProgramCacheKey = () => "cortical-bone-v1";
+  material.customProgramCacheKey = () => "cortical-bone-v2";
   return material;
 }

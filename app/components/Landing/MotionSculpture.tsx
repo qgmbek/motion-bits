@@ -35,6 +35,8 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     function release(model: SkullAnatomy) {
       model.cranium.dispose();
       model.mandible.dispose();
+      model.upperTeeth.dispose();
+      model.lowerTeeth.dispose();
     }
     loadSkullAnatomy(controller.signal).then((model) => {
       if (controller.signal.aborted) {
