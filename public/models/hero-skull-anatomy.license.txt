@@ -16,9 +16,16 @@ https://creativecommons.org/licenses/by/4.0/
 
 Changes: reduced the meshes for the web, oriented and scaled them, posed the
 mandible open, and baked surface fitting and ambient occlusion data.
+The occlusion data samples both small crevices and larger recesses, with
+additional depth shading inside the eye sockets and nasal cavity.
+Localized facial relief at the brow, orbital rims, and cheekbones was
+recovered from the registered high-resolution cranium scan.
 The dental surfaces were reshaped locally to seat separately modeled crowns.
 A contoured upper socket ridge and the upper crowns were resurfaced with the
 cranium as one mesh. Enamel colors blend into the bone along the socket ridge.
+The upper cutting edges and socket contours were sculpted, with the surface
+and enamel colors smoothed where each crown meets the ridge. Custom fangs
+were fused into the mandible at the canine and second premolar sockets.
 
 Permanent Teeth models by the University of Dundee, School of Dentistry.
 https://sketchfab.com/DundeeDental/collections/permanent-teeth-4c0d0548c40c463c8cdceb6e0d08df7f
@@ -27,3 +34,4 @@ https://creativecommons.org/licenses/by/4.0/
 Source GLB files: https://github.com/sameralseedbth-Dental/dental-3d-models
 Changes: mirrored and fitted the arches, shortened hidden roots, reduced the
 meshes for the web, softened the biting edges, and recolored the enamel.
+The remaining lower crowns were refitted around the new fangs.

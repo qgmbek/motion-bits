@@ -8,6 +8,7 @@ import {
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { createMechanicalSkull } from "./MechanicalSkull";
+import { createMetalEnvironment } from "./metalStudio";
 import { loadSkullAnatomy, type SkullAnatomy } from "./skullAnatomy";
 import styles from "./Landing.module.css";
 
@@ -76,12 +77,13 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     const room = new RoomEnvironment();
     const pmrem = new PMREMGenerator(renderer);
     const environment = pmrem.fromScene(room, 0.04);
+    const metalEnvironment = createMetalEnvironment(pmrem);
     scene.environment = environment.texture;
     scene.environmentIntensity = 0.45;
     room.dispose();
     pmrem.dispose();
 
-    const artifact = createMechanicalSkull(anatomy);
+    const artifact = createMechanicalSkull(anatomy, metalEnvironment.texture);
     scene.add(artifact.root);
     const bounds = new Box3().setFromObject(artifact.root);
     const size = bounds.getSize(new Vector3());
@@ -269,6 +271,7 @@ export default function MotionSculpture({ accent, light, view }: Props) {
       key.shadow.map?.dispose();
       scene.environment = null;
       environment.dispose();
+      metalEnvironment.dispose();
       renderer.dispose();
     };
   }, [anatomy, contextVersion]);

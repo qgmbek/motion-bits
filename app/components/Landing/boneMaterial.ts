@@ -22,13 +22,13 @@ const noiseFunctions = /* glsl */ `
 
   float bonePore(vec3 p) {
     vec3 cell = floor(p);
-    vec3 center = 0.25 + 0.50 * vec3(
+    vec3 center = 0.28 + 0.44 * vec3(
       boneHash(cell),
       boneHash(cell + vec3(7.3, 1.8, 4.0)),
       boneHash(cell + vec3(3.2, 5.7, 9.1)));
     float distanceToCenter = length((fract(p) - center) * vec3(1.0, 1.2, 1.0));
-    float size = mix(0.12, 0.23, boneHash(cell + 12.6));
-    return 1.0 - smoothstep(size * 0.18, size, distanceToCenter);
+    float size = mix(0.10, 0.27, boneHash(cell + 12.6));
+    return 1.0 - smoothstep(size * 0.23, size, distanceToCenter);
   }
 
 `;
@@ -64,42 +64,57 @@ export function createBoneMaterial() {
       `)
       .replace("#include <color_fragment>", `#include <color_fragment>
         vec3 bonePoint = vBonePosition + vec3(2.7, 4.3, 7.1);
-        float drift = boneNoise(bonePoint * 4.6);
-        float mineral = boneNoise(bonePoint * vec3(8.2, 5.9, 9.6) + drift * 1.04);
-        float marbling = smoothstep(0.24, 0.76, 0.6 * drift + 0.4 * mineral);
-        float grainMask = smoothstep(0.28, 0.68, boneNoise(bonePoint * 14.0));
+        float drift = boneNoise(bonePoint * 3.4);
+        float mineral = boneNoise(bonePoint * vec3(7.6, 5.5, 9.3) + drift * 1.35);
+        float marbling = smoothstep(0.19, 0.80, drift * 0.58 + mineral * 0.42);
+        float weathering = smoothstep(0.29, 0.70, boneNoise(bonePoint * 12.5 + mineral));
+        float exposedFace = smoothstep(0.47, 1.06, vBonePosition.z) *
+          (1.0 - smoothstep(0.79, 1.41, vBonePosition.y));
+        float enamel = vBoneEnamel.a;
+        float crevice = smoothstep(0.025, 0.42, vBoneOcclusion.x);
+        float hollow = smoothstep(0.10, 0.68, vBoneOcclusion.y) * (1.0 - enamel * 0.88);
+        float porosity = mix(0.25, 0.79, weathering) * (0.64 + 0.46 * exposedFace + 0.25 * crevice);
         float footprint = max(length(dFdx(bonePoint)), length(dFdy(bonePoint)));
-        // Scale the fine detail down in distant views to avoid a speckled silhouette.
-        float pinholes = bonePore(bonePoint * 48.0) * (1.0 - smoothstep(0.24, 0.86, footprint * 48.0));
-        float weathering = grainMask;
-        float crevice = smoothstep(0.035, 0.58, vBoneOcclusion.x);
-        float hollow = smoothstep(0.045, 0.76, vBoneOcclusion.y);
-        vec3 aged = mix(vec3(0.77, 0.70, 0.60), vec3(1.09, 1.10, 1.11), marbling);
-        diffuseColor.rgb *= aged;
-        diffuseColor.rgb *= mix(vec3(1.0), vec3(0.69, 0.60, 0.50), crevice * 0.66);
-        diffuseColor.rgb *= 1.0 - weathering * pinholes * 0.19;
-        diffuseColor.rgb = mix(diffuseColor.rgb, vBoneEnamel.rgb, vBoneEnamel.a);
+        float poreVisibility = 1.0 - smoothstep(0.27, 0.96, footprint * 36.0);
+        float microVisibility = 1.0 - smoothstep(0.24, 0.83, footprint * 92.0);
+        float pores = bonePore(bonePoint * 36.0 + mineral * 0.65);
+        float micropores = bonePore(bonePoint * 92.0 + vec3(1.19, 4.7, 2.5));
+        vec3 ivory = mix(vec3(0.79, 0.73, 0.65), vec3(1.07, 1.06, 1.06), marbling);
+        vec3 corticalColor = diffuseColor.rgb * ivory;
+        corticalColor *= mix(vec3(1.0), vec3(0.78, 0.69, 0.59), crevice * 0.67);
+        corticalColor *= 1.0 - hollow * 0.14;
+        corticalColor *= 1.0 - porosity * (pores * poreVisibility * 0.16 + micropores * microVisibility * 0.065);
+        diffuseColor.rgb = mix(corticalColor, vBoneEnamel.rgb, enamel);
       `)
       .replace("#include <roughnessmap_fragment>", `#include <roughnessmap_fragment>
-        float boneRoughness = clamp(roughnessFactor + (mineral - 0.5) * 0.14, 0.61, 0.93);
-        roughnessFactor = mix(boneRoughness, 0.49, vBoneEnamel.a);
+        float polish = (1.0 - weathering) * (1.0 - crevice);
+        float boneRoughness = roughnessFactor - polish * 0.13 + crevice * 0.095 + (mineral - 0.5) * 0.09;
+        roughnessFactor = mix(clamp(boneRoughness, 0.59, 0.91), 0.49, enamel);
       `)
       .replace("#include <normal_fragment_maps>", `#include <normal_fragment_maps>
-        float relief = ((mineral - 0.5) * 0.005 - weathering * pinholes * 0.0045) *
-          (1.0 - vBoneEnamel.a * 0.88);
+        float corticalGrain = boneNoise(bonePoint * vec3(29.0, 39.0, 32.0) + mineral * 1.5);
+        float grainVisibility = 1.0 - smoothstep(0.34, 1.05, footprint * 39.0);
+        // Filter the slope after differentiation so subpixel pores fade cleanly.
+        vec2 slope = vec2(dFdx(mineral), dFdy(mineral)) * 0.0048;
+        slope += weathering * grainVisibility * 0.0019 * vec2(dFdx(corticalGrain), dFdy(corticalGrain));
+        slope -= porosity * poreVisibility * 0.0023 * vec2(dFdx(pores), dFdy(pores));
+        slope -= porosity * microVisibility * 0.00044 * vec2(dFdx(micropores), dFdy(micropores));
+        slope *= 1.0 - enamel * 0.96;
         vec3 surfaceX = dFdx(-vViewPosition);
         vec3 surfaceY = dFdy(-vViewPosition);
         vec3 tangentX = cross(surfaceY, normal);
         vec3 tangentY = cross(normal, surfaceX);
         float determinant = dot(surfaceX, tangentX);
-        vec3 gradient = sign(determinant) * (dFdx(relief) * tangentX + dFdy(relief) * tangentY);
+        vec3 gradient = sign(determinant) * (slope.x * tangentX + slope.y * tangentY);
         normal = normalize(max(abs(determinant), 0.00000001) * normal - gradient);
       `)
       .replace("#include <aomap_fragment>", `#include <aomap_fragment>
-        reflectedLight.indirectDiffuse *= 1.0 - hollow * 0.68;
-        reflectedLight.indirectSpecular *= 1.0 - hollow * 0.53;
+        reflectedLight.directDiffuse *= 1.0 - hollow * 0.43;
+        reflectedLight.directSpecular *= 1.0 - hollow * 0.46;
+        reflectedLight.indirectDiffuse *= 1.0 - hollow * 0.76;
+        reflectedLight.indirectSpecular *= 1.0 - hollow * 0.63;
       `);
   };
-  material.customProgramCacheKey = () => "cortical-bone-enamel-v1";
+  material.customProgramCacheKey = () => "cortical-bone-accessibility";
   return material;
 }
