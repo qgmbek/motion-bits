@@ -16,7 +16,9 @@ https://creativecommons.org/licenses/by/4.0/
 
 Changes: reduced the meshes for the web, oriented and scaled them, posed the
 mandible open, and baked surface fitting and ambient occlusion data.
-The fused dental surfaces were reshaped locally to seat separately modeled crowns.
+The dental surfaces were reshaped locally to seat separately modeled crowns.
+A contoured upper socket ridge and the upper crowns were resurfaced with the
+cranium as one mesh. Enamel colors blend into the bone along the socket ridge.
 
 Permanent Teeth models by the University of Dundee, School of Dentistry.
 https://sketchfab.com/DundeeDental/collections/permanent-teeth-4c0d0548c40c463c8cdceb6e0d08df7f
@@ -24,4 +26,4 @@ The models are licensed under Creative Commons Attribution 4.0 International.
 https://creativecommons.org/licenses/by/4.0/
 Source GLB files: https://github.com/sameralseedbth-Dental/dental-3d-models
 Changes: mirrored and fitted the arches, shortened hidden roots, reduced the
-meshes for the web, and blended the source colors into aged enamel.
+meshes for the web, softened the biting edges, and recolored the enamel.

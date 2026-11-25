@@ -14,7 +14,7 @@ type SurfaceProfile = {
 export type SkullAnatomy = {
   cranium: BufferGeometry;
   mandible: BufferGeometry;
-  upperTeeth: BufferGeometry;
+  upperTeeth?: BufferGeometry;
   lowerTeeth: BufferGeometry;
   hinge: Point;
   skullPoint: (theta: number, phi: number, clearance?: number) => Point;
@@ -42,19 +42,27 @@ export async function loadSkullAnatomy(signal: AbortSignal): Promise<SkullAnatom
 
   if (
     !(cranium instanceof Mesh) || !(mandible instanceof Mesh) ||
-    !(upperTeeth instanceof Mesh) || !(lowerTeeth instanceof Mesh) || !profile || !hinge
+    !(lowerTeeth instanceof Mesh) || !profile || !hinge ||
+    (!(upperTeeth instanceof Mesh) && !cranium.geometry.hasAttribute("_bone_enamel"))
   ) {
     scene.traverse((object) => { if (object instanceof Mesh) object.geometry.dispose(); });
     throw new Error("The skull is missing an anatomy part or its fitting data");
   }
 
   scene.updateMatrixWorld(true);
-  for (const part of [cranium, mandible, upperTeeth, lowerTeeth]) {
+  for (const part of [cranium, mandible, lowerTeeth]) {
     part.geometry.applyMatrix4(part.matrixWorld);
   }
+  if (upperTeeth instanceof Mesh) {
+    upperTeeth.geometry.applyMatrix4(upperTeeth.matrixWorld);
+  }
   for (const { geometry } of [cranium, mandible]) {
+    const { count } = geometry.getAttribute("position");
     if (!geometry.hasAttribute("_bone_occlusion")) {
-      geometry.setAttribute("_bone_occlusion", new BufferAttribute(new Uint8Array(geometry.getAttribute("position").count * 2), 2, true));
+      geometry.setAttribute("_bone_occlusion", new BufferAttribute(new Uint8Array(count * 2), 2, true));
+    }
+    if (!geometry.hasAttribute("_bone_enamel")) {
+      geometry.setAttribute("_bone_enamel", new BufferAttribute(new Uint8Array(count * 4), 4, true));
     }
   }
 
@@ -81,7 +89,7 @@ export async function loadSkullAnatomy(signal: AbortSignal): Promise<SkullAnatom
   return {
     cranium: cranium.geometry,
     mandible: mandible.geometry,
-    upperTeeth: upperTeeth.geometry,
+    upperTeeth: upperTeeth instanceof Mesh ? upperTeeth.geometry : undefined,
     lowerTeeth: lowerTeeth.geometry,
     hinge,
     skullPoint,

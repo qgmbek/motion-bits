@@ -82,8 +82,8 @@ export function createMechanicalSkull(anatomy: SkullAnatomy) {
   head.add(jaw);
   const jawSeat = new Group();
   jawSeat.name = "mandible-open-rest";
-  jawSeat.position.set(0, -0.058, 0.162);
-  jawSeat.rotation.x = 0.058;
+  jawSeat.position.set(0, -0.022, 0.162);
+  jawSeat.rotation.x = 0.038;
   jaw.add(jawSeat);
   const jawParts = new Group();
   jawParts.position.copy(jaw.position).multiplyScalar(-1);
@@ -254,22 +254,26 @@ export function createMechanicalSkull(anatomy: SkullAnatomy) {
     follower.rotation.z = contact + Math.PI + ((contact - driver.rotation.z) * drivingTeeth - Math.PI) / drivenTeeth;
   }
 
-  mesh(head, "ct-cranium-and-maxilla", anatomy.cranium, bone);
+  // Use the baked cavity shading on the cranium to avoid shadow-map artifacts
+  // around the forehead hardware and upper sockets.
+  mesh(head, "ct-cranium-and-maxilla", anatomy.cranium, bone).receiveShadow = false;
   mesh(jawParts, "ct-mandible", anatomy.mandible, bone);
-  mesh(head, "upper-dental-crowns", anatomy.upperTeeth, enamel);
+  if (anatomy.upperTeeth) {
+    mesh(head, "upper-dental-crowns", anatomy.upperTeeth, enamel).receiveShadow = false;
+  }
   mesh(jawParts, "lower-dental-crowns", anatomy.lowerTeeth, enamel);
 
-  function tusk(side: number) {
-    const curve = new CatmullRomCurve3([
-      new Vector3(side * 0.38, -1.236, 0.345), new Vector3(side * 0.429, -1.092, 0.445),
-      new Vector3(side * 0.454, -0.908, 0.548), new Vector3(side * 0.438, -0.755, 0.573),
-    ]);
+  function tusk(side: number, outer = false) {
+    const profile: Point[] = outer
+      ? [[0.489, -1.207, 0.264], [0.515, -1.103, 0.323], [0.531, -0.988, 0.352], [0.516, -0.915, 0.346]]
+      : [[0.354, -1.24, 0.361], [0.408, -1.085, 0.50], [0.44, -0.796, 0.589], [0.417, side > 0 ? -0.55 : -0.585, 0.598]];
+    const curve = new CatmullRomCurve3(profile.map(([x, y, z]) => new Vector3(side * x, y, z)));
     const points: number[] = [], indices: number[] = [];
     for (let i = 0; i <= 28; i++) {
       const t = i / 28, point = curve.getPoint(t), tangent = curve.getTangent(t);
       const normal = new Vector3(0, 0, 1).cross(tangent).normalize();
       const binormal = tangent.clone().cross(normal).normalize();
-      const radius = 0.075 * Math.pow(1 - t, 0.72) + 0.0015;
+      const radius = (outer ? 0.043 : 0.102) * Math.pow(1 - t, 0.79) + 0.0015;
       for (let j = 0; j < 16; j++) {
         const a = j / 16 * Math.PI * 2;
         const ridge = 1 + 0.055 * Math.cos(a * 3 + t * Math.PI) * Math.sin(t * Math.PI);
@@ -286,10 +290,12 @@ export function createMechanicalSkull(anatomy: SkullAnatomy) {
     geometry.setAttribute("position", new Float32BufferAttribute(points, 3));
     geometry.setIndex(indices);
     geometry.computeVertexNormals();
-    mesh(jawParts, `lower-tusk-${side}`, geometry, tuskMaterial);
+    mesh(jawParts, `lower-${outer ? "outer-spur" : "tusk"}-${side}`, geometry, tuskMaterial);
   }
   tusk(-1);
   tusk(1);
+  tusk(-1, true);
+  tusk(1, true);
 
   // A recessed monocle with an actual open barrel, knurled bezel, and optical glass.
   const monocle = new Group();
@@ -605,12 +611,6 @@ export function createMechanicalSkull(anatomy: SkullAnatomy) {
     orb(monocle, "optical-index", [Math.cos(angle) * 0.419, Math.sin(angle) * 0.419, barrelFace + 0.002], [0.006, 0.006, 0.004], accent);
   }
 
-  // Restrained tool marks on the metal panels.
-  for (let i = 0; i < 18; i++) {
-    const theta = 0.42 + ((i * 0.137) % 0.69), phi = -0.15 - ((i * 0.219) % 1.1);
-    tube(head, "plate-tool-mark", [skullPoint(theta, phi, 0.021), skullPoint(theta + 0.028, phi + 0.05, 0.021), skullPoint(theta + 0.052, phi + 0.04, 0.021)], 0.003, recess);
-  }
-
   const pedestal = new Group();
   pedestal.name = "turned-display-plinth";
   root.add(pedestal);
@@ -619,7 +619,7 @@ export function createMechanicalSkull(anatomy: SkullAnatomy) {
     [0.96, -2.02], [0.89, -1.98], [0.85, -1.94], [0.83, -1.86],
     [0.72, -1.80], [0.58, -1.72], [0.51, -1.64], [0.50, -1.57],
     [0.55, -1.51], [0.57, -1.45], [0.54, -1.39], [0.43, -1.34],
-    [0.32, -1.27], [0.24, -1.17], [0.19, -1.06], [0.176, -0.47],
+    [0.32, -1.27], [0.24, -1.17], [0.137, -1.06], [0.124, -0.47],
     [0.198, -0.39], [0.268, -0.34], [0.304, -0.28], [0.275, -0.221],
     [0.195, 0.08], [0, 0.08],
   ].map(([radius, height]) => new Vector2(radius, height));

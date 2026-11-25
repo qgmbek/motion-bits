@@ -45,17 +45,21 @@ export function createBoneMaterial() {
     shader.vertexShader = shader.vertexShader
       .replace("#include <common>", `#include <common>
         attribute vec2 _bone_occlusion;
+        attribute vec4 _bone_enamel;
         varying vec3 vBonePosition;
         varying vec2 vBoneOcclusion;
+        varying vec4 vBoneEnamel;
       `)
       .replace("#include <begin_vertex>", `#include <begin_vertex>
         vBonePosition = position;
         vBoneOcclusion = _bone_occlusion;
+        vBoneEnamel = _bone_enamel;
       `);
     shader.fragmentShader = shader.fragmentShader
       .replace("#include <common>", `#include <common>
         varying vec3 vBonePosition;
         varying vec2 vBoneOcclusion;
+        varying vec4 vBoneEnamel;
         ${noiseFunctions}
       `)
       .replace("#include <color_fragment>", `#include <color_fragment>
@@ -74,12 +78,15 @@ export function createBoneMaterial() {
         diffuseColor.rgb *= aged;
         diffuseColor.rgb *= mix(vec3(1.0), vec3(0.69, 0.60, 0.50), crevice * 0.66);
         diffuseColor.rgb *= 1.0 - weathering * pinholes * 0.19;
+        diffuseColor.rgb = mix(diffuseColor.rgb, vBoneEnamel.rgb, vBoneEnamel.a);
       `)
       .replace("#include <roughnessmap_fragment>", `#include <roughnessmap_fragment>
-        roughnessFactor = clamp(roughnessFactor + (mineral - 0.5) * 0.14, 0.61, 0.93);
+        float boneRoughness = clamp(roughnessFactor + (mineral - 0.5) * 0.14, 0.61, 0.93);
+        roughnessFactor = mix(boneRoughness, 0.49, vBoneEnamel.a);
       `)
       .replace("#include <normal_fragment_maps>", `#include <normal_fragment_maps>
-        float relief = (mineral - 0.5) * 0.005 - weathering * pinholes * 0.0045;
+        float relief = ((mineral - 0.5) * 0.005 - weathering * pinholes * 0.0045) *
+          (1.0 - vBoneEnamel.a * 0.88);
         vec3 surfaceX = dFdx(-vViewPosition);
         vec3 surfaceY = dFdy(-vViewPosition);
         vec3 tangentX = cross(surfaceY, normal);
@@ -93,6 +100,6 @@ export function createBoneMaterial() {
         reflectedLight.indirectSpecular *= 1.0 - hollow * 0.53;
       `);
   };
-  material.customProgramCacheKey = () => "cortical-bone-v2";
+  material.customProgramCacheKey = () => "cortical-bone-enamel-v1";
   return material;
 }
