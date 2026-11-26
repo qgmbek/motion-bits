@@ -2,8 +2,14 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { Check, Copy, Github, RotateCcw } from "lucide-react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Check, Copy, Github, Play, RotateCcw } from "lucide-react";
+import MagneticFieldButton from "../../animations/buttons/MagneticFieldButton/MagneticFieldButton";
+import AmbientBloom from "../../animations/components/AmbientBloom/AmbientBloom";
+import SpotlightCard from "../../animations/components/SpotlightCard/SpotlightCard";
+import StackSpread from "../../animations/components/StackSpread/StackSpread";
+import BlurText from "../../animations/text/BlurText/BlurText";
+import GradientFlow from "../../animations/text/GradientFlow/GradientFlow";
 import { SiteLinks } from "../Nav/Nav";
 import { useSiteMotion } from "../SiteMotion";
 import styles from "./Landing.module.css";
@@ -48,6 +54,36 @@ function useReducedMotion() {
     return () => preference.removeEventListener("change", sync);
   }, []);
   return reduced;
+}
+
+function BentoPreview({ name, category, className, reduced, children }: {
+  name: string;
+  category: string;
+  className: string;
+  reduced: boolean;
+  children: (playing: boolean) => ReactNode;
+}) {
+  const [runs, setRuns] = useState(0);
+  const action = runs ? "Replay" : "Play";
+  const Icon = runs ? RotateCcw : Play;
+  const play = () => setRuns((count) => count + 1);
+
+  return (
+    <figure className={className} onPointerEnter={(event) => {
+      if (!reduced && event.pointerType === "mouse") play();
+    }}>
+      <div key={runs} className={styles.bentoArt} aria-hidden="true">
+        {children(runs > 0 && !reduced)}
+      </div>
+      <figcaption className={styles.bentoCaption}>
+        <div className={styles.bentoLabel}><span>{name}</span><small>{category}</small></div>
+        <button type="button" aria-label={`${action} ${name} preview`} title={`${action} preview`}
+          disabled={reduced} onClick={play}>
+          <Icon size={15} aria-hidden="true" />
+        </button>
+      </figcaption>
+    </figure>
+  );
 }
 
 export default function Landing() {
@@ -142,50 +178,26 @@ export default function Landing() {
 
         <section className={styles.showcase} id="explore" aria-labelledby="explore-title">
           <h2 id="explore-title">Component previews</h2>
+          <p>{reduced ? "Static previews with reduced motion enabled." : "Hover over a tile or press play."}</p>
           <div className={styles.bento}>
-            <figure className={styles.gradientDemo}>
-              <div className={styles.bentoArt} aria-hidden="true">
-                <div className={styles.flowLoops}><i /><i /><i /></div>
-                <span className={styles.flowWord}>flow.</span>
-              </div>
-              <figcaption className={styles.bentoCaption}><span>Gradient Flow</span><small>Text</small></figcaption>
-            </figure>
-            <figure className={styles.magneticDemo}>
-              <div className={styles.bentoArt} aria-hidden="true">
-                <div className={styles.fieldLines}><i /><i /><i /></div>
-                <span className={styles.magneticCore} />
-              </div>
-              <figcaption className={styles.bentoCaption}><span>Magnetic Field</span><small>Buttons</small></figcaption>
-            </figure>
-            <figure className={styles.bloomDemo}>
-              <div className={styles.bentoArt} aria-hidden="true">
-                <div className={styles.bloomOrb}><i /><i /><i /></div>
-                <span className={styles.bloomCore} />
-                <span className={styles.bloomWord}>aura</span>
-              </div>
-              <figcaption className={styles.bentoCaption}><span>Ambient Bloom</span><small>Components</small></figcaption>
-            </figure>
-            <figure className={styles.stackDemo}>
-              <div className={styles.bentoArt} aria-hidden="true">
-                <div className={styles.stackCards}><i /><i /><i /></div>
-              </div>
-              <figcaption className={styles.bentoCaption}><span>Stack Spread</span><small>Components</small></figcaption>
-            </figure>
-            <figure className={styles.blurDemo}>
-              <div className={styles.bentoArt} aria-hidden="true">
-                <div className={styles.blurForms}><i /><i /><i /></div>
-                <span className={styles.blurWord}>hello, world.</span>
-              </div>
-              <figcaption className={styles.bentoCaption}><span>Blur Text</span><small>Text</small></figcaption>
-            </figure>
-            <figure className={styles.spotlightDemo}>
-              <div className={styles.bentoArt} aria-hidden="true">
-                <div className={styles.spotlightGrid} />
-                <div className={styles.spotlightLens} />
-                <span className={styles.spotlightWord}>Spotlight</span>
-              </div>
-              <figcaption className={styles.bentoCaption}><span>Spotlight Card</span><small>Components</small></figcaption>
-            </figure>
+            <BentoPreview name="Gradient Flow" category="Text" className={styles.gradientDemo} reduced={reduced}>
+              {(playing) => <div className={styles.flowWord}><GradientFlow playing={playing} speed={2.4}>flow.</GradientFlow></div>}
+            </BentoPreview>
+            <BentoPreview name="Magnetic Field Button" category="Buttons" className={styles.magneticDemo} reduced={reduced}>
+              {(playing) => <MagneticFieldButton playing={playing} />}
+            </BentoPreview>
+            <BentoPreview name="Ambient Bloom" category="Components" className={styles.bloomDemo} reduced={reduced}>
+              {(playing) => <AmbientBloom playing={playing} />}
+            </BentoPreview>
+            <BentoPreview name="Stack Spread" category="Components" className={styles.stackDemo} reduced={reduced}>
+              {(playing) => <StackSpread playing={playing} />}
+            </BentoPreview>
+            <BentoPreview name="Blur Text" category="Text" className={styles.blurDemo} reduced={reduced}>
+              {(playing) => <div className={styles.blurWord}><BlurText playing={playing}>hello, world.</BlurText></div>}
+            </BentoPreview>
+            <BentoPreview name="Spotlight Card" category="Components" className={styles.spotlightDemo} reduced={reduced}>
+              {(playing) => <SpotlightCard playing={playing} />}
+            </BentoPreview>
           </div>
         </section>
 
@@ -201,7 +213,17 @@ export default function Landing() {
 
         <section className={styles.openSource} id="open-source" aria-labelledby="open-source-title" data-reveal>
           <div className={styles.openSourceGlow} aria-hidden="true" />
-          <div className={styles.openSourceBody}><div><h2 id="open-source-title">Open source</h2><p>MIT license for personal and commercial projects.</p></div><a href={repository} target="_blank" rel="noreferrer" className={styles.githubButton}><Github size={17} /> View source</a></div>
+          <div className={styles.openSourceBody}>
+            <div>
+              <h2 id="open-source-title">Open source</h2>
+              <p>Free to use, modify, and share under the MIT license.</p>
+              <a href={repository} target="_blank" rel="noreferrer" className={styles.githubButton}><Github size={17} /> View source</a>
+            </div>
+            <div className={styles.sourceArtwork} aria-hidden="true">
+              <div className={styles.sourceOrbits}><i /><i /><i /></div>
+              <div className={styles.sourceEmblem}><Github size={46} strokeWidth={1.35} /></div>
+            </div>
+          </div>
         </section>
       </main>
 

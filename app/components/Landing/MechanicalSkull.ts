@@ -714,6 +714,7 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
 
   const pedestal = new Group();
   pedestal.name = "turned-display-plinth";
+  pedestal.position.z = -0.65;
   root.add(pedestal);
   const profile = [
     [0, -2.17], [0.83, -2.17], [0.94, -2.14], [0.97, -2.08],
@@ -724,18 +725,8 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     [0.198, -0.39], [0.268, -0.34], [0.304, -0.28], [0.275, -0.221],
     [0.195, 0.08], [0, 0.08],
   ].map(([radius, height]) => new Vector2(radius, height));
-  const plinthGeometry = new LatheGeometry(profile, 96);
-  const plinthVertices = plinthGeometry.getAttribute("position");
-  // Route the mount around the mouth and into the underside of the skull.
-  for (let i = 0; i < plinthVertices.count; i++) {
-    const y = plinthVertices.getY(i);
-    const offset = 0.56 * MathUtils.smoothstep(y, -1.53, -0.94)
-      - 0.13 * MathUtils.smoothstep(y, -0.43, 0.08);
-    plinthVertices.setX(i, plinthVertices.getX(i) + offset);
-  }
-  plinthGeometry.computeVertexNormals();
-  mesh(pedestal, "lathed-pedestal", plinthGeometry, darkSteel, [0, 0, -0.65]);
-  const footTrim = ring(pedestal, "plinth-machined-edge", [0, -2.06, -0.65], 0.958, 0.012, steel);
+  mesh(pedestal, "lathed-pedestal", new LatheGeometry(profile, 96), darkSteel);
+  const footTrim = ring(pedestal, "plinth-machined-edge", [0, -2.06, 0], 0.958, 0.012, steel);
   footTrim.rotation.x = Math.PI / 2;
 
   return {

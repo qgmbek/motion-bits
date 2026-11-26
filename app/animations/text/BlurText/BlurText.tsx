@@ -5,23 +5,21 @@ import { motion } from "framer-motion";
 
 type BlurTextProps = {
   children?: ReactNode;
+  playing?: boolean;
 };
+
+const hidden = { opacity: 0, filter: "blur(16px)", y: 20 };
+const visible = { opacity: 1, filter: "blur(0px)", y: 0 };
 
 export default function BlurText({
   children = "Blur Text Animation",
+  playing,
 }: BlurTextProps) {
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        filter: "blur(16px)",
-        y: 20,
-      }}
-      whileInView={{
-        opacity: 1,
-        filter: "blur(0px)",
-        y: 0,
-      }}
+      initial={playing === false ? false : hidden}
+      whileInView={playing === undefined ? visible : undefined}
+      animate={playing !== undefined ? visible : undefined}
       viewport={{ once: true }}
       transition={{
         duration: 1.4,

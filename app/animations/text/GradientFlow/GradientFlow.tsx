@@ -9,6 +9,7 @@ interface GradientFlowProps {
   text?: string;
   speed?: number;
   direction?: Direction;
+  playing?: boolean;
   children?: ReactNode;
 }
 
@@ -16,6 +17,7 @@ export default function GradientFlow({
   text = "Gradient Flow",
   speed = 6,
   direction = "right",
+  playing,
   children,
 }: GradientFlowProps) {
   const displayText = typeof children === "string" ? children : text;
@@ -38,12 +40,13 @@ export default function GradientFlow({
 
   return (
     <motion.div
-      whileInView={backgroundPosition}
+      whileInView={playing === undefined ? backgroundPosition : undefined}
+      animate={playing ? backgroundPosition : undefined}
       viewport={{ once: true }}
       transition={{
         duration: speed,
         ease: "linear",
-        repeat: Infinity,
+        repeat: playing === undefined ? Infinity : 0,
       }}
       style={{
         letterSpacing: "-0.04em",
