@@ -1,10 +1,42 @@
 const code = `"use client";
 
 import { useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 
 type Props = { children?: string };
+
+type ChannelProps = {
+  children: string;
+  channel: { color: string; xOffset: number; yOffset: number };
+  springX: MotionValue<number>;
+  springY: MotionValue<number>;
+  isHovered: boolean;
+};
+
+function HologramChannel({ children, channel, springX, springY, isHovered }: ChannelProps) {
+  const x = useTransform(springX, (v) => v * (channel.xOffset / 30));
+  const y = useTransform(springY, (v) => v * (channel.yOffset / 30));
+
+  return (
+    <motion.span
+      style={{
+        position: "absolute",
+        inset: 0,
+        color: channel.color,
+        pointerEvents: "none",
+        mixBlendMode: "screen",
+        filter: "blur(0.5px)",
+        x,
+        y,
+      }}
+      animate={{ opacity: isHovered ? [0.6, 0.8, 0.6] : 0.3 }}
+      transition={{ duration: 0.3, opacity: { duration: 1, repeat: isHovered ? Infinity : 0 } }}
+    >
+      {children}
+    </motion.span>
+  );
+}
 
 export default function ChromaHologram({ children = "Chroma Hologram" }: Props) {
   const [isHovered, setIsHovered] = useState(false);
@@ -59,33 +91,11 @@ export default function ChromaHologram({ children = "Chroma Hologram" }: Props) 
           cursor: "pointer",
         }}
       >
-        {channels.map((channel, i) => {
-          const x = useTransform(springX, (v) => v * (channel.xOffset / 30));
-          const y = useTransform(springY, (v) => v * (channel.yOffset / 30));
-
-          return (
-            <motion.span
-              key={i}
-              style={{
-                position: "absolute",
-                inset: 0,
-                color: channel.color,
-                pointerEvents: "none",
-                mixBlendMode: "screen",
-                opacity: isHovered ? 0.6 : 0.3,
-                filter: "blur(0.5px)",
-              }}
-              animate={{
-                x: isHovered ? x : 0,
-                y: isHovered ? y : 0,
-                opacity: isHovered ? [0.6, 0.8, 0.6] : 0.3,
-              }}
-              transition={{ duration: 0.3, opacity: { duration: 1, repeat: isHovered ? Infinity : 0 } }}
-            >
-              {children}
-            </motion.span>
-          );
-        })}
+        {channels.map((channel) => (
+          <HologramChannel key={channel.color} channel={channel} springX={springX} springY={springY} isHovered={isHovered}>
+            {children}
+          </HologramChannel>
+        ))}
 
         <motion.span
           style={{
@@ -120,11 +130,11 @@ export default function ChromaHologram({ children = "Chroma Hologram" }: Props) 
             background: "radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.08), transparent 60%)",
             pointerEvents: "none",
             opacity: 0,
+            ["--x" as string]: useTransform(springX, (v) => \`\${50 + v / 4}%\`),
+            ["--y" as string]: useTransform(springY, (v) => \`\${50 + v / 4}%\`),
           }}
           animate={{
             opacity: isHovered ? 1 : 0,
-            ["--x" as string]: useTransform(springX, (v) => \`\${50 + v / 4}%\`),
-            ["--y" as string]: useTransform(springY, (v) => \`\${50 + v / 4}%\`),
           }}
         />
 

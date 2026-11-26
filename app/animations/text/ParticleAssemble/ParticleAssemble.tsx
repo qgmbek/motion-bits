@@ -10,7 +10,6 @@ type ParticleAssembleProps = {
 
 export default function ParticleAssemble({
   children = "Particle Assemble",
-  particleCount = 20,
 }: ParticleAssembleProps) {
   const text = typeof children === "string" ? children : "Particle Assemble";
   
@@ -33,9 +32,9 @@ export default function ParticleAssemble({
           initial={{
             opacity: 0,
             scale: 0,
-            rotate: Math.random() * 360,
-            x: (Math.random() - 0.5) * 200,
-            y: (Math.random() - 0.5) * 200,
+            rotate: ((i * 37 + 11) % 101) / 100 * 360,
+            x: (((i * 53 + 17) % 101) / 100 - 0.5) * 200,
+            y: (((i * 29 + 23) % 101) / 100 - 0.5) * 200,
           }}
           whileInView={{
             opacity: 1,
@@ -50,17 +49,15 @@ export default function ParticleAssemble({
             delay: i * 0.1,
             ease: [0.25, 0.1, 0.25, 1],
           }}
-          animate={{
-            scale: [1, 1.02, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatDelay: 2,
-            ease: "easeInOut",
-          }}
         >
-          {char === " " ? "\u00A0" : char}
+          <motion.span
+            style={{ display: "inline-block" }}
+            whileInView={{ scale: [1, 1.02, 1] }}
+            viewport={{ once: true }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </motion.span>
         </motion.span>
       ))}
     </motion.div>

@@ -58,10 +58,8 @@ export default function FluidDistortionCard() {
           border: "1px solid rgba(255, 255, 255, 0.1)",
           overflow: "hidden",
           transformStyle: "preserve-3d",
-        }}
-        animate={{
-          rotateX: isHovered ? rotateX : 0,
-          rotateY: isHovered ? rotateY : 0,
+          rotateX: rotateX,
+          rotateY: rotateY,
         }}
         transition={{ type: "spring", stiffness: 150, damping: 20 }}
       >
@@ -72,8 +70,6 @@ export default function FluidDistortionCard() {
             borderRadius: 20,
             background: "radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(100, 200, 255, 0.15), transparent 60%)",
             pointerEvents: "none",
-          }}
-          animate={{
             ["--x" as string]: useTransform(springX, (v) => `${50 + v / 5}%`),
             ["--y" as string]: useTransform(springY, (v) => `${50 + v / 5}%`),
           }}

@@ -62,10 +62,8 @@ export default function SpectralFocus({ children = "Spectral Focus" }: Props) {
           display: "inline-block",
           cursor: "pointer",
           transformStyle: "preserve-3d",
-        }}
-        animate={{
-          rotateX: isHovered ? rotateX : 0,
-          rotateY: isHovered ? rotateY : 0,
+          rotateX: rotateX,
+          rotateY: rotateY,
         }}
         transition={{ type: "spring", stiffness: 200, damping: 25 }}
       >
@@ -130,11 +128,11 @@ export default function SpectralFocus({ children = "Spectral Focus" }: Props) {
             background: "radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.1), transparent 60%)",
             pointerEvents: "none",
             opacity: 0,
+            ["--x" as string]: useTransform(springX, (v) => `${50 + v / 5}%`),
+            ["--y" as string]: useTransform(springY, (v) => `${50 + v / 5}%`),
           }}
           animate={{
             opacity: isHovered ? 1 : 0,
-            ["--x" as string]: useTransform(springX, (v) => `${50 + v / 5}%`),
-            ["--y" as string]: useTransform(springY, (v) => `${50 + v / 5}%`),
           }}
         />
       </motion.div>

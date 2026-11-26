@@ -31,9 +31,9 @@ export default function TextScatter({
       }}
     >
       {text.split("").map((char, i) => {
-        const randomX = (Math.random() - 0.5) * 200;
-        const randomY = (Math.random() - 0.5) * 200;
-        const randomRotate = (Math.random() - 0.5) * 180;
+        const randomX = ((((i * 37 + 11) % 101) / 100) - 0.5) * 200;
+        const randomY = ((((i * 53 + 17) % 101) / 100) - 0.5) * 200;
+        const randomRotate = ((((i * 29 + 23) % 101) / 100) - 0.5) * 180;
         return (
           <motion.span
             key={i}

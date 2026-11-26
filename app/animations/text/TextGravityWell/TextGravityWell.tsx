@@ -1,9 +1,24 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 
 type Props = { children?: string };
+
+function GravityLetter({ char, angle, x, y }: {
+  char: string;
+  angle: number;
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+}) {
+  const px = useTransform(x, v => Math.cos(angle) * v * .12);
+  const py = useTransform(y, v => Math.sin(angle) * v * .12);
+  return (
+    <motion.span style={{ display: "inline-block", x: px, y: py }}>
+      {char === " " ? "\u00A0" : char}
+    </motion.span>
+  );
+}
 
 export default function TextGravityWell({ children = "Gravity Well" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -30,12 +45,8 @@ export default function TextGravityWell({ children = "Gravity Well" }: Props) {
       style={{ display: "inline-block", position: "relative" }}>
       {text.map((char, i) => {
         const angle = (i / Math.max(text.length - 1, 1) - .5) * Math.PI;
-        const px = useTransform(x, v => Math.cos(angle) * v * .12);
-        const py = useTransform(y, v => Math.sin(angle) * v * .12);
         return (
-          <motion.span key={i} style={{ display: "inline-block", x: px, y: py }}>
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
+          <GravityLetter key={i} char={char} angle={angle} x={x} y={y} />
         );
       })}
     </motion.div>

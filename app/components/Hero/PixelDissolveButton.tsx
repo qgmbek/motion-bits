@@ -114,7 +114,7 @@ export default function PixelDissolveButton({
                 opacity: 1,
                 scale: 1,
                 transition: {
-                  delay: Math.random() * 0.15,
+                  delay: (((i * 37 + 11) % 101) / 100) * 0.15,
                   duration: 0.5,
                   ease: [0.16, 1, 0.3, 1],
                 },
@@ -124,7 +124,7 @@ export default function PixelDissolveButton({
                 opacity: 0,
                 scale: 0,
                 transition: {
-                  delay: Math.random() * 0.1,
+                  delay: (((i * 53 + 17) % 101) / 100) * 0.1,
                   duration: 0.2,
                 },
               },

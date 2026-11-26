@@ -61,8 +61,8 @@ export default function MotionSculpture({ accent, light }: Props) {
     try {
       renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power" });
     } catch {
-      setUnavailable(true);
-      return;
+      const frame = requestAnimationFrame(() => setUnavailable(true));
+      return () => cancelAnimationFrame(frame);
     }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
     renderer.setClearColor(0x000000, 0);
@@ -110,7 +110,7 @@ export default function MotionSculpture({ accent, light }: Props) {
     const rim = new DirectionalLight(0xc9d9eb, 2.2);
     rim.position.set(2, 3, -3);
     scene.add(rim);
-    const accentRim = new DirectionalLight(accent, 0.3);
+    const accentRim = new DirectionalLight(settings.current.accent, 0.3);
     accentRim.position.set(-3, -0.5, -2);
     scene.add(accentRim);
 

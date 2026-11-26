@@ -45,7 +45,7 @@ export default function TextGlitch({
             duration: 0.3,
             repeat: Infinity,
             repeatDelay: 2,
-            ease: "steps(1)",
+            ease: (progress) => progress < 1 ? 0 : 1,
             delay: i * 0.05,
           }}
         >

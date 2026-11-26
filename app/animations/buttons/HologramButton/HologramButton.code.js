@@ -57,10 +57,8 @@ export default function HologramButton() {
           border: "none",
           cursor: "pointer",
           transformStyle: "preserve-3d",
-        }}
-        animate={{
-          rotateX: isHovered ? rotateX : 0,
-          rotateY: isHovered ? rotateY : 0,
+          rotateX: rotateX,
+          rotateY: rotateY,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >

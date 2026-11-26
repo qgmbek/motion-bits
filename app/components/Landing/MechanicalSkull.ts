@@ -228,10 +228,10 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     assembly.position.set(...at);
     parent.add(assembly);
     gears.push(assembly);
-    const module = options.module ?? radius / (teeth / 2 + 1);
-    const pitch = module * teeth / 2;
-    const tip = pitch + module;
-    const rootRadius = pitch - 1.20 * module;
+    const gearModule = options.module ?? radius / (teeth / 2 + 1);
+    const pitch = gearModule * teeth / 2;
+    const tip = pitch + gearModule;
+    const rootRadius = pitch - 1.20 * gearModule;
     const pressureAngle = Math.PI / 9;
     const base = pitch * Math.cos(pressureAngle);
     const flankStart = Math.max(rootRadius, base);
@@ -271,7 +271,7 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
         hole(shape, Math.cos(offset) * tip * 0.57, Math.sin(offset) * tip * 0.57, tip * 0.086);
       }
     }
-    mesh(assembly, "toothed-wheel", extrude(shape, depth, Math.min(0.004, module * 0.18)), [machinedSteel, edge]);
+    mesh(assembly, "toothed-wheel", extrude(shape, depth, Math.min(0.004, gearModule * 0.18)), [machinedSteel, edge]);
     ring(assembly, "machined-outer-lip", [0, 0, depth + 0.006], tip * 0.77, tip * 0.026, edge);
     turnedProfile(assembly, "stepped-axle-bearing", [
       [tip * bore, depth - 0.005], [tip * (bore + 0.105), depth - 0.005],

@@ -32,7 +32,7 @@ export default function LiquidFloat({
             y: 100,
             opacity: 0,
             scale: 0.5,
-            rotate: Math.random() * 20 - 10,
+            rotate: ((i * 37 + 11) % 101) / 100 * 20 - 10,
           }}
           whileInView={{
             y: 0,
@@ -46,18 +46,20 @@ export default function LiquidFloat({
             delay: i * 0.05,
             ease: [0.25, 0.1, 0.25, 1],
           }}
-          animate={{
-            y: [0, -3, 0],
-            rotate: [0, 1, 0],
-          }}
-          transition={{
-            duration: 2 + Math.random() * 1,
-            repeat: Infinity,
-            repeatDelay: 1 + Math.random(),
-            ease: "easeInOut",
-          }}
         >
-          {char === " " ? "\\u00A0" : char}
+          <motion.span
+            style={{ display: "inline-block" }}
+            whileInView={{ y: [0, -3, 0], rotate: [0, 1, 0] }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 2 + ((i * 53 + 17) % 101) / 100,
+              repeat: Infinity,
+              repeatDelay: 1 + ((i * 29 + 23) % 101) / 100,
+              ease: "easeInOut",
+            }}
+          >
+            {char === " " ? "\\u00A0" : char}
+          </motion.span>
         </motion.span>
       ))}
     </motion.div>

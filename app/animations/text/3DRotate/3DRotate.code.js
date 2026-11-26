@@ -50,17 +50,15 @@ export default function ThreeDRotate({
             delay: i * 0.1,
             ease: [0.25, 0.1, 0.25, 1],
           }}
-          animate={{
-            rotateY: [0, 5, 0, -5, 0],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            repeatDelay: 2,
-            ease: "easeInOut",
-          }}
         >
-          {char === " " ? "\\u00A0" : char}
+          <motion.span
+            style={{ display: "inline-block", transformStyle: "preserve-3d" }}
+            whileInView={{ rotateY: [0, 5, 0, -5, 0] }}
+            viewport={{ once: true }}
+            transition={{ duration: 3, repeat: Infinity, repeatDelay: 2, ease: "easeInOut" }}
+          >
+            {char === " " ? "\\u00A0" : char}
+          </motion.span>
         </motion.span>
       ))}
     </motion.div>

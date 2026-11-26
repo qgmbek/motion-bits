@@ -80,9 +80,9 @@ export default function HologramFlicker({
             ],
           }}
           transition={{
-            duration: 0.08 + Math.random() * 0.05,
+            duration: 0.08 + (((i * 37 + 11) % 101) / 100) * 0.05,
             repeat: Infinity,
-            repeatDelay: 0.5 + Math.random() * 1.5,
+            repeatDelay: 0.5 + (((i * 53 + 17) % 101) / 100) * 1.5,
             ease: "easeInOut",
           }}
         >

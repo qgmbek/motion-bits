@@ -27,7 +27,7 @@ export default function MagneticFlow({
       }}
     >
       {text.split("").map((char, i) => (
-        <MagneticChar key={i} char={char} index={i} isHovered={isHovered} />
+        <MagneticChar key={i} char={char} isHovered={isHovered} />
       ))}
     </motion.div>
   );
@@ -35,11 +35,9 @@ export default function MagneticFlow({
 
 function MagneticChar({
   char,
-  index,
   isHovered,
 }: {
   char: string;
-  index: number;
   isHovered: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -74,10 +72,10 @@ function MagneticChar({
         display: "inline-block",
         whiteSpace: "pre",
         perspective: 1000,
+        rotateX: rotateX,
+        rotateY: rotateY,
       }}
       animate={{
-        rotateX: isHovered ? rotateX : 0,
-        rotateY: isHovered ? rotateY : 0,
         scale: isHovered ? 1.2 : 1,
         color: isHovered ? "#00d4ff" : "#ffffff",
       }}

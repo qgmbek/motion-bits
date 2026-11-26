@@ -51,9 +51,9 @@ export default function NeonPulse({
             ],
           }}
           transition={{
-            duration: 0.5 + Math.random() * 0.3,
+            duration: 0.5 + (((i * 37 + 11) % 101) / 100) * 0.3,
             repeat: Infinity,
-            repeatDelay: 2 + Math.random() * 3,
+            repeatDelay: 2 + (((i * 53 + 17) % 101) / 100) * 3,
             ease: "easeInOut",
           }}
         >

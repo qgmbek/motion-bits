@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export default function NeonGridBackground() {
   const ref = useRef<HTMLDivElement>(null);
@@ -104,8 +104,6 @@ export default function NeonGridBackground() {
           background:
             "radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 200, 0.1), transparent 50%)",
           pointerEvents: "none",
-        }}
-        animate={{
           ["--x" as string]: useTransform(springX, (v) => `${50 + v / 4}%`),
           ["--y" as string]: useTransform(springY, (v) => `${50 + v / 4}%`),
         }}
@@ -118,8 +116,6 @@ export default function NeonGridBackground() {
           background:
             "radial-gradient(circle at var(--x2, 50%) var(--y2, 50%), rgba(255, 0, 150, 0.08), transparent 50%)",
           pointerEvents: "none",
-        }}
-        animate={{
           ["--x2" as string]: useTransform(springX, (v) => `${50 - v / 4}%`),
           ["--y2" as string]: useTransform(springY, (v) => `${50 - v / 4}%`),
         }}

@@ -1,10 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 
 type Props = { children?: string };
+
+function CascadeLetter({ letter, index, springX, springY, isHovered }: {
+  letter: string;
+  index: number;
+  springX: MotionValue<number>;
+  springY: MotionValue<number>;
+  isHovered: boolean;
+}) {
+  const rotateY = useTransform(springX, [-200, 200], [-15 + index * 2, 15 - index * 2]);
+  const y = useTransform(springY, [-200, 200], [-10 + index, 10 - index]);
+  const color = `hsl(${(index * 30) % 360}, 80%, 60%)`;
+
+  return (
+    <motion.span
+      style={{ display: "inline-block", whiteSpace: "pre", fontSize: 36, fontWeight: 800, position: "relative", rotateY, y }}
+      animate={{
+        color: isHovered ? ["#ffffff", color, "#ffffff"] : "#ffffff",
+        textShadow: isHovered ? ["none", `0 0 20px ${color}`, "none"] : "none",
+      }}
+      transition={{
+        duration: 0.4,
+        delay: isHovered ? index * 0.03 : 0,
+        color: { duration: 0.8, repeat: isHovered ? Infinity : 0 },
+        textShadow: { duration: 0.8, repeat: isHovered ? Infinity : 0 },
+      }}
+    >
+      {letter}
+    </motion.span>
+  );
+}
 
 export default function VelocityCascade({ children = "Velocity Cascade" }: Props) {
   const [isHovered, setIsHovered] = useState(false);
@@ -55,50 +85,9 @@ export default function VelocityCascade({ children = "Velocity Cascade" }: Props
           cursor: "pointer",
         }}
       >
-        {letters.map((letter, i) => {
-          const delay = i * 0.03;
-          const rotateY = useTransform(springX, [-200, 200], [-15 + i * 2, 15 - i * 2]);
-          const translateY = useTransform(springY, [-200, 200], [-10 + i, 10 - i]);
-
-          return (
-            <motion.span
-              key={i}
-              style={{
-                display: "inline-block",
-                fontSize: 36,
-                fontWeight: 800,
-                color: "#ffffff",
-                position: "relative",
-              }}
-              animate={{
-                rotateY: isHovered ? rotateY : 0,
-                translateY: isHovered ? translateY : 0,
-                color: isHovered
-                  ? [
-                      "#ffffff",
-                      `hsl(${(i * 30) % 360}, 80%, 60%)`,
-                      "#ffffff",
-                    ]
-                  : "#ffffff",
-                textShadow: isHovered
-                  ? [
-                      "none",
-                      `0 0 20px hsl(${(i * 30) % 360}, 80%, 60%)`,
-                      "none",
-                    ]
-                  : "none",
-              }}
-              transition={{
-                duration: 0.4,
-                delay: isHovered ? delay : 0,
-                color: { duration: 0.8, repeat: isHovered ? Infinity : 0 },
-                textShadow: { duration: 0.8, repeat: isHovered ? Infinity : 0 },
-              }}
-            >
-              {letter === " " ? " " : letter}
-            </motion.span>
-          );
-        })}
+        {letters.map((letter, i) => (
+          <CascadeLetter key={i} letter={letter} index={i} springX={springX} springY={springY} isHovered={isHovered} />
+        ))}
 
         <motion.div
           style={{
@@ -107,11 +96,11 @@ export default function VelocityCascade({ children = "Velocity Cascade" }: Props
             background: "radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(100, 200, 255, 0.15), transparent 60%)",
             pointerEvents: "none",
             opacity: 0,
+            ["--x" as string]: useTransform(springX, (v) => `${50 + v / 4}%`),
+            ["--y" as string]: useTransform(springY, (v) => `${50 + v / 4}%`),
           }}
           animate={{
             opacity: isHovered ? 1 : 0,
-            ["--x" as string]: useTransform(springX, (v) => `${50 + v / 4}%`),
-            ["--y" as string]: useTransform(springY, (v) => `${50 + v / 4}%`),
           }}
         />
 

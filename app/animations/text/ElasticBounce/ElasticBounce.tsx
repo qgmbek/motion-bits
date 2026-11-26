@@ -46,17 +46,15 @@ export default function ElasticBounce({
             mass: 0.8,
             delay: i * 0.08,
           }}
-          animate={{
-            y: [0, -5, 0],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            repeatDelay: 3 + i * 0.2,
-            ease: "easeInOut",
-          }}
         >
-          {char === " " ? "\u00A0" : char}
+          <motion.span
+            style={{ display: "inline-block" }}
+            whileInView={{ y: [0, -5, 0] }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 + i * 0.2, ease: "easeInOut" }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </motion.span>
         </motion.span>
       ))}
     </motion.div>
