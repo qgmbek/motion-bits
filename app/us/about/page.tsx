@@ -1,72 +1,107 @@
+"use client";
+
+import Link from "next/link";
+import { useState, type CSSProperties } from "react";
+import { ArrowRight, ArrowUpRight, Focus, Github, RotateCcw, SlidersHorizontal } from "lucide-react";
+import BlurText from "../../animations/text/BlurText/BlurText";
+import { useSiteMotion } from "../../components/SiteMotion";
 import styles from "./about.module.css";
 
-export default function About() {
+const repository = "https://github.com/qgmbek/motion-bits";
+
+function MotionPreview() {
+  const [runs, setRuns] = useState(0);
+
+  const replay = () => {
+    if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+      setRuns((count) => count + 1);
+    }
+  };
+
   return (
-    <main id="main" className={styles.page} tabIndex={-1}>
-      <section className={styles.hero}>
-        <h1 className={styles.title}>About Motion Bits</h1>
-        <p className={styles.lead}>
-          Motion Bits is a collection of carefully crafted animation components
-          designed for modern web interfaces.
-        </p>
-      </section>
+    <figure className={styles.specimen} data-cursor-quiet>
+      <div className={styles.art} aria-hidden="true" onPointerEnter={(event) => {
+        if (event.pointerType === "mouse") replay();
+      }}>
+        <div className={styles.reticle} />
+        <span className={styles.echo}>Focus</span>
+        <span className={styles.echo}>Focus</span>
+        <span className={styles.still}>Focus</span>
+        <div className={styles.motion}>
+          <BlurText key={runs} playing={runs > 0}>Focus</BlurText>
+        </div>
+      </div>
+      <figcaption className={styles.specimenCaption}>
+        <Link href="/collections#blur-text" className={styles.specimenLink}>
+          Blur Text <ArrowUpRight size={14} aria-hidden="true" />
+        </Link>
+        <button type="button" className={styles.replay} onClick={replay} aria-label="Replay Blur Text preview">
+          <RotateCcw size={14} aria-hidden="true" /> Replay
+        </button>
+      </figcaption>
+    </figure>
+  );
+}
 
-      <section className={styles.section}>
-        <p>
-          The goal is simple: make expressive motion accessible to developers
-          without adding complexity to their workflow.
-        </p>
+export default function About() {
+  const { accent } = useSiteMotion();
 
-        <p>
-          Every component is built with clarity and usability in mind clean
-          code, predictable behavior, and animations that enhance the interface
-          rather than distract from it.
-        </p>
+  return (
+    <main id="main" tabIndex={-1} className={styles.page} style={{ "--accent": accent } as CSSProperties}>
+      <div className={styles.layout}>
+        <section className={styles.hero} aria-labelledby="about-title">
+          <div className={styles.heroCopy} data-cursor-quiet>
+            <p className={styles.eyebrow}>About Motion Bits</p>
+            <h1 id="about-title">Motion <em>with intent<span>.</span></em></h1>
+            <p className={styles.lead}>An open source library of React animations for the details that make an interface feel alive.</p>
+            <Link href="/collections" className={styles.primaryLink}>
+              Browse collections <ArrowRight size={17} aria-hidden="true" />
+            </Link>
+          </div>
+          <MotionPreview />
+        </section>
 
-        <p>
-          Motion on the web should feel intentional. Subtle reveals, fluid
-          transitions, and responsive interactions can transform static
-          interfaces into living systems. Motion Bits focuses on these small but
-          meaningful details that elevate user experience.
-        </p>
-      </section>
+        <section className={styles.principles} aria-labelledby="principles-title">
+          <h2 id="principles-title">How it’s <em>built.</em></h2>
+          <div className={styles.principleList}>
+            <article className={styles.principle}>
+              <span className={styles.principleIcon}><Focus size={21} strokeWidth={1.5} aria-hidden="true" /></span>
+              <div>
+                <h3>Give motion a job.</h3>
+                <p>A reveal sets the reading order. A transition shows what changed. A button confirms the click.</p>
+              </div>
+            </article>
+            <article className={styles.principle}>
+              <span className={styles.principleIcon}><SlidersHorizontal size={20} strokeWidth={1.5} aria-hidden="true" /></span>
+              <div>
+                <h3>Make it yours.</h3>
+                <p>Try a component in Collections, copy its source, and tune the timing or styling for your own interface.</p>
+              </div>
+            </article>
+          </div>
+        </section>
 
-      <section className={styles.section}>
-        <h2 className={styles.subtitle}>Philosophy</h2>
-
-        <p>
-          Good interfaces are not static. They respond, guide attention, and
-          create rhythm through motion. Animation should support usability —
-          helping users understand what changed, where to look next, and how the
-          interface behaves.
-        </p>
-
-        <p>
-          Motion Bits embraces this philosophy by focusing on motion patterns
-          that feel natural, subtle, and useful.
-        </p>
-      </section>
-
-      <section className={styles.section}>
-        <h2 className={styles.subtitle}>Built For</h2>
-
-        <ul className={styles.list}>
-          <li>Developers building modern UI systems</li>
-          <li>Designers exploring motion in interfaces</li>
-          <li>Teams creating polished product experiences</li>
-          <li>Anyone who appreciates well-crafted interaction design</li>
-        </ul>
-      </section>
-
-      <section className={styles.section}>
-        <h2 className={styles.subtitle}>Creator</h2>
-
-        <p>
-          Motion Bits is created by <strong>Khogambek Yersin</strong>, a
-          developer focused on building clean interfaces, animation systems, and
-          tools that help developers create better user experiences.
-        </p>
-      </section>
+        <footer className={styles.credits}>
+          <div className={styles.creator}>
+            <span className={styles.monogram} aria-hidden="true">KY</span>
+            <div>
+              <p className={styles.creditLabel}>Created by</p>
+              <a href="https://github.com/qgmbek" className={styles.creatorLink}>
+                Khogambek Yersin <ArrowUpRight size={15} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+          <div className={styles.source}>
+            <div>
+              <h2>Open source</h2>
+              <p>Released under the MIT license.</p>
+            </div>
+            <a href={repository} className={styles.sourceLink}>
+              <Github size={17} aria-hidden="true" /> View on GitHub
+            </a>
+          </div>
+        </footer>
+      </div>
     </main>
   );
 }
