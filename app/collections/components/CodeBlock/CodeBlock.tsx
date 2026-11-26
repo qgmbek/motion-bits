@@ -2,58 +2,63 @@
 
 import { useEffect, useState } from "react";
 import { Copy, Check } from "lucide-react";
-import "./CodeBlock.css";
-
-function addLineNumbers(html: string): string {
-  return html.replace(/<span class="line">/g, (match, offset, full) => {
-    const index =
-      full.slice(0, offset).match(/<span class="line">/g)?.length || 0;
-    return `<span class="line"><span class="line-number">${index + 1}  </span>`;
-  });
-}
+import styles from "./CodeBlock.module.css";
 
 interface CodeBlockProps {
   code: string;
-  language: string;
+  language: "tsx" | "css";
+  label: string;
 }
 
-export default function CodeBlock({ code, language }: CodeBlockProps) {
+export default function CodeBlock({ code, language, label }: CodeBlockProps) {
   const [html, setHtml] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
 
   useEffect(() => {
+    const controller = new AbortController();
     fetch("/api/highlight", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code, language }),
+      signal: controller.signal,
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setHtml(addLineNumbers(data.html));
+      .then((response) => response.ok ? response.json() : null)
+      .then((result) => {
+        if (!controller.signal.aborted && typeof result?.html === "string") setHtml(result.html);
+      })
+      .catch(() => {
+        // The plain source stays visible when highlighting is unavailable.
       });
+    return () => controller.abort();
   }, [code, language]);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(code);
-    setCopied(true);
-    // setTimeout(() => setCopied(false), 10000);
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopyStatus("copied");
+    } catch {
+      setCopyStatus("failed");
+    }
   };
 
   return (
-    <div className="codeblock-container">
-      <button
-        className="copy-button"
-        onClick={handleCopy}
-        aria-label="Copy code"
-      >
-        {copied ? <Check size={16} /> : <Copy size={16} />}
-        <span>{copied ? "Copied" : "Copy"}</span>
-      </button>
-
-      <div
-        className="shiki-wrapper"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    </div>
+    <section className={styles.block} aria-label={`${label} source`}>
+      <div className={styles.toolbar}>
+        <h2>{label}</h2>
+        <div className={styles.copyControl}>
+          <span className={styles.status} role="status">
+            {copyStatus === "copied" && <span className={styles.srOnly}>Code copied.</span>}
+            {copyStatus === "failed" && "Clipboard unavailable"}
+          </span>
+          <button type="button" className={styles.copy} onClick={handleCopy}>
+            {copyStatus === "copied" ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
+            {copyStatus === "copied" ? "Copied" : "Copy"}
+          </button>
+        </div>
+      </div>
+      <div className={styles.source} role="region" tabIndex={0} aria-label={`${label} code`}>
+        {html ? <div dangerouslySetInnerHTML={{ __html: html }} /> : <pre><code>{code}</code></pre>}
+      </div>
+    </section>
   );
 }

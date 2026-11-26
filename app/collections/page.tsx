@@ -1,20 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { RotateCcw, Eye, Code } from "lucide-react";
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import CodeBlock from "./components/CodeBlock/CodeBlock";
 import styles from "./collections.module.css";
 
-import {
-  ANIMATIONS_BY_ID,
-  type AnimationSlug,
-} from "../animations/registry";
+import { ANIMATIONS, ANIMATIONS_BY_ID, type AnimationSlug } from "../animations/registry";
+import { useSiteMotion } from "../components/SiteMotion";
 
 export default function CollectionsPage() {
+  const { accent } = useSiteMotion();
   const [currentSlug, setCurrentSlug] = useState<AnimationSlug>("blur-text");
-  const [tab, setTab] = useState("demo");
+  const [tab, setTab] = useState<"demo" | "code">("demo");
   const [replayKey, setReplayKey] = useState(0);
 
   useEffect(() => {
@@ -37,76 +36,57 @@ export default function CollectionsPage() {
 
   const activeEntry = ANIMATIONS_BY_ID[currentSlug];
   const ActiveDemo = activeEntry.component;
-  const activeCode = activeEntry.code;
-  const activeCss = activeEntry.css;
+  const category = Object.values(ANIMATIONS).find(({ items }) => Object.hasOwn(items, currentSlug));
+  const CategoryIcon = category?.icon;
+  const scrollDemo = currentSlug === "horizontal-gallery";
 
   return (
-    <>
-      <div className={styles.fadingBorderTop} />
-
-      <div className={styles.container}>
+    <main id="main" tabIndex={-1} className={styles.page} style={{ "--accent": accent } as CSSProperties}>
+      <div className={styles.layout}>
         <Sidebar currentSlug={currentSlug} onNavigate={selectAnimation} />
-
-        <div className={styles.collectionWrapper}>
-          <div className={styles.collectionName}>{activeEntry.name}</div>
-          <div className={styles.tab}>
-            <button
-              onClick={() => setTab("demo")}
-              className={`${styles.tabButton} ${
-                tab === "demo" ? styles.active : ""
-              }`}
-            >
-              <Eye size={16} />
-              Demo
-            </button>
-            <button
-              onClick={() => setTab("code")}
-              className={`${styles.tabButton} ${
-                tab === "code" ? styles.active : ""
-              }`}
-            >
-              <Code size={16} />
-              Code
-            </button>
-          </div>
-
-          {tab === "demo" && (
-            <>
-              <div className={styles.demo}>
-                {ActiveDemo && (
-                  <>
-                    <ActiveDemo key={replayKey} />
-                    <button
-                      onClick={() => setReplayKey((k) => k + 1)}
-                      className={styles.replayButton}
-                    >
-                      <RotateCcw size={16} />
-                      <span>Replay</span>
-                    </button>
-                  </>
-                )}
-              </div>
-            </>
-          )}
-
-          {tab === "code" && (
-            <div className={styles.code}>
-              <CodeBlock code={activeCode} language="jsx" />
-              {activeCss ? (
-                <CodeBlock code={activeCss} language="css" />
-              ) : null}
+        <section className={styles.workspace} aria-labelledby="component-name">
+          <div className={styles.heading}>
+            <div>
+              <p className={styles.category}>
+                {CategoryIcon && <CategoryIcon size={14} aria-hidden="true" />}
+                {category?.title}
+              </p>
+              <h1 id="component-name">{activeEntry.name}</h1>
             </div>
-          )}
-
-          <div className={styles.fadingBorderBottom} />
-          <div className={styles.footerContent}>
-            Created with💜 by
-            <a href="https://github.com/qgmbek" className={styles.userLink}>
-              qgmbek
-            </a>
+            <div className={styles.switcher} role="group" aria-label="Component view">
+              <button type="button" aria-pressed={tab === "demo"} aria-controls="component-view" onClick={() => setTab("demo")}>
+                <Eye size={15} aria-hidden="true" /> Preview
+              </button>
+              <button type="button" aria-pressed={tab === "code"} aria-controls="component-view" onClick={() => setTab("code")}>
+                <Code size={15} aria-hidden="true" /> Code
+              </button>
+            </div>
           </div>
-        </div>
+          <div id="component-view">
+            {tab === "demo" ? (
+              <div className={styles.preview}>
+                <div className={styles.toolbar}>
+                  <span className={styles.previewLabel}>{scrollDemo ? "Scroll to preview" : "Live preview"}</span>
+                  {ActiveDemo && (
+                    <button type="button" className={styles.replayButton} onClick={() => setReplayKey((key) => key + 1)}>
+                      <RotateCcw size={14} aria-hidden="true" /> Replay
+                    </button>
+                  )}
+                </div>
+                <div className={scrollDemo ? styles.scrollStage : styles.stage} data-cursor-quiet>
+                  {ActiveDemo && <ActiveDemo key={`${currentSlug}:${replayKey}`} />}
+                </div>
+              </div>
+            ) : (
+              <div className={styles.code} key={currentSlug}>
+                <CodeBlock code={activeEntry.code} language="tsx" label={activeEntry.css ? "React component" : "React"} />
+                {activeEntry.css && <CodeBlock code={activeEntry.css} language="css" label="CSS" />}
+              </div>
+            )}
+          </div>
+          <footer className={styles.credit}>Motion Bits by <a href="https://github.com/qgmbek">qgmbek</a></footer>
+        </section>
       </div>
-    </>
+    </main>
   );
 }

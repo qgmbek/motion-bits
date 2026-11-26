@@ -10,7 +10,7 @@ import SpotlightCard from "../../animations/components/SpotlightCard/SpotlightCa
 import StackSpread from "../../animations/components/StackSpread/StackSpread";
 import BlurText from "../../animations/text/BlurText/BlurText";
 import GradientFlow from "../../animations/text/GradientFlow/GradientFlow";
-import { SiteLinks } from "../Nav/Nav";
+import { Brand } from "../Nav/Nav";
 import { useSiteMotion } from "../SiteMotion";
 import styles from "./Landing.module.css";
 
@@ -34,15 +34,6 @@ export default function Hello() {
     </BlurText>
   );
 }`;
-
-function Brand() {
-  return (
-    <span className={styles.brand}>
-      <span className={styles.brandSymbol} aria-hidden="true"><i /><i /><i /></span>
-      <span>motion<span className={styles.brandLight}>bits</span><span className={styles.brandPeriod}>.</span></span>
-    </span>
-  );
-}
 
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -135,15 +126,6 @@ export default function Landing() {
   return (
     <div ref={pageRef} className={styles.page} style={{ "--accent": accent } as CSSProperties}>
       <div className={styles.pageAtmosphere} aria-hidden="true" />
-      <a className={styles.skipLink} href="#main">Skip to content</a>
-      <header className={styles.header}>
-        <Link href="/" aria-label="Motion Bits home"><Brand /></Link>
-        <nav className={styles.siteNav} aria-label="Main navigation">
-          <SiteLinks />
-        </nav>
-        <a className={styles.githubLink} href={repository} target="_blank" rel="noreferrer" aria-label="Motion Bits on GitHub"><Github size={17} /><span>GitHub</span></a>
-      </header>
-
       <main id="main" tabIndex={-1}>
         <section className={styles.hero} aria-labelledby="hero-title">
           <div className={styles.heroCopy} data-cursor-quiet>

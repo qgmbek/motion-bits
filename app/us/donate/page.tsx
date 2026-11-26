@@ -1,3 +1,3 @@
 export default function Donate() {
-  return <div></div>;
+  return <main id="main" tabIndex={-1} />;
 }

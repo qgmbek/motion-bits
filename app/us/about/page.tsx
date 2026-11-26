@@ -2,7 +2,7 @@ import styles from "./about.module.css";
 
 export default function About() {
   return (
-    <main className={styles.page}>
+    <main id="main" className={styles.page} tabIndex={-1}>
       <section className={styles.hero}>
         <h1 className={styles.title}>About Motion Bits</h1>
         <p className={styles.lead}>
