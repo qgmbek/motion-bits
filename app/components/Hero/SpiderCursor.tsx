@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 interface Particle {
@@ -8,70 +9,106 @@ interface Particle {
   vx: number;
   vy: number;
   radius: number;
+  visibility: number;
 }
+
+const pointerReach = 146;
+const threadReach = 102;
+const ink = "178, 177, 174";
+const thread = "197, 201, 207";
 
 export function SpiderCursor() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationFrameId: number;
+    const preference = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+    const quietRegions = Array.from(document.querySelectorAll<HTMLElement>("[data-cursor-quiet]"));
+    const particles: Particle[] = [];
+    let quietBounds: DOMRect[] = [];
+    let boundsDirty = true;
+    let frame = 0;
     let previousTime: number | null = null;
+    let width = 0;
+    let height = 0;
 
     const mouse: { x: number | null; y: number | null } = { x: null, y: null };
     const eased = { x: 0, y: 0 };
 
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (mouse.x === null || mouse.y === null) {
-        eased.x = e.clientX;
-        eased.y = e.clientY;
+    const invalidateBounds = () => { boundsDirty = true; };
+    const resize = () => {
+      const nextWidth = window.innerWidth;
+      const nextHeight = window.innerHeight;
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.round(nextWidth * ratio);
+      canvas.height = Math.round(nextHeight * ratio);
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      if (width && height) {
+        for (const particle of particles) {
+          particle.x *= nextWidth / width;
+          particle.y *= nextHeight / height;
+        }
       }
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      width = nextWidth;
+      height = nextHeight;
+      const count = Math.max(49, Math.min(98, Math.round(width * height / 19700)));
+      if (particles.length > count) particles.length = count;
+      while (particles.length < count) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * .62,
+          vy: (Math.random() - 0.5) * .62,
+          radius: .9 + Math.random() * .55,
+          visibility: 1,
+        });
+      }
+      invalidateBounds();
     };
 
-    const handleMouseOut = (e: MouseEvent) => {
-      if (e.relatedTarget !== null) return;
+    const visibilityAt = (x: number, y: number) => {
+      let visibility = 1;
+      for (const bounds of quietBounds) {
+        const inside = Math.min(x - bounds.left, bounds.right - x, y - bounds.top, bounds.bottom - y);
+        const strength = Math.max(0, Math.min(1, (inside + 22) / 65));
+        visibility = Math.min(visibility, 1 - .58 * strength);
+      }
+      return visibility;
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (mouse.x === null || mouse.y === null) {
+        eased.x = event.clientX;
+        eased.y = event.clientY;
+      }
+      mouse.x = event.clientX;
+      mouse.y = event.clientY;
+    };
+
+    const clearPointer = () => {
       mouse.x = null;
       mouse.y = null;
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseout", handleMouseOut);
-
-    const particles: Particle[] = [];
-    const numParticles = 80;
-    const maxDistance = 150;
-
-    for (let i = 0; i < numParticles; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1,
-        vy: (Math.random() - 0.5) * 1,
-        radius: 2,
-      });
-    }
+    const handleMouseOut = (event: MouseEvent) => {
+      if (event.relatedTarget === null) clearPointer();
+    };
 
     const draw = (now: number) => {
       const delta = previousTime === null ? 1000 / 60 : Math.min(now - previousTime, 32);
       previousTime = now;
       const step = delta / (1000 / 60);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, width, height);
 
+      if (boundsDirty) {
+        quietBounds = quietRegions.map((region) => region.getBoundingClientRect());
+        boundsDirty = false;
+      }
+      const hasPointer = mouse.x !== null && mouse.y !== null;
       if (mouse.x !== null && mouse.y !== null) {
         // A light, frame-rate-independent ease with a short leash for fast moves.
         const ease = 1 - Math.exp(-delta / 28);
@@ -86,77 +123,106 @@ export function SpiderCursor() {
         }
       }
 
-      particles.forEach((p, index) => {
+      for (const p of particles) {
         p.x += p.vx * step;
         p.y += p.vy * step;
+        if (p.x < 0 || p.x > width) {
+          p.x = Math.max(0, Math.min(width, p.x));
+          p.vx *= -1;
+        }
+        if (p.y < 0 || p.y > height) {
+          p.y = Math.max(0, Math.min(height, p.y));
+          p.vy *= -1;
+        }
+        p.visibility = visibilityAt(p.x, p.y);
+      }
 
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
+      const pointerVisibility = hasPointer ? .36 + .64 * visibilityAt(eased.x, eased.y) : 0;
+      particles.forEach((p, index) => {
+        const distance = hasPointer ? Math.hypot(eased.x - p.x, eased.y - p.y) : Infinity;
+        const proximity = Math.max(0, 1 - distance / pointerReach);
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.fillStyle = "rgba(" + ink + ", " + ((.39 + .21 * proximity) * p.visibility) + ")";
         ctx.fill();
 
-        if (mouse.x !== null && mouse.y !== null) {
-          const dx = eased.x - p.x;
-          const dy = eased.y - p.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < maxDistance) {
-            ctx.beginPath();
-            ctx.moveTo(eased.x, eased.y);
-            ctx.lineTo(p.x, p.y);
-
-            const opacity = 1 - distance / maxDistance;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
+        if (proximity > 0) {
+          ctx.beginPath();
+          ctx.moveTo(eased.x, eased.y);
+          ctx.lineTo(p.x, p.y);
+          const opacity = .48 * proximity * pointerVisibility * (.45 + .55 * p.visibility);
+          ctx.strokeStyle = "rgba(" + thread + ", " + opacity + ")";
+          ctx.lineWidth = .8;
+          ctx.stroke();
         }
 
         for (let j = index + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const other = particles[j];
+          const distanceSquared = (p.x - other.x) ** 2 + (p.y - other.y) ** 2;
+          if (distanceSquared >= threadReach * threadReach) continue;
 
-          if (distance < maxDistance * 0.7) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            const opacity = 0.3 * (1 - distance / (maxDistance * 0.7));
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
+          const visibility = Math.min(p.visibility, other.visibility);
+          const opacity = .22 * (1 - Math.sqrt(distanceSquared) / threadReach) * visibility;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(other.x, other.y);
+          ctx.strokeStyle = "rgba(" + ink + ", " + opacity + ")";
+          ctx.lineWidth = .65;
+          ctx.stroke();
         }
       });
 
-      animationFrameId = requestAnimationFrame(draw);
+      frame = requestAnimationFrame(draw);
     };
 
-    animationFrameId = requestAnimationFrame(draw);
+    const syncActivity = () => {
+      cancelAnimationFrame(frame);
+      previousTime = null;
+      if (preference.matches && !document.hidden) {
+        frame = requestAnimationFrame(draw);
+      } else {
+        ctx.clearRect(0, 0, width, height);
+        clearPointer();
+      }
+    };
+
+    resize();
+    const observer = new ResizeObserver(invalidateBounds);
+    quietRegions.forEach((region) => observer.observe(region));
+    preference.addEventListener("change", syncActivity);
+    window.addEventListener("resize", resize);
+    window.addEventListener("scroll", invalidateBounds, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseout", handleMouseOut);
+    window.addEventListener("blur", clearPointer);
+    document.addEventListener("visibilitychange", syncActivity);
+    syncActivity();
 
     return () => {
-      window.removeEventListener("resize", resizeCanvas);
+      observer.disconnect();
+      preference.removeEventListener("change", syncActivity);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("scroll", invalidateBounds);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseout", handleMouseOut);
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("blur", clearPointer);
+      document.removeEventListener("visibilitychange", syncActivity);
+      cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden="true"
       style={{
         position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
+        inset: 0,
+        width: "100%",
+        height: "100%",
         pointerEvents: "none",
-        zIndex: 9999,
+        mixBlendMode: "screen",
+        zIndex: 4,
       }}
     />
   );

@@ -12,13 +12,12 @@ import { createMetalEnvironment } from "./metalStudio";
 import { loadSkullAnatomy, type SkullAnatomy } from "./skullAnatomy";
 import styles from "./Landing.module.css";
 
-export type SculptureView = "three-quarter" | "front" | "profile";
-type Props = { accent: string; light: number; view: SculptureView };
-const viewYaw: Record<SculptureView, number> = { "three-quarter": -0.47, front: 0, profile: Math.PI / 2 };
+type Props = { accent: string; light: number };
+const initialYaw = -0.47;
 
-export default function MotionSculpture({ accent, light, view }: Props) {
+export default function MotionSculpture({ accent, light }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const settings = useRef({ accent, light, view });
+  const settings = useRef({ accent, light });
   const invalidate = useRef<(() => void) | null>(null);
   const [ready, setReady] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
@@ -26,9 +25,9 @@ export default function MotionSculpture({ accent, light, view }: Props) {
   const [anatomy, setAnatomy] = useState<SkullAnatomy | null>(null);
 
   useEffect(() => {
-    settings.current = { accent, light, view };
+    settings.current = { accent, light };
     invalidate.current?.();
-  }, [accent, light, view]);
+  }, [accent, light]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -127,23 +126,17 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     let visible = true;
     let lost = false;
     let firstFrame = true;
-    let currentView = settings.current.view;
     let currentAccent = "";
     let dragging: number | null = null;
     let downX = 0;
     let downY = 0;
-    const rotation = { x: 0, y: viewYaw[currentView] };
+    const rotation = { x: 0, y: initialYaw };
 
     // Render only when the view, lighting, or viewport changes. There is no idle animation.
     const render = () => {
       frame = 0;
       if (lost || !visible || document.hidden) return;
       const config = settings.current;
-      if (config.view !== currentView) {
-        currentView = config.view;
-        rotation.x = 0;
-        rotation.y = viewYaw[currentView];
-      }
       if (currentAccent !== config.accent) {
         accentRim.color.set(config.accent);
         artifact.setAccent(config.accent);
@@ -203,7 +196,7 @@ export default function MotionSculpture({ accent, light, view }: Props) {
     };
     const reset = () => {
       rotation.x = 0;
-      rotation.y = viewYaw[settings.current.view];
+      rotation.y = initialYaw;
       requestRender();
     };
     const keydown = (event: KeyboardEvent) => {
