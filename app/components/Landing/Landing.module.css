@@ -7,6 +7,7 @@
   position: relative;
   isolation: isolate;
   overflow: clip;
+  padding-bottom: clamp(2.75rem, 6vw, 5rem);
   background: linear-gradient(168deg, #0e0d10, #0b0d10 42%, #0d1010 72%, #0e0e0d);
   color: #f0eee8;
   font: 1rem var(--font-manrope), var(--font-red-hat-text), sans-serif;
@@ -33,7 +34,7 @@
 .page [data-reveal] { transition: opacity 500ms var(--ease), transform 500ms var(--ease); }
 .page [data-reveal][data-visible="false"] { opacity: 0; transform: translateY(14px); }
 
-.hero, .showcase, .workflow, .openSource, .footer {
+.hero, .showcase, .workflow, .openSource {
   width: min(84rem, calc(100% - 2 * var(--gutter)));
   margin-inline: auto;
 }
@@ -399,11 +400,6 @@
   transition: transform 550ms ease;
 }
 .openSource:hover .sourceEmblem { transform: translateY(-4px) rotate(-7deg); }
-.footer { margin-top: clamp(2.75rem, 6vw, 5rem); padding-bottom: 1.25rem; }
-.footerTop, .footerBottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 1.25rem; padding-block: 1rem; border-top: 1px solid var(--line); }
-.footerTop nav { display: flex; flex-wrap: wrap; gap: .75rem 1.35rem; color: var(--muted); font-size: .875rem; }
-.footerBottom { color: var(--muted); font-size: .8125rem; }
-.footer a:hover { color: var(--accent); }
 
 @keyframes blurIn { from { opacity: 0; filter: blur(10px); transform: translateY(12px); } to { opacity: 1; filter: none; transform: none; } }
 

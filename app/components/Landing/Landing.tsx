@@ -10,7 +10,6 @@ import SpotlightCard from "../../animations/components/SpotlightCard/SpotlightCa
 import StackSpread from "../../animations/components/StackSpread/StackSpread";
 import BlurText from "../../animations/text/BlurText/BlurText";
 import GradientFlow from "../../animations/text/GradientFlow/GradientFlow";
-import { Brand } from "../Nav/Nav";
 import { useSiteMotion } from "../SiteMotion";
 import styles from "./Landing.module.css";
 
@@ -209,20 +208,6 @@ export default function Landing() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <div className={styles.footerTop}>
-          <Link href="/" aria-label="Motion Bits home"><Brand /></Link>
-          <nav aria-label="Footer navigation">
-            <Link href="/collections">Collections</Link>
-            <Link href="/us/about">About</Link>
-            <Link href="/us/donate">Donate</Link>
-          </nav>
-        </div>
-        <div className={styles.footerBottom}>
-          <span>© {new Date().getFullYear()} Motion Bits</span>
-          <a href="https://github.com/qgmbek" target="_blank" rel="noreferrer">qgmbek</a>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -315,6 +315,19 @@
 .cryptoCard .cardHeader { margin-bottom: .35rem; }
 .cryptoBody { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0 .75rem; }
 
+.paymentTerms {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  margin-top: .5rem;
+  color: var(--muted);
+  font-size: .8125rem;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.paymentTerms:hover { color: var(--accent); }
+
 .footer {
   display: flex;
   align-items: center;

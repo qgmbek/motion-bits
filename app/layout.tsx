@@ -1,6 +1,7 @@
 import { Instrument_Serif, Manrope, Red_Hat_Text } from "next/font/google";
 import "./globals.css";
 import Nav from "./components/Nav/Nav";
+import SiteFooter from "./components/SiteFooter";
 import { SiteMotionProvider } from "./components/SiteMotion";
 
 const manrope = Manrope({
@@ -36,6 +37,7 @@ export default function RootLayout({
         <SiteMotionProvider>
           <Nav />
           {children}
+          <SiteFooter />
         </SiteMotionProvider>
       </body>
     </html>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowDown, ArrowUpRight, Bitcoin, Coffee, Github, Landmark, WalletCards } from "lucide-react";
+import { legalDocuments } from "../../legal/documents";
 import CopyIban from "./CopyIban";
 import styles from "./donate.module.css";
 
@@ -157,6 +159,7 @@ export default function Donate() {
               </div>
             </article>
           </div>
+          <Link className={styles.paymentTerms} href={legalDocuments.support.href}>Support and payment terms</Link>
         </section>
 
         <footer className={styles.footer}>
