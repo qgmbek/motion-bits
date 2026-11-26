@@ -164,7 +164,7 @@ export default function MotionSculpture({ accent, light }: Props) {
       if (!width || !height) return;
       renderer.setSize(width, height, false);
       const aspect = width / height;
-      const halfHeight = Math.max(size.y * 0.55, Math.max(size.x, size.z) * 0.57 / aspect);
+      const halfHeight = Math.max(size.y * 0.532, Math.max(size.x, size.z) * 0.548 / aspect);
       camera.left = -halfHeight * aspect;
       camera.right = halfHeight * aspect;
       camera.top = halfHeight;

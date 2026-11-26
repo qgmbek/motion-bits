@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
-import {
-  Check, Copy, Github, Layers3, MousePointer2,
-  Pause, Play, RotateCcw, Sparkles,
-} from "lucide-react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Check, Copy, Github, RotateCcw } from "lucide-react";
 import { SiteLinks } from "../Nav/Nav";
 import { useSiteMotion } from "../SiteMotion";
 import styles from "./Landing.module.css";
@@ -21,16 +18,6 @@ const colors = [
   { name: "Lime", value: "#d0ff71" },
   { name: "Iris", value: "#b9a1ff" },
   { name: "Ice", value: "#8ee9f3" },
-];
-const filters = ["All", "Text", "Buttons", "Components"] as const;
-type Filter = (typeof filters)[number];
-const experiments = [
-  { name: "Gradient Flow", slug: "gradient-flow", category: "Text", kind: "gradient" },
-  { name: "Magnetic Field", slug: "magnetic-field-button", category: "Buttons", kind: "magnetic" },
-  { name: "Ambient Bloom", slug: "ambient-bloom", category: "Components", kind: "bloom" },
-  { name: "Stack Spread", slug: "stack-spread", category: "Components", kind: "stack" },
-  { name: "Blur Text", slug: "blur-text", category: "Text", kind: "blur" },
-  { name: "Spotlight Card", slug: "spotlight-card", category: "Components", kind: "spotlight" },
 ];
 const snippet = `import BlurText from "./components/BlurText";
 
@@ -63,115 +50,15 @@ function useReducedMotion() {
   return reduced;
 }
 
-function Experiment({ kind, reduced }: { kind: string; reduced: boolean }) {
-  const [replay, setReplay] = useState(0);
-  const [pressed, setPressed] = useState(false);
-  const pressTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => () => {
-    if (pressTimeout.current) clearTimeout(pressTimeout.current);
-  }, []);
-
-  const magneticMove = (event: PointerEvent<HTMLButtonElement>) => {
-    if (reduced || event.pointerType === "touch") return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    event.currentTarget.style.setProperty("--mx", `${(event.clientX - rect.left - rect.width / 2) * 0.22}px`);
-    event.currentTarget.style.setProperty("--my", `${(event.clientY - rect.top - rect.height / 2) * 0.22}px`);
-  };
-
-  if (kind === "gradient") return (
-    <div className={styles.gradientDemo}>
-      <span className={styles.flowText}>flow.</span>
-    </div>
-  );
-
-  if (kind === "magnetic") return (
-    <div className={styles.magneticDemo}>
-      <div className={styles.fieldLines} aria-hidden="true"><i /><i /><i /></div>
-      <button
-        type="button"
-        className={styles.magneticButton}
-        onPointerMove={magneticMove}
-        onPointerLeave={(event) => {
-          event.currentTarget.style.setProperty("--mx", "0px");
-          event.currentTarget.style.setProperty("--my", "0px");
-        }}
-        onClick={() => {
-          setPressed(true);
-          if (pressTimeout.current) clearTimeout(pressTimeout.current);
-          pressTimeout.current = setTimeout(() => setPressed(false), 1400);
-        }}
-      >
-        {pressed ? <Check size={16} /> : <Sparkles size={16} />}
-        <span aria-live="polite">{pressed ? "Pressed" : "Magnetic button"}</span>
-      </button>
-      <span className={styles.demoHint}><MousePointer2 size={12} /> Hover & click</span>
-    </div>
-  );
-
-  if (kind === "bloom") return (
-    <div className={styles.bloomDemo}>
-      <div className={styles.bloomOrb} aria-hidden="true"><i /><i /><i /></div>
-      <span className={styles.bloomWord}>aura<span>✳</span></span>
-    </div>
-  );
-
-  if (kind === "stack") return (
-    <button type="button" className={styles.stackDemo} onClick={() => setPressed((value) => !value)} aria-pressed={pressed} aria-label="Spread the glass cards" data-spread={pressed}>
-      <span className={styles.stackCards} aria-hidden="true">
-        <span className={styles.stackCard}><span className={styles.cardOrbit} /></span>
-        <span className={styles.stackCard}><span className={styles.cardOrbit} /></span>
-        <span className={styles.stackCard}><Layers3 size={24} /><span>Stack spread</span></span>
-      </span>
-      <span className={styles.demoHint}>Hover to unfold. Click to hold.</span>
-    </button>
-  );
-
-  if (kind === "blur") return (
-    <button type="button" className={styles.blurDemo} onClick={() => setReplay((value) => value + 1)} aria-label="Replay the Blur Text preview">
-      <span key={replay} className={styles.blurWords} aria-hidden="true">
-        {"hello, world.".split("").map((letter, index) => <span key={index} style={{ "--i": index } as CSSProperties}>{letter === " " ? "\u00a0" : letter}</span>)}
-      </span>
-      <span className={styles.demoHint}><RotateCcw size={12} /> Click to replay</span>
-    </button>
-  );
-
-  return (
-    <button
-      type="button"
-      className={styles.spotlightDemo}
-      aria-label="Move the spotlight, or click to change its position"
-      onPointerMove={(event) => {
-        if (reduced) return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        event.currentTarget.style.setProperty("--spot-x", `${event.clientX - bounds.left}px`);
-        event.currentTarget.style.setProperty("--spot-y", `${event.clientY - bounds.top}px`);
-      }}
-      onClick={(event) => {
-        setPressed((value) => !value);
-        event.currentTarget.style.setProperty("--spot-x", pressed ? "30%" : "70%");
-        event.currentTarget.style.setProperty("--spot-y", pressed ? "30%" : "65%");
-      }}
-    >
-      <span className={styles.spotlightGrid} aria-hidden="true" />
-      <span className={styles.spotlightGlyph} aria-hidden="true">✳</span>
-      <span className={styles.spotlightText}>Spotlight</span>
-    </button>
-  );
-}
-
 export default function Landing() {
   const pageRef = useRef<HTMLDivElement>(null);
-  const { accent, setAccent, paused, setPaused } = useSiteMotion();
+  const { accent, setAccent } = useSiteMotion();
   const activeColor = colors.findIndex((color) => color.value === accent);
   const [light, setLight] = useState(1.1);
-  const [filter, setFilter] = useState<Filter>("All");
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [codeReplay, setCodeReplay] = useState(0);
   const copyTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reduced = useReducedMotion();
-  const motionPaused = paused || reduced;
-  const visibleExperiments = experiments.filter((item) => filter === "All" || item.category === filter);
 
   useEffect(() => {
     if (reduced) return;
@@ -210,7 +97,7 @@ export default function Landing() {
   };
 
   return (
-    <div ref={pageRef} className={styles.page} style={{ "--accent": accent } as CSSProperties} data-motion={motionPaused ? "paused" : "playing"}>
+    <div ref={pageRef} className={styles.page} style={{ "--accent": accent } as CSSProperties}>
       <div className={styles.pageAtmosphere} aria-hidden="true" />
       <a className={styles.skipLink} href="#main">Skip to content</a>
       <header className={styles.header}>
@@ -225,12 +112,11 @@ export default function Landing() {
         <section className={styles.hero} aria-labelledby="hero-title">
           <div className={styles.heroCopy} data-cursor-quiet>
             <h1 id="hero-title">Motion<br /><span>in pieces<span className={styles.titlePeriod}>.</span></span></h1>
-            <p className={styles.heroDescription}>Open-source React animations for text, buttons, and interfaces.</p>
+            <p className={styles.heroDescription}>Open source React animations for text, buttons, and interfaces.</p>
             <Link className={styles.primaryButton} href="/collections">Browse components</Link>
           </div>
 
           <div className={styles.heroStage} data-cursor-quiet>
-            <div className={styles.stageHalo} aria-hidden="true" />
             <MotionSculpture accent={accent} light={light} />
             <p className={styles.comingSoon}>Animated 3D <span>Coming Soon</span></p>
             <div className={styles.inspector} role="group" aria-label="Sculpture appearance">
@@ -255,29 +141,51 @@ export default function Landing() {
         </section>
 
         <section className={styles.showcase} id="explore" aria-labelledby="explore-title">
-          <div className={styles.sectionHeading} data-reveal>
-            <h2 id="explore-title">Component previews</h2>
-          </div>
-          <div className={styles.galleryToolbar}>
-            <div className={styles.filters} role="group" aria-label="Filter animation previews">
-              {filters.map((item) => (
-                <button type="button" key={item} aria-pressed={filter === item} onClick={() => setFilter(item)}>{item}</button>
-              ))}
-            </div>
-            <Link className={styles.collectionLink} href="/collections">View collection</Link>
-          </div>
-          <div className={styles.experimentGrid} data-filtered={filter !== "All"}>
-            {visibleExperiments.map((experiment) => <article className={styles.experimentCard} data-kind={experiment.kind} key={experiment.slug} onPointerMove={(event) => {
-              if (motionPaused || event.pointerType === "touch") return;
-              const bounds = event.currentTarget.getBoundingClientRect();
-              event.currentTarget.style.setProperty("--card-x", `${event.clientX - bounds.left}px`);
-              event.currentTarget.style.setProperty("--card-y", `${event.clientY - bounds.top}px`);
-            }}>
-              <div className={styles.experimentPreview}><Experiment kind={experiment.kind} reduced={motionPaused} /></div>
-              <Link href={`/collections#${experiment.slug}`} className={styles.experimentInfo} aria-label={`Explore ${experiment.name}`}>
-                <h3>{experiment.name}</h3><span className={styles.categoryLabel}>{experiment.category}</span>
-              </Link>
-            </article>)}
+          <h2 id="explore-title">Component previews</h2>
+          <div className={styles.bento}>
+            <figure className={styles.gradientDemo}>
+              <div className={styles.bentoArt} aria-hidden="true">
+                <div className={styles.flowLoops}><i /><i /><i /></div>
+                <span className={styles.flowWord}>flow.</span>
+              </div>
+              <figcaption className={styles.bentoCaption}><span>Gradient Flow</span><small>Text</small></figcaption>
+            </figure>
+            <figure className={styles.magneticDemo}>
+              <div className={styles.bentoArt} aria-hidden="true">
+                <div className={styles.fieldLines}><i /><i /><i /></div>
+                <span className={styles.magneticCore} />
+              </div>
+              <figcaption className={styles.bentoCaption}><span>Magnetic Field</span><small>Buttons</small></figcaption>
+            </figure>
+            <figure className={styles.bloomDemo}>
+              <div className={styles.bentoArt} aria-hidden="true">
+                <div className={styles.bloomOrb}><i /><i /><i /></div>
+                <span className={styles.bloomCore} />
+                <span className={styles.bloomWord}>aura</span>
+              </div>
+              <figcaption className={styles.bentoCaption}><span>Ambient Bloom</span><small>Components</small></figcaption>
+            </figure>
+            <figure className={styles.stackDemo}>
+              <div className={styles.bentoArt} aria-hidden="true">
+                <div className={styles.stackCards}><i /><i /><i /></div>
+              </div>
+              <figcaption className={styles.bentoCaption}><span>Stack Spread</span><small>Components</small></figcaption>
+            </figure>
+            <figure className={styles.blurDemo}>
+              <div className={styles.bentoArt} aria-hidden="true">
+                <div className={styles.blurForms}><i /><i /><i /></div>
+                <span className={styles.blurWord}>hello, world.</span>
+              </div>
+              <figcaption className={styles.bentoCaption}><span>Blur Text</span><small>Text</small></figcaption>
+            </figure>
+            <figure className={styles.spotlightDemo}>
+              <div className={styles.bentoArt} aria-hidden="true">
+                <div className={styles.spotlightGrid} />
+                <div className={styles.spotlightLens} />
+                <span className={styles.spotlightWord}>Spotlight</span>
+              </div>
+              <figcaption className={styles.bentoCaption}><span>Spotlight Card</span><small>Components</small></figcaption>
+            </figure>
           </div>
         </section>
 
@@ -293,9 +201,8 @@ export default function Landing() {
 
         <section className={styles.openSource} id="open-source" aria-labelledby="open-source-title" data-reveal>
           <div className={styles.openSourceGlow} aria-hidden="true" />
-          <div className={styles.openSourceBody}><div><h2 id="open-source-title">Open source</h2><p>MIT-licensed for personal and commercial projects.</p></div><a href={repository} target="_blank" rel="noreferrer" className={styles.githubButton}><Github size={17} /> View source</a></div>
+          <div className={styles.openSourceBody}><div><h2 id="open-source-title">Open source</h2><p>MIT license for personal and commercial projects.</p></div><a href={repository} target="_blank" rel="noreferrer" className={styles.githubButton}><Github size={17} /> View source</a></div>
         </section>
-
       </main>
 
       <footer className={styles.footer}>
@@ -310,10 +217,6 @@ export default function Landing() {
         <div className={styles.footerBottom}>
           <span>© {new Date().getFullYear()} Motion Bits</span>
           <a href="https://github.com/qgmbek" target="_blank" rel="noreferrer">qgmbek</a>
-          <button type="button" aria-pressed={motionPaused} disabled={reduced} onClick={() => setPaused((value) => !value)}>
-            {motionPaused ? <Play size={12} aria-hidden="true" /> : <Pause size={12} aria-hidden="true" />}
-            {reduced ? "Reduced motion enabled" : paused ? "Play motion" : "Pause motion"}
-          </button>
         </div>
       </footer>
     </div>

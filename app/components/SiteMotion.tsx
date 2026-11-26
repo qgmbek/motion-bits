@@ -14,24 +14,18 @@ import { SpiderCursor } from "./Hero/SpiderCursor";
 type MotionSettings = {
   accent: string;
   setAccent: Dispatch<SetStateAction<string>>;
-  paused: boolean;
-  setPaused: Dispatch<SetStateAction<boolean>>;
 };
 
 const SiteMotionContext = createContext<MotionSettings | null>(null);
 
 export function SiteMotionProvider({ children }: { children: ReactNode }) {
   const [accent, setAccent] = useState("#d0ff71");
-  const [paused, setPaused] = useState(false);
-  const settings = useMemo(
-    () => ({ accent, setAccent, paused, setPaused }),
-    [accent, paused],
-  );
+  const settings = useMemo(() => ({ accent, setAccent }), [accent]);
 
   return (
     <SiteMotionContext.Provider value={settings}>
       {children}
-      {!paused && <SpiderCursor />}
+      <SpiderCursor />
     </SiteMotionContext.Provider>
   );
 }
