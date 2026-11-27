@@ -104,6 +104,7 @@
   height: 100dvh;
   max-height: none;
   border: 0;
+  overflow: hidden;
   background: transparent;
   color: inherit;
 }
@@ -126,6 +127,31 @@
 .mobileToggle svg:last-child { margin-left: auto; color: var(--muted); }
 .closeButton { display: inline-grid; min-width: 2.75rem; padding: 0; place-items: center; }
 .mobileToggle:hover, .closeButton:hover { background: #212228; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .drawer[open] {
+    --drawer-duration: 700ms;
+    --drawer-ease: cubic-bezier(.3, .08, .22, 1);
+  }
+  .drawer[open]::backdrop { animation: drawerBackdrop 540ms ease backwards; }
+  .drawer[open] .drawerPanel { animation: drawerSlide var(--drawer-duration) var(--drawer-ease) backwards; }
+  .drawer[open] .head { animation: drawerContents 500ms var(--drawer-ease) var(--drawer-duration) backwards; }
+  .drawer[open] .list { animation: drawerContents 600ms var(--drawer-ease) calc(var(--drawer-duration) + 85ms) backwards; }
+  .drawer[open] :is(.head, .list):has(:focus-visible) { animation-name: none; }
+}
+
+@keyframes drawerBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes drawerSlide {
+  from { translate: 100% 0; }
+  to { translate: 0 0; }
+}
+@keyframes drawerContents {
+  from { opacity: 0; translate: .55rem 0; }
+  to { opacity: 1; translate: 0 0; }
+}
 
 @media (max-width: 52rem) {
   .sidebar { display: none; }

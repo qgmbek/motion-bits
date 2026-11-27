@@ -54,7 +54,7 @@ function ComponentList({ currentSlug, onNavigate, query, onSearch, onClose, visi
   return (
     <>
       <div className={styles.head}>
-        <div className={styles.titleRow}>
+        <div className={styles.titleRow} data-reveal={onClose ? undefined : "slide down"} data-reveal-detail>
           <h2>Components</h2>
           {onClose && (
             <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Close component list">
@@ -62,12 +62,12 @@ function ComponentList({ currentSlug, onNavigate, query, onSearch, onClose, visi
             </button>
           )}
         </div>
-        <label className={styles.search}>
+        <label className={styles.search} data-reveal={onClose ? undefined : "fade right"} data-reveal-detail data-reveal-step="1">
           <Search size={15} aria-hidden="true" />
           <input type="search" placeholder="Find a component" aria-label="Find a component" value={query} onChange={(event) => onSearch(event.target.value)} />
         </label>
       </div>
-      <div className={styles.list} ref={listRef}>
+      <div className={styles.list} ref={listRef} data-reveal={onClose ? undefined : "wipe up"} data-reveal-detail data-reveal-step="1">
         {matches.length === 0 && <p className={styles.empty} role="status">No matching components.</p>}
         {matches.map(({ id, title, Icon, items }) => (
           <div key={id} className={styles.group}>
@@ -106,7 +106,7 @@ export function Sidebar({ currentSlug, onNavigate }: SidebarProps) {
 
   return (
     <>
-      <aside className={styles.sidebar} aria-label="Component library">
+      <aside className={styles.sidebar} aria-label="Component library" data-reveal="slide right" data-intro>
         <ComponentList currentSlug={currentSlug} onNavigate={onNavigate} query={query} onSearch={setQuery} visible />
       </aside>
       <button
@@ -115,6 +115,9 @@ export function Sidebar({ currentSlug, onNavigate }: SidebarProps) {
         aria-haspopup="dialog"
         aria-controls="component-drawer"
         aria-expanded={drawerOpen}
+        data-reveal="slide down"
+        data-reveal-detail
+        data-intro
         onClick={() => { drawer.current?.showModal(); setDrawerOpen(true); }}
       >
         <PanelLeft size={17} aria-hidden="true" /> Browse components <ChevronRight size={16} aria-hidden="true" />

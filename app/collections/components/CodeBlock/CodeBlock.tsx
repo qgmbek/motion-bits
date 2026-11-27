@@ -42,10 +42,11 @@ export default function CodeBlock({ code, language, label }: CodeBlockProps) {
   };
 
   return (
-    <section className={styles.block} aria-label={`${label} source`}>
+    <section className={styles.block} aria-label={`${label} source`}
+      data-reveal={language === "tsx" ? "wipe right" : "wipe left"} data-reveal-detail data-intro>
       <div className={styles.toolbar}>
         <h2>{label}</h2>
-        <div className={styles.copyControl}>
+        <div className={styles.copyControl} data-reveal="fade left" data-reveal-detail>
           <span className={styles.status} role="status">
             {copyStatus === "copied" && <span className={styles.srOnly}>Code copied.</span>}
             {copyStatus === "failed" && "Clipboard unavailable"}
@@ -56,7 +57,8 @@ export default function CodeBlock({ code, language, label }: CodeBlockProps) {
           </button>
         </div>
       </div>
-      <div className={styles.source} role="region" tabIndex={0} aria-label={`${label} code`}>
+      <div className={styles.source} role="region" tabIndex={0} aria-label={`${label} code`}
+        data-reveal="fade up" data-reveal-detail data-reveal-step="1">
         {html ? <div dangerouslySetInnerHTML={{ __html: html }} /> : <pre><code>{code}</code></pre>}
       </div>
     </section>

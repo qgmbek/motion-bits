@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ANIMATIONS_BY_ID, type AnimationSlug } from "../../animations/registry";
 import CursorOriginTransition from "../../animations/components/CursorOriginTransition/CursorOriginTransition";
 import HorizontalGallery from "../../animations/components/HorizontalGallery/HorizontalGallery";
@@ -11,10 +11,26 @@ import styles from "../collections.module.css";
 const sampleImage = "https://images.unsplash.com/photo-1515266591878-f93e32bc5937?auto=format&fit=crop&w=1000&q=80";
 const sampleVideo = "https://mdn.github.io/shared-assets/videos/flower.mp4";
 
-export default function DemoStage({ slug }: { slug: AnimationSlug }) {
+export default function DemoStage({ slug, replayKey }: { slug: AnimationSlug; replayKey: number }) {
   const stage = useRef<HTMLDivElement>(null);
   const gallery = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
   const Demo = ANIMATIONS_BY_ID[slug].component;
+
+  useEffect(() => {
+    const element = stage.current;
+    if (!element) return;
+    const startWhenRevealed = () => {
+      const state = element.dataset.revealState;
+      if (state && state !== "settled") return;
+      observer.disconnect();
+      setReady(true);
+    };
+    const observer = new MutationObserver(startWhenRevealed);
+    observer.observe(element, { attributes: true, attributeFilter: ["data-reveal-state"] });
+    startWhenRevealed();
+    return () => observer.disconnect();
+  }, []);
 
   function renderDemo() {
     switch (slug) {
@@ -29,14 +45,14 @@ export default function DemoStage({ slug }: { slug: AnimationSlug }) {
   }
 
   return (
-    <div ref={stage} className={styles.stage}>
+    <div ref={stage} className={styles.stage} data-reveal="fade up" data-reveal-detail data-intro>
       {slug === "horizontal-gallery" ? (
-        <div ref={gallery} className={styles.galleryScroll} tabIndex={0} role="region" aria-label="Scroll to move the gallery">
-          {renderDemo()}
+        <div key={replayKey} ref={gallery} className={styles.galleryScroll} tabIndex={0} role="region" aria-label="Scroll to move the gallery">
+          {ready && renderDemo()}
         </div>
       ) : (
-        <div className={styles.demoFrame}>
-          {renderDemo()}
+        <div key={replayKey} className={styles.demoFrame}>
+          {ready && renderDemo()}
         </div>
       )}
     </div>
