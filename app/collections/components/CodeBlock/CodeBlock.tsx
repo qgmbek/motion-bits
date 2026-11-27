@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 import styles from "./CodeBlock.module.css";
 
@@ -8,29 +8,11 @@ interface CodeBlockProps {
   code: string;
   language: "tsx" | "css";
   label: string;
+  html?: string;
 }
 
-export default function CodeBlock({ code, language, label }: CodeBlockProps) {
-  const [html, setHtml] = useState("");
+export default function CodeBlock({ code, language, label, html }: CodeBlockProps) {
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch("/api/highlight", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, language }),
-      signal: controller.signal,
-    })
-      .then((response) => response.ok ? response.json() : null)
-      .then((result) => {
-        if (!controller.signal.aborted && typeof result?.html === "string") setHtml(result.html);
-      })
-      .catch(() => {
-        // The plain source stays visible when highlighting is unavailable.
-      });
-    return () => controller.abort();
-  }, [code, language]);
 
   const handleCopy = async () => {
     try {

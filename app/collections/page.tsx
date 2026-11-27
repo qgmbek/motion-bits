@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { RotateCcw, Eye, Code } from "lucide-react";
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
-import CodeBlock from "./components/CodeBlock/CodeBlock";
+import CodePanel from "./components/CodePanel";
 import DemoStage from "./components/DemoStage";
 import styles from "./collections.module.css";
 
@@ -83,10 +83,7 @@ export default function CollectionsPage() {
                 <DemoStage key={currentSlug} slug={currentSlug} replayKey={replayKey} />
               </div>
             ) : (
-              <div className={styles.code} key={currentSlug}>
-                <CodeBlock code={activeEntry.code} language="tsx" label={activeEntry.css ? "React component" : "React"} />
-                {activeEntry.css && <CodeBlock code={activeEntry.css} language="css" label="CSS" />}
-              </div>
+              <CodePanel key={currentSlug} slug={currentSlug} />
             )}
           </div>
           <footer className={styles.credit} data-reveal="fade left" data-reveal-detail>

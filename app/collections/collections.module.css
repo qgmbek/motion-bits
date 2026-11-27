@@ -159,6 +159,9 @@
 
 .code { display: grid; gap: 1rem; min-width: 0; }
 
+.codeHint { color: var(--muted); font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere; }
+.codeHint code { color: #f0eee8; font-family: ui-monospace, Consolas, monospace; font-size: .875em; }
+
 .credit {
   margin-top: 1rem;
   color: var(--muted);

@@ -4,6 +4,9 @@ import Nav from "./components/Nav/Nav";
 import SiteFooter from "./components/SiteFooter";
 import { SiteMotionProvider } from "./components/SiteMotion";
 
+// Fail the build if a page starts depending on request-time server rendering.
+export const dynamic = "error";
+
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
