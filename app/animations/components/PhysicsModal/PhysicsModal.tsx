@@ -31,7 +31,7 @@ export default function PhysicsModal() {
               transition={{ type: "spring", stiffness: 280, damping: 24 }}
               style={{
                 padding: 32,
-                width: "min(500px, calc(100vw - 32px))",
+                width: "min(500px, calc(100% - 32px))",
                 background: "var(--background,#fff)",
                 borderRadius: 18,
               }}

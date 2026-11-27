@@ -208,7 +208,7 @@
   border: 1px solid #ffffff16;
   border-radius: .875rem;
 }
-.bento > :is(.gradientDemo, .spotlightDemo) { grid-column: span 6; }
+.bento > :is(.gradientDemo, .ludwigDemo) { grid-column: span 6; }
 .bentoArt {
   position: relative;
   display: grid;
@@ -257,7 +257,8 @@
 }
 .magneticDemo { background: radial-gradient(ellipse at center, #262a23, #141615 76%); }
 .bloomDemo { background: linear-gradient(140deg, #19161e, #13131b); }
-.stackDemo { background: radial-gradient(ellipse at 50% 72%, #252c3a, #12151b 76%); }
+.ludwigDemo { background: radial-gradient(ellipse at 50% 72%, #252c3a, #12151b 76%); }
+.ludwigDemo .bentoArt { container-type: size; }
 .blurDemo { background: radial-gradient(ellipse at 42% 58%, #2c251f, #171411 77%); }
 .blurWord {
   color: #eee4d7;
@@ -265,6 +266,11 @@
   font: clamp(1.25rem, 2.6vw, 2.65rem)/1.1 var(--font-instrument-serif), Georgia, serif;
 }
 .spotlightDemo { background: radial-gradient(ellipse at 65% 48%, #2c2637, #17141d 76%); }
+.spotlightDemo .bentoArt { container-type: inline-size; }
+
+@container (max-width: 12rem) {
+  .spotlightDemo .bentoArt p { display: none; }
+}
 
 .workflow h2, .openSource h2 {
   font-size: clamp(2.125rem, 4.5vw, 3.8rem);
@@ -405,7 +411,7 @@
 
 @media (max-width: 52rem) {
   .bento > figure { grid-column: span 6; }
-  .bento > :is(.gradientDemo, .spotlightDemo) { grid-column: span 12; }
+  .bento > :is(.gradientDemo, .ludwigDemo) { grid-column: span 12; }
   .comingSoon { top: 7%; }
 }
 
@@ -423,7 +429,7 @@
 
 @media (max-width: 34rem) {
   .bentoArt { height: clamp(7rem, 34vw, 11.5rem); }
-  :is(.gradientDemo, .spotlightDemo) .bentoArt { height: clamp(9rem, 42vw, 13.5rem); }
+  :is(.gradientDemo, .ludwigDemo) .bentoArt { height: clamp(9rem, 42vw, 13.5rem); }
   .bentoCaption { flex-wrap: wrap; padding: .625rem .75rem; }
 }
 

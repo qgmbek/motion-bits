@@ -35,7 +35,7 @@ export default function CommandPalette() {
               backdropFilter: "blur(8px)",
               display: "grid",
               placeItems: "start center",
-              paddingTop: "15vh",
+              paddingTop: "15cqh",
             }}
           >
             <motion.div
@@ -43,7 +43,7 @@ export default function CommandPalette() {
               animate={{ y: 0, scale: 1, opacity: 1 }}
               exit={{ y: 12, scale: 0.98, opacity: 0 }}
               style={{
-                width: "min(640px, calc(100vw - 32px))",
+                width: "min(640px, calc(100% - 32px))",
                 padding: 24,
                 background: "var(--background,#fff)",
                 borderRadius: 18,

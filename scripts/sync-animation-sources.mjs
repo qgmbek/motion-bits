@@ -14,8 +14,7 @@ function escapeForTemplateLiteral(str) {
 }
 
 function findImportedStylePaths(tsxContent, componentDir) {
-  const re =
-    /import\s+["'](\.\/[^"']+\.(?:css|module\.css))["']/g;
+  const re = /import\s+(?:\w+\s+from\s+)?["'](\.\/[^"']+\.css)["']/g;
   const files = [];
   let m;
   while ((m = re.exec(tsxContent))) {

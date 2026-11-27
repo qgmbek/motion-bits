@@ -6,8 +6,8 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import { Check, Copy, Github, Play, RotateCcw } from "lucide-react";
 import MagneticFieldButton from "../../animations/buttons/MagneticFieldButton/MagneticFieldButton";
 import AmbientBloom from "../../animations/components/AmbientBloom/AmbientBloom";
+import LudwigHover from "../../animations/components/LudwigHover/LudwigHover";
 import SpotlightCard from "../../animations/components/SpotlightCard/SpotlightCard";
-import StackSpread from "../../animations/components/StackSpread/StackSpread";
 import BlurText from "../../animations/text/BlurText/BlurText";
 import GradientFlow from "../../animations/text/GradientFlow/GradientFlow";
 import { useSiteMotion } from "../SiteMotion";
@@ -170,14 +170,14 @@ export default function Landing() {
             <BentoPreview name="Ambient Bloom" category="Components" className={styles.bloomDemo} reduced={reduced}>
               {(playing) => <AmbientBloom playing={playing} />}
             </BentoPreview>
-            <BentoPreview name="Stack Spread" category="Components" className={styles.stackDemo} reduced={reduced}>
-              {(playing) => <StackSpread playing={playing} />}
+            <BentoPreview name="Spotlight Card" category="Components" className={styles.spotlightDemo} reduced={reduced}>
+              {(playing) => <SpotlightCard playing={playing} />}
             </BentoPreview>
             <BentoPreview name="Blur Text" category="Text" className={styles.blurDemo} reduced={reduced}>
               {(playing) => <div className={styles.blurWord}><BlurText playing={playing}>hello, world.</BlurText></div>}
             </BentoPreview>
-            <BentoPreview name="Spotlight Card" category="Components" className={styles.spotlightDemo} reduced={reduced}>
-              {(playing) => <SpotlightCard playing={playing} />}
+            <BentoPreview name="Ludwig Hover" category="Components" className={styles.ludwigDemo} reduced={reduced}>
+              {(playing) => <LudwigHover playing={playing} />}
             </BentoPreview>
           </div>
         </section>

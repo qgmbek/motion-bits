@@ -5,6 +5,7 @@ import { RotateCcw, Eye, Code } from "lucide-react";
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import CodeBlock from "./components/CodeBlock/CodeBlock";
+import DemoStage from "./components/DemoStage";
 import styles from "./collections.module.css";
 
 import { ANIMATIONS, ANIMATIONS_BY_ID, type AnimationSlug } from "../animations/registry";
@@ -35,7 +36,6 @@ export default function CollectionsPage() {
   };
 
   const activeEntry = ANIMATIONS_BY_ID[currentSlug];
-  const ActiveDemo = activeEntry.component;
   const category = Object.values(ANIMATIONS).find(({ items }) => Object.hasOwn(items, currentSlug));
   const CategoryIcon = category?.icon;
   const scrollDemo = currentSlug === "horizontal-gallery";
@@ -62,20 +62,16 @@ export default function CollectionsPage() {
               </button>
             </div>
           </div>
-          <div id="component-view">
+          <div id="component-view" data-cursor-quiet>
             {tab === "demo" ? (
               <div className={styles.preview}>
                 <div className={styles.toolbar}>
-                  <span className={styles.previewLabel}>{scrollDemo ? "Scroll to preview" : "Live preview"}</span>
-                  {ActiveDemo && (
-                    <button type="button" className={styles.replayButton} onClick={() => setReplayKey((key) => key + 1)}>
-                      <RotateCcw size={14} aria-hidden="true" /> Replay
-                    </button>
-                  )}
+                  <span className={styles.previewLabel}>{scrollDemo ? "Scroll inside to preview" : "Live preview"}</span>
+                  <button type="button" className={styles.replayButton} onClick={() => setReplayKey((key) => key + 1)}>
+                    <RotateCcw size={14} aria-hidden="true" /> Replay
+                  </button>
                 </div>
-                <div className={scrollDemo ? styles.scrollStage : styles.stage} data-cursor-quiet>
-                  {ActiveDemo && <ActiveDemo key={`${currentSlug}:${replayKey}`} />}
-                </div>
+                <DemoStage key={`${currentSlug}:${replayKey}`} slug={currentSlug} />
               </div>
             ) : (
               <div className={styles.code} key={currentSlug}>

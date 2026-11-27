@@ -1,6 +1,6 @@
 .wrapper {
   position: relative;
-  height: 100vh;
+  height: 100cqh;
   width: 100%;
   overflow: hidden;
   background: #040509;
@@ -11,9 +11,9 @@
 
 .blob {
   position: absolute;
-  width: 60vw;
-  height: 60vw;
-  filter: blur(140px);
+  width: 60cqw;
+  height: 60cqw;
+  filter: blur(clamp(32px, 13cqw, 140px));
   opacity: 0.5;
   mix-blend-mode: screen;
   pointer-events: none;
@@ -49,7 +49,7 @@
 
 .text {
   position: relative;
-  font-size: clamp(2rem, 6vw, 5rem);
+  font-size: clamp(1.25rem, 6cqw, 5rem);
   font-weight: 600;
   letter-spacing: 0.08em;
   color: white;

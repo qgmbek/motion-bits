@@ -30,8 +30,8 @@ export default function Cookies() {
           title: "External media and links",
           content: (
             <>
-              <p>Some Collections demos load images directly from Unsplash or CodePen. When those images load, your browser contacts the media host, which receives information needed to serve the request. Its cookie and privacy practices apply to that connection.</p>
-              <p>See the <a href="https://unsplash.com/privacy">Unsplash Privacy Policy</a> and the <a href="https://blog.codepen.io/legal/privacy-policy/">CodePen Privacy Policy</a>.</p>
+              <p>Some Collections demos load images from Unsplash or the Xbox Store, or sample media from MDN’s GitHub Pages site. When these assets load, your browser contacts the media host, which receives the information needed to serve the request.</p>
+              <p>See the <a href="https://unsplash.com/privacy">Unsplash Privacy Policy</a> and the <a href="https://www.microsoft.com/privacy/privacystatement">Microsoft Privacy Statement</a>.</p>
               <p>GitHub and payment providers may also set their own cookies when you open their sites. Each service provides its own controls.</p>
             </>
           ),

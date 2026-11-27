@@ -246,8 +246,8 @@ import velocityImageCode from "./components/VelocityImage/VelocityImage.code";
 import velocitySkewCode from "./components/VelocitySkew/VelocitySkew.code";
 import videoHoverPreviewCode from "./components/VideoHoverPreview/VideoHoverPreview.code";
 import ambientBloomCode from "./components/AmbientBloom/AmbientBloom.code";
-import auroraBackgroundCode from "./components/AuroraBackground/AuroraBackground.code";
-import hoverImageSwitchCardCode from "./components/HoverImageSwitchCard/HoverImageSwitchCard.code";
+import auroraBackgroundCode, { css as auroraBackgroundCss } from "./components/AuroraBackground/AuroraBackground.code";
+import hoverImageSwitchCardCode, { css as hoverImageSwitchCardCss } from "./components/HoverImageSwitchCard/HoverImageSwitchCard.code";
 
 import BorderRevealButton from "./buttons/BorderRevealButton/BorderRevealButton";
 import PixelDissolveButton from "./buttons/PixelDissolveButton/PixelDissolveButton";
@@ -888,11 +888,13 @@ export const ANIMATIONS = {
         name: "Aurora Background",
         component: AuroraBackground,
         code: auroraBackgroundCode,
+        css: auroraBackgroundCss,
       },
       "hover-image-switch-card": {
         name: "Hover Image Switch Card",
         component: HoverImageSwitchCard,
         code: hoverImageSwitchCardCode,
+        css: hoverImageSwitchCardCss,
       },
     },
   },

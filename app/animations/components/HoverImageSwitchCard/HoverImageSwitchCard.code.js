@@ -66,3 +66,55 @@ export default function HoverImageSwitchCard() {
 }`;
 
 export default code;
+
+export const css = `.card {
+  position: relative;
+  width: min(420px, 100%, calc((100cqh - 2rem) * 420 / 550));
+  aspect-ratio: 420 / 550;
+  border-radius: 24px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #111;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+.content {
+  position: absolute;
+  bottom: 7%;
+  left: 9%;
+  right: 9%;
+  color: white;
+  z-index: 10;
+}
+
+.content h2 {
+  font-size: clamp(20px, 5cqi, 32px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.content p {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 6px;
+}`;

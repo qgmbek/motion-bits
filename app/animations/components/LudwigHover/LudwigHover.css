@@ -1,35 +1,69 @@
 .ldh-wrapper {
-  min-height: 100%;
+  width: 100%;
+  container-type: inline-size;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#ldh-cards {
+.ldh-cards {
+  --card-width: min(13.5rem, max(0px, calc((100cqh - 3rem) * 2 / 3)));
   width: 100%;
-  display: flex;
-  gap: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, var(--card-width)));
+  justify-content: center;
+  gap: clamp(.75rem, 5.5cqi, 3.25rem);
+  padding-inline: clamp(.625rem, 6cqi, 3.75rem);
 }
 
 .ldh-card {
+  --cover: 83 175 242;
+  --corner: clamp(.375rem, 1.15cqi, .75rem);
   position: relative;
   cursor: pointer;
   transition: scale 100ms;
 }
+
+.ldh-card[data-color="green"] { --cover: 118 178 83; }
+.ldh-card[data-color="brown"] { --cover: 174 111 244; }
+
+.ldh-card:is(:hover, :focus-visible) { z-index: 1; }
+.ldh-card:focus-visible { outline: 2px solid rgb(var(--cover)); outline-offset: 4px; border-radius: var(--corner); }
 
 .ldh-card:active {
   scale: 0.98;
 }
 
 .ldh-card-image {
-  width: 180px;
+  display: block;
+  width: 100%;
+  height: auto;
   aspect-ratio: 2 / 3;
-  border-radius: 8px;
+  border-radius: var(--corner);
+  object-fit: cover;
+}
+
+.ldh-cover-fallback {
+  display: grid;
+  place-items: center;
+  padding: .4rem;
+  background: linear-gradient(145deg, rgb(var(--cover) / 40%), #14151a);
+  color: #fff;
+  font: 700 clamp(10px, 3cqi, 19px) / 1.15 system-ui, sans-serif;
+  overflow-wrap: anywhere;
 }
 
 .ldh-card-front-image {
   position: relative;
   z-index: 2;
+  border-radius: var(--corner);
+  box-shadow: 0 .9rem 1.6rem -.9rem #000, 0 0 0 1px rgb(255 255 255 / 14%);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.ldh-card:is(:hover, :focus-visible) .ldh-card-front-image {
+  transform: translateY(-.25rem);
+  box-shadow: 0 1rem 2rem -.85rem rgb(var(--cover) / 40%), 0 0 0 1px rgb(var(--cover) / 60%);
 }
 
 .ldh-card-faders {
@@ -41,14 +75,24 @@
   pointer-events: none;
 }
 
-.ldh-card:hover .ldh-card-faders {
+.ldh-card:is(:hover, :focus-visible) .ldh-card-faders {
   opacity: 1;
+}
+
+.ldh-wrapper[data-playing="true"] .ldh-card:nth-child(2) .ldh-card-faders {
+  animation: ldh-preview-trails 2s ease;
+}
+
+@keyframes ldh-preview-trails {
+  0%, 100% { opacity: 0; }
+  22%, 65% { opacity: 1; }
 }
 
 .ldh-card-fader {
   position: absolute;
-  left: 0;
-  top: 0;
+  inset: 0;
+  border-radius: var(--corner);
+  background: var(--ldh-art) center / cover no-repeat;
 }
 
 .ldh-card-fader:nth-child(odd) {
@@ -97,35 +141,7 @@
   }
 }
 
-@media (max-width: 1200px) {
-  .ldh-wrapper {
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
-  #ldh-cards {
-    flex-direction: column;
-    align-items: center;
-    gap: 4rem;
-    padding: 4rem;
-  }
-
-  .ldh-card-image {
-    width: 400px;
-  }
-}
-
-@media (max-width: 600px) {
-  #ldh-cards {
-    gap: 2rem;
-    padding: 2rem;
-  }
-
-  .ldh-card {
-    width: 80%;
-  }
-
-  .ldh-card-image {
-    width: 100%;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .ldh-card-faders { display: none; }
+  .ldh-card-front-image { transition: none; }
 }

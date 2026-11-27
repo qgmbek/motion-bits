@@ -34,8 +34,10 @@ export default function BorderRevealButton() {
         }}
       >
         <svg
-          width={width}
+          width="100%"
           height={height}
+          viewBox={`0 0 ${width} ${height}`}
+          preserveAspectRatio="none"
           style={{
             position: "absolute",
             top: 0,

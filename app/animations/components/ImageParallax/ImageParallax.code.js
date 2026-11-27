@@ -9,7 +9,7 @@ export default function ImageParallax({ src = "", alt = "" }: { src?: string; al
   const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
   return (
-    <div ref={ref} style={{ overflow: "hidden", height: 420 }}>
+    <div ref={ref} style={{ overflow: "hidden", height: "min(420px, calc(100cqh - 2.5rem))", width: "min(100%, 680px)" }}>
       <motion.img src={src} alt={alt} style={{ y, width: "100%", height: "120%", objectFit: "cover" }} />
     </div>
   );

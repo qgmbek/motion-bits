@@ -73,7 +73,7 @@ export default function CodeGrid() {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      const cards = cardsContainer.querySelectorAll<HTMLDivElement>(".card");
+      const cards = cardsContainer.querySelectorAll<HTMLDivElement>(".code-grid-card");
 
       cards.forEach((card) => {
         const rect = card.getBoundingClientRect();
@@ -108,14 +108,12 @@ export default function CodeGrid() {
   }, []);
 
   return (
-    <div>
-      <div id="cards" ref={cardsRef}>
-        {cardData.map((card, index) => (
-          <div className="card" key={index}>
-            <div className="card-content"></div>
-          </div>
-        ))}
-      </div>
+    <div className="code-grid" ref={cardsRef}>
+      {cardData.map((_, index) => (
+        <div className="code-grid-card" key={index}>
+          <div className="code-grid-content" />
+        </div>
+      ))}
     </div>
   );
 }

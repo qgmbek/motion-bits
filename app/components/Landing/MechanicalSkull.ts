@@ -288,10 +288,10 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     follower.rotation.z = contact + Math.PI + ((contact - driver.rotation.z) * drivingTeeth - Math.PI) / drivenTeeth;
   }
 
-  // Use the baked cavity shading on the cranium to avoid shadow-map artifacts
-  // around the forehead hardware and upper sockets.
+  // The bone's baked cavity shading keeps the hardware and sockets readable
+  // without shadow-map artifacts where their surfaces meet.
   mesh(head, "ct-cranium-and-maxilla", anatomy.cranium, bone).receiveShadow = false;
-  mesh(jawParts, "ct-mandible", anatomy.mandible, bone);
+  mesh(jawParts, "ct-mandible", anatomy.mandible, bone).receiveShadow = false;
   if (anatomy.upperTeeth) {
     mesh(head, "upper-dental-crowns", anatomy.upperTeeth, enamel).receiveShadow = false;
   }

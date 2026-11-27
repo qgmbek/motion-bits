@@ -1,4 +1,4 @@
-import { BufferAttribute, Mesh, type BufferGeometry, type Material } from "three";
+import { BufferAttribute, MathUtils, Mesh, Vector3, type BufferGeometry, type Material } from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 type Point = [number, number, number];
@@ -19,6 +19,52 @@ export type SkullAnatomy = {
   hinge: Point;
   skullPoint: (theta: number, phi: number, clearance?: number) => Point;
 };
+
+const lowerIncisorContacts = [-0.084, 0, 0.086];
+
+function lowerSocketLift(x: number, y: number, z: number) {
+  const acrossArch = 1 - MathUtils.smoothstep(Math.abs(x), 0.12, 0.176);
+  const nearCrest = MathUtils.smoothstep(y, -1.205, -1.118);
+  const underCrowns = MathUtils.smoothstep(z, 0.493, 0.55) * (1 - MathUtils.smoothstep(z, 0.607, 0.664));
+  const contact = lowerIncisorContacts.reduce((height, center) =>
+    height + 1 - MathUtils.smoothstep(Math.abs(x - center), 0.008, 0.033), 0);
+
+  return acrossArch * nearCrest * underCrowns * (0.006 + contact * 0.049);
+}
+
+function seatLowerIncisors(geometry: BufferGeometry) {
+  const position = geometry.getAttribute("position");
+  if (!geometry.hasAttribute("normal")) geometry.computeVertexNormals();
+  const normals = geometry.getAttribute("normal");
+  const occlusion = geometry.getAttribute("_bone_occlusion");
+  const normal = new Vector3();
+  const step = 0.001;
+
+  for (let i = 0; i < position.count; i++) {
+    const x = position.getX(i), y = position.getY(i), z = position.getZ(i);
+    const lift = lowerSocketLift(x, y, z);
+
+    if (lift > 0) {
+      // Raise the existing bone between the roots and carry its normals along.
+      const dx = (lowerSocketLift(x + step, y, z) - lowerSocketLift(x - step, y, z)) / (2 * step);
+      const dy = (lowerSocketLift(x, y + step, z) - lowerSocketLift(x, y - step, z)) / (2 * step);
+      const dz = (lowerSocketLift(x, y, z + step) - lowerSocketLift(x, y, z - step)) / (2 * step);
+      normal.fromBufferAttribute(normals, i);
+      const normalY = normal.y / (1 + dy);
+      normal.set(normal.x - dx * normalY, normalY, normal.z - dz * normalY).normalize();
+      normals.setXYZ(i, normal.x, normal.y, normal.z);
+      position.setY(i, y + lift);
+    }
+
+    // The baked crevice shadows are too strong along the lower socket join.
+    const socketRim = (1 - MathUtils.smoothstep(Math.abs(x), 0.29, 0.43)) *
+      MathUtils.smoothstep(y, -1.33, -1.185) * (1 - MathUtils.smoothstep(y, -1.055, -0.95)) *
+      MathUtils.smoothstep(z, 0.41, 0.54);
+    if (socketRim > 0) {
+      occlusion.setXY(i, occlusion.getX(i) * (1 - socketRim * 0.58), occlusion.getY(i) * (1 - socketRim * 0.78));
+    }
+  }
+}
 
 export async function loadSkullAnatomy(signal: AbortSignal): Promise<SkullAnatomy> {
   const response = await fetch("/models/hero-skull-anatomy.glb", { signal });
@@ -65,6 +111,7 @@ export async function loadSkullAnatomy(signal: AbortSignal): Promise<SkullAnatom
       geometry.setAttribute("_bone_enamel", new BufferAttribute(new Uint8Array(count * 4), 4, true));
     }
   }
+  seatLowerIncisors(mandible.geometry);
 
   // The asset stores radial samples of the outside of the cranium. Use them to
   // seat the armor against the bone, including where the profile curves rearward.

@@ -22,7 +22,7 @@ export default code;
 
 export const css = `.scramble-screen-wrapper {
   height: 100%;
-  width: fit-content;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +32,7 @@ export const css = `.scramble-screen-wrapper {
 }
 
 .screen {
-  width: 260px;
+  width: min(100%, 260px, calc((100cqh - 2rem) * 10 / 16));
   display: flex;
   border: 3px solid rgb(33, 150, 243, 80%);
   aspect-ratio: 10 / 16;
@@ -173,18 +173,11 @@ export const css = `.scramble-screen-wrapper {
   align-items: center;
   justify-content: flex-end;
   flex-grow: 1;
-  gap: 4rem;
+  gap: min(4rem, 10cqh);
   position: relative;
   z-index: 3;
   margin: 1rem;
-  padding-bottom: 6rem;
+  padding-bottom: min(6rem, 16cqh);
   border: 1px solid rgb(33, 150, 243, 50%);
   border-radius: 0.6rem;
-}
-
-@media (max-width: 700px) {
-  .screen {
-    scale: 0.6;
-    margin-bottom: 0rem;
-  }
 }`;

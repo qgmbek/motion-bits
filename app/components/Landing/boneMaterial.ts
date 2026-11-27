@@ -113,8 +113,18 @@ export function createBoneMaterial() {
         reflectedLight.directSpecular *= 1.0 - hollow * 0.46;
         reflectedLight.indirectDiffuse *= 1.0 - hollow * 0.76;
         reflectedLight.indirectSpecular *= 1.0 - hollow * 0.63;
+
+        // The underside of the rear ridge faces away from the studio lights.
+        // Lift its deepest shadow with a soft falloff around the ridge.
+        float rearRidge = smoothstep(1.45, 1.62, -vBonePosition.z) *
+          (1.0 - smoothstep(0.12, 0.26, abs(vBonePosition.x))) *
+          smoothstep(-0.055, 0.035, vBonePosition.y) *
+          (1.0 - smoothstep(0.24, 0.42, vBonePosition.y));
+        vec3 litBone = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;
+        vec3 shadowLift = max(vec3(0.0), diffuseColor.rgb * 0.30 - litBone);
+        reflectedLight.indirectDiffuse += shadowLift * rearRidge;
       `);
   };
-  material.customProgramCacheKey = () => "cortical-bone-accessibility";
+  material.customProgramCacheKey = () => "cortical-bone-rear-fill";
   return material;
 }

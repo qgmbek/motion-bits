@@ -1,7 +1,7 @@
 .card {
   position: relative;
-  width: 420px;
-  height: 550px;
+  width: min(420px, 100%, calc((100cqh - 2rem) * 420 / 550));
+  aspect-ratio: 420 / 550;
   border-radius: 24px;
   overflow: hidden;
   cursor: pointer;
@@ -30,14 +30,15 @@
 
 .content {
   position: absolute;
-  bottom: 40px;
-  left: 40px;
+  bottom: 7%;
+  left: 9%;
+  right: 9%;
   color: white;
   z-index: 10;
 }
 
 .content h2 {
-  font-size: 32px;
+  font-size: clamp(20px, 5cqi, 32px);
   font-weight: 700;
   letter-spacing: -0.5px;
   margin: 0;

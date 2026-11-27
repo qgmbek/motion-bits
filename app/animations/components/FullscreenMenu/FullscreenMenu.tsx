@@ -22,19 +22,21 @@ export default function FullscreenMenu() {
               inset: 0,
               zIndex: 1000,
               background: "var(--background,#fff)",
-              padding: 40,
+              padding: "clamp(16px, 5cqw, 40px)",
+              overflow: "auto",
             }}
           >
             <button onClick={() => setOpen(false)}>Close</button>
-            <div style={{ marginTop: 100, display: "grid", gap: 12 }}>
+            <div style={{ marginTop: "clamp(16px, 7cqh, 48px)", display: "grid", gap: 12 }}>
               {items.map((item, i) => (
                 <motion.a
                   key={item}
                   href="#"
+                  onClick={(event) => { event.preventDefault(); setOpen(false); }}
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.15 + i * 0.06 }}
-                  style={{ fontSize: "clamp(2rem, 7vw, 6rem)", color: "inherit" }}
+                  style={{ fontSize: "clamp(1.25rem, min(7cqw, 10cqh), 4rem)", color: "inherit" }}
                 >
                   {item}
                 </motion.a>

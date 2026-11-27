@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function ImageMaskReveal({ src = "", alt = "" }: { src?: string; alt?: string }) {
   return (
-    <div style={{ overflow: "hidden", aspectRatio: "16/10" }}>
+    <div style={{ overflow: "hidden", aspectRatio: "16/10", width: "min(100%, 680px, calc((100cqh - 3rem) * 1.6))" }}>
       <motion.img
         src={src}
         alt={alt}

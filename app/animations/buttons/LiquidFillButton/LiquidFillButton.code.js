@@ -21,8 +21,7 @@ export default function LiquidFillButton() {
   return (
     <div
       style={{
-        minHeight: "100vh",
-        backgroundColor: "#0f0f0f",
+        minHeight: "var(--preview-content-height, 100vh)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

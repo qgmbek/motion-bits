@@ -17,8 +17,8 @@ export default function LiquidTransition() {
           onAnimationComplete={() => setActive(false)}
           style={{
             position: "fixed",
-            width: "100vw",
-            height: "100vw",
+            width: "100cqmin",
+            height: "100cqmin",
             left: "50%",
             top: "50%",
             translateX: "-50%",

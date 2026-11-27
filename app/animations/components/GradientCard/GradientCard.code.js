@@ -52,8 +52,7 @@ export const css = `.gc-wrapper {
   border: 2px solid rgb(3, 169, 244);
   cursor: pointer;
   position: relative;
-  width: 100%;
-  max-width: 30%;
+  width: min(15rem, 88%, calc((100cqh - 2.5rem) / 1.6));
 }
 
 .gc-card:hover:before {
@@ -102,12 +101,11 @@ export const css = `.gc-wrapper {
     transparent 8%
   );
   background-position: 0% 0%;
-  background-size: 5vmin 5vmin;
-  height: calc(100% - 10vmin);
+  background-size: 16px 16px;
+  min-height: 100%;
   padding: 14px;
   position: relative;
   transition: background-position 350ms ease;
-  width: calc(100% - 10vmin);
   z-index: 2;
 }
 
@@ -130,7 +128,7 @@ export const css = `.gc-wrapper {
 
 .gc-card-subtitle-word {
   display: inline-block;
-  margin: 0vmin 0.3vmin;
+  margin-inline: 2px;
   opacity: 0;
   position: relative;
   transform: translateY(40%);
