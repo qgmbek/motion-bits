@@ -15,7 +15,7 @@ import { sampleSkullPerformance, skullPerformanceDuration } from "./skullPerform
 import styles from "./Landing.module.css";
 
 type Props = { accent: string; light: number };
-const initialYaw = -0.47;
+const initialYaw = -0.08;
 const restPose = sampleSkullPerformance(0);
 
 export default function MotionSculpture({ accent, light }: Props) {
@@ -24,6 +24,7 @@ export default function MotionSculpture({ accent, light }: Props) {
   const invalidate = useRef<(() => void) | null>(null);
   const replay = useRef<(() => void) | null>(null);
   const [ready, setReady] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const [contextVersion, setContextVersion] = useState(0);
   const [anatomy, setAnatomy] = useState<SkullAnatomy | null>(null);
@@ -142,8 +143,10 @@ export default function MotionSculpture({ accent, light }: Props) {
     let previousTimestamp: number | null = null;
 
     const stopPerformance = () => {
+      if (!playing) return;
       playing = false;
       previousTimestamp = null;
+      setIsPlaying(false);
     };
     const suspendFrame = () => {
       cancelAnimationFrame(frame);
@@ -177,6 +180,7 @@ export default function MotionSculpture({ accent, light }: Props) {
       renderer.toneMappingExposure = config.light;
       renderer.render(scene, camera);
       if (firstFrame) {
+        setIsPlaying(playing);
         setReady(true);
         setUnavailable(false);
         firstFrame = false;
@@ -190,7 +194,7 @@ export default function MotionSculpture({ accent, light }: Props) {
       if (!width || !height) return;
       renderer.setSize(width, height, false);
       const aspect = width / height;
-      const halfHeight = Math.max(size.y * 0.532, Math.max(size.x, size.z) * 0.548 / aspect);
+      const halfHeight = Math.max(size.y * 0.532, Math.max(size.x, size.z) * 0.585 / aspect);
       camera.left = -halfHeight * aspect;
       camera.right = halfHeight * aspect;
       camera.top = halfHeight;
@@ -229,9 +233,11 @@ export default function MotionSculpture({ accent, light }: Props) {
       requestRender();
     };
     replay.current = () => {
+      if (playing || lost) return;
       reset();
       elapsed = 0;
       playing = true;
+      setIsPlaying(true);
     };
     const keydown = (event: KeyboardEvent) => {
       if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home"].includes(event.key)) return;
@@ -324,11 +330,14 @@ export default function MotionSculpture({ accent, light }: Props) {
         role="img"
         aria-label="Mechanical skull with a monocle, exposed gears, fangs, and an open jaw on a pedestal. Drag or use arrow keys to inspect. Press Home to reset the view."
       />
-      {ready && (
+      {ready && !isPlaying && (
         <button
           type="button"
           className={styles.sculptureReplay}
-          onClick={() => replay.current?.()}
+          onClick={(event) => {
+            replay.current?.();
+            if (event.detail === 0) canvasRef.current?.focus({ preventScroll: true });
+          }}
           aria-label="Replay skull animation"
         >
           <RotateCcw size={14} aria-hidden="true" />

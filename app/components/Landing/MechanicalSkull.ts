@@ -119,8 +119,9 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
   jawSeat.add(jawParts);
   jawSeat.updateMatrix();
   jawParts.updateMatrix();
+  jaw.updateMatrix();
   const jawMount = new Matrix4().multiplyMatrices(jawSeat.matrix, jawParts.matrix);
-  const jawToHead = new Matrix4();
+  const jawToHead = new Matrix4().multiplyMatrices(jaw.matrix, jawMount);
   const updateJawDrives: ((drive: number) => void)[] = [];
 
   const bone = createBoneMaterial();
@@ -339,7 +340,7 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     if (radiusSquared <= 0.345 ** 2) apertureBone = Math.max(apertureBone, sample.z);
     if (radiusSquared <= 0.47 ** 2) rimBone = Math.max(rimBone, sample.z);
   }
-  const glassSeat = apertureBone + 0.052;
+  const glassSeat = apertureBone + 0.074;
   const barrelFace = Math.max(rimBone + 0.056, glassSeat + 0.108);
   const focusDepth = barrelFace - 0.192;
   const focusTeeth = 72;
@@ -372,7 +373,7 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
   ring(focusRotor, "focus-ring-seam", [0, 0, 0.082], 0.448, 0.004, edge);
   ring(monocle, "barrel-rear-gasket", [0, 0, -0.063], 0.421, 0.014, recess);
   ring(opticalCell, "lens-retainer", [0, 0, 0.003], 0.328, 0.009, darkSteel);
-  disc(monocle, "dark-lens-backing", [0, 0, glassSeat - 0.046], 0.334, 0.012, recess);
+  disc(monocle, "dark-lens-backing", [0, 0, glassSeat - 0.063], 0.334, 0.012, recess);
   const glass = turnedProfile(opticalCell, "ground-optical-glass", [
     [0, -0.024], [0.294, -0.024], [0.322, -0.020],
     [0.323, -0.006], [0.315, 0], [0.27, 0.009],
@@ -460,10 +461,10 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
 
   const jawVertices = anatomy.mandible.getAttribute("position");
   // Fit the cheek covers over the mandible's full keyed sweep.
-  const jawSweep = [jawTravel.closed, 0, jawTravel.open].map((angle) =>
+  const sweepAngles = [jawTravel.closed, jawTravel.closed / 2, 0, jawTravel.open / 2, jawTravel.open];
+  const jawSweep = sweepAngles.map((angle) =>
     new Matrix4().makeRotationX(angle).setPosition(jaw.position).multiply(jawMount)
   );
-  jawToHead.copy(jawSweep[1]);
   const pistonUp = new Vector3(0, 1, 0);
   for (const side of [-1, 1]) {
     const transmission = new Group();
@@ -535,7 +536,7 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
       [0.055, 0.49], [0.063, 0.51], [0.063, 0.57], [0.05, 0.60], [0.029, 0.60],
     ].map(([radius, travel]) => new Vector2(radius, travel * stroke));
     const sleeve = mesh(head, "inboard-pull-cylinder", new LatheGeometry(sleeveProfile, 32), darkSteel, pointFromVector(pullTop));
-    const shaftHalf = stroke * 0.285;
+    const shaftHalf = stroke * 0.31;
     const drawRod = mesh(head, "inboard-draw-rod", new CylinderGeometry(0.025, 0.025, shaftHalf * 2, 12), edge);
     orb(jawParts, "inner-jaw-clevis", pullFoot, [0.064, 0.059, 0.058], darkSteel);
     bolt(jawParts, [pullFoot[0] + side * 0.052, pullFoot[1], pullFoot[2]], new Vector3(side, 0, 0), 0.64);
@@ -564,10 +565,11 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     hole(tie, 0, 0, 0.037, false);
     const link = mesh(head, "forged-chin-tie", extrude(tie, 0.038, 0.008), [steel, darkSteel], pointFromVector(tieStart));
     const tongue = new Shape();
-    tongue.moveTo(-length * 0.67, 0.029);
+    const tongueLength = length * 0.74;
+    tongue.moveTo(-tongueLength, 0.029);
     tongue.quadraticCurveTo(-0.10, 0.029, 0, 0.055);
     tongue.bezierCurveTo(0.074, 0.055, 0.074, -0.055, 0, -0.055);
-    tongue.quadraticCurveTo(-0.10, -0.029, -length * 0.67, -0.029);
+    tongue.quadraticCurveTo(-0.10, -0.029, -tongueLength, -0.029);
     tongue.closePath();
     hole(tongue, 0, 0, 0.029, false);
     const slider = mesh(head, "chin-tie-slider", extrude(tongue, 0.026, 0.006), [machinedSteel, darkSteel]);
