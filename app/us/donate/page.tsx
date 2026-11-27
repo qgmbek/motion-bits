@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight, Bitcoin, Coffee, Github, Landmark, WalletCards } from "lucide-react";
+import { ArrowUpRight, Bitcoin, Coffee, Github, Landmark, WalletCards } from "lucide-react";
+import RevealMain from "../../components/Reveal/RevealMain";
 import { legalDocuments } from "../../legal/documents";
 import CopyIban from "./CopyIban";
 import styles from "./donate.module.css";
@@ -42,68 +43,93 @@ function bankAccount(country: "MN" | "KZ", bankName?: string, accountName?: stri
   return { bank, recipient, iban };
 }
 
+const kofiGuide = "https://help.ko-fi.com/hc/en-us/articles/24482435253661-What-payment-methods-are-available-on-Ko-fi";
+
 export default function Donate() {
   const mongolia = bankAccount("MN", process.env.DONATE_MN_BANK, process.env.DONATE_MN_RECIPIENT, process.env.DONATE_MN_IBAN);
   const kazakhstan = bankAccount("KZ", process.env.DONATE_KZ_BANK, process.env.DONATE_KZ_RECIPIENT, process.env.DONATE_KZ_IBAN);
   const kaspi = checkoutUrl(process.env.DONATE_KASPI_URL, "kaspi.kz");
   const qrPath = process.env.DONATE_QPAY_QR?.trim();
   const qpayQr = qrPath && /^\/donate\/[a-z\d_-]+\.(png|jpe?g|webp)$/i.test(qrPath) ? qrPath : undefined;
+  const kofi = checkoutUrl(process.env.DONATE_KOFI_URL, "ko-fi.com");
   const crypto = checkoutUrl(process.env.DONATE_CRYPTO_URL);
 
   const countries = [
-    { name: "Mongolia", currency: "MNT", symbol: "₮", account: mongolia, provider: "QPay", guide: "https://qpay.mn/p/static-qr", qr: qpayQr },
-    { name: "Kazakhstan", currency: "KZT", symbol: "₸", account: kazakhstan, provider: "Kaspi Pay", guide: "https://guide.kaspi.kz/partner/ru/pos/payments/remote/q2019", checkout: kaspi },
+    { name: "Mongolia", currency: "MNT", account: mongolia, provider: "QPay", guide: "https://qpay.mn/p/static-qr", qr: qpayQr },
+    { name: "Kazakhstan", currency: "KZT", account: kazakhstan, provider: "Kaspi Pay", guide: "https://guide.kaspi.kz/partner/ru/pos/payments/remote/q2019", checkout: kaspi },
   ];
 
   const platforms = [
-    { name: "GitHub Sponsors", purpose: "Open source sponsorship", icon: Github, url: checkoutUrl(process.env.DONATE_GITHUB_SPONSORS_URL, "github.com"), guide: "https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors" },
-    { name: "Ko-fi", purpose: "One-time tips", icon: Coffee, url: checkoutUrl(process.env.DONATE_KOFI_URL, "ko-fi.com"), guide: "https://help.ko-fi.com/hc/en-us/articles/115003980093-How-do-I-get-paid" },
-    { name: "Patreon", purpose: "Monthly support", icon: WalletCards, url: checkoutUrl(process.env.DONATE_PATREON_URL, "patreon.com"), guide: "https://support.patreon.com/hc/en-gb/articles/39694936541965-Payout-guide-for-creators-outside-the-US" },
+    {
+      name: "GitHub Sponsors", purpose: "Open source sponsorship",
+      url: checkoutUrl(process.env.DONATE_GITHUB_SPONSORS_URL, "github.com"),
+      guide: "https://docs.github.com/en/sponsors/getting-started-with-github-sponsors/about-github-sponsors",
+    },
+    {
+      name: "Patreon", purpose: "Monthly support",
+      url: checkoutUrl(process.env.DONATE_PATREON_URL, "patreon.com"),
+      guide: "https://support.patreon.com/hc/en-us/articles/203913709-Joining-a-creator-s-Patreon-as-a-paid-member",
+    },
   ];
 
-  const acceptsSupport = Boolean(mongolia || kazakhstan || kaspi || qpayQr || crypto || platforms.some(({ url }) => url));
-
   return (
-    <main id="main" tabIndex={-1} className={styles.page}>
+    <RevealMain className={styles.page}>
       <div className={styles.layout}>
-        <section className={styles.hero} aria-labelledby="support-title">
-          <div className={styles.heroCopy} data-cursor-quiet>
-            <p className={styles.eyebrow}>Support Motion Bits</p>
-            <h1 id="support-title">Keep it <em>moving<span>.</span></em></h1>
-            <p className={styles.lead}>Support the work behind new animations, better examples, and an open source library anyone can use.</p>
-            <a href="#ways-to-support" className={styles.primaryLink}>
-              Ways to support <ArrowDown size={16} aria-hidden="true" />
-            </a>
+        <header className={styles.hero} data-intro data-reveal="fade up" data-cursor-quiet>
+          <h1>Support Motion Bits</h1>
+          <p className={styles.lead} data-reveal="fade right" data-reveal-detail>
+            Contributions help maintain the library and build new React animations.
+          </p>
+        </header>
+
+        <section className={styles.featured} aria-labelledby="kofi-title" data-intro data-reveal="fade up" data-cursor-quiet>
+          <div className={styles.featuredCopy}>
+            <div className={styles.featuredTitle}>
+              <span className={styles.kofiIcon}><Coffee size={23} strokeWidth={1.7} aria-hidden="true" /></span>
+              <h2 id="kofi-title">Ko-fi</h2>
+            </div>
+            <p data-reveal="fade up" data-reveal-detail>
+              Send a one-time tip as a guest. Payment options depend on your location and payment provider.
+            </p>
           </div>
-          <div className={styles.art} aria-hidden="true" data-cursor-quiet>
-            <div className={styles.orbit} />
-            <div className={styles.mark}><i /><i /><i /></div>
+          <div className={styles.featuredActions} data-reveal="slide up" data-reveal-detail data-reveal-step="1">
+            {kofi ? (
+              <a href={kofi} className={styles.kofiButton}>Donate on Ko-fi <ArrowUpRight size={17} aria-hidden="true" /></a>
+            ) : (
+              <>
+                <span className={styles.status}>Ko-fi checkout pending</span>
+                <a href={kofiGuide} className={styles.kofiInfo}>How Ko-fi payments work <ArrowUpRight size={16} aria-hidden="true" /></a>
+              </>
+            )}
           </div>
         </section>
 
-        <section id="ways-to-support" className={styles.methods} aria-labelledby="ways-title">
-          <div className={styles.sectionHeading}>
-            <h2 id="ways-title">Ways to support</h2>
-            {!acceptsSupport && <p>Payment setup is pending. The links below explain each option.</p>}
-          </div>
-
-          <div className={styles.methodGrid}>
-            <article className={`${styles.card} ${styles.bankCard}`}>
-              <header className={styles.cardHeader}>
-                <Landmark size={19} strokeWidth={1.65} aria-hidden="true" />
-                <h3>Bank transfer</h3>
+        <section className={styles.options} id="ways-to-support" aria-labelledby="ways-title">
+          <h2 id="ways-title" data-reveal="fade up">More ways to give</h2>
+          <div className={styles.methods}>
+            <section className={styles.method} id="bank-transfers" aria-labelledby="bank-title" data-reveal="slide right">
+              <header className={styles.methodHeading}>
+                <Landmark size={22} strokeWidth={1.55} aria-hidden="true" />
+                <h3 id="bank-title">Bank transfers</h3>
               </header>
-              <div className={styles.countryGrid}>
-                {countries.map(({ name, currency, symbol, account, provider, guide, qr, checkout }) => (
-                  <section className={styles.country} key={currency}>
-                    <span className={styles.currencySymbol} aria-hidden="true">{symbol}</span>
-                    <div className={styles.countryHeading}>
-                      <h4>{name}</h4>
-                      <span>{currency}</span>
+              <div className={styles.routeList}>
+                {countries.map(({ name, currency, account, provider, guide, qr, checkout }, index) => (
+                  <section className={styles.route} key={currency} aria-labelledby={`bank-${currency}`}
+                    data-reveal="fade right" data-reveal-detail data-reveal-step={index || undefined}>
+                    <div className={styles.routeRow}>
+                      <div>
+                        <h4 id={`bank-${currency}`}>{name} <span className={styles.currency}>{currency}</span></h4>
+                        <p>{account ? `Transfer in ${currency}` : "IBAN details pending"}</p>
+                      </div>
+                      {!qr && (
+                        <a href={checkout ?? guide} className={styles.routeLink}>
+                          {checkout ? `Pay with ${provider}` : `${provider} guide`} <ArrowUpRight size={14} aria-hidden="true" />
+                        </a>
+                      )}
                     </div>
                     {account && (
                       <details className={styles.transfer}>
-                        <summary>Transfer details</summary>
+                        <summary>View transfer details</summary>
                         <dl>
                           <dt>Bank</dt><dd>{account.bank}</dd>
                           <dt>Recipient</dt><dd>{account.recipient}</dd>
@@ -112,61 +138,60 @@ export default function Donate() {
                         <p>Check the recipient name in your bank app before confirming.</p>
                       </details>
                     )}
-                    {qr ? (
+                    {qr && (
                       <details className={styles.transfer}>
                         <summary>Show QPay QR</summary>
                         <Image src={qr} className={styles.qr} alt="Motion Bits QPay payment code" width={180} height={180} unoptimized />
                         <p>Scan with a Mongolian banking app.</p>
                       </details>
-                    ) : (
-                      <a href={checkout ?? guide} className={styles.textLink}>
-                        {checkout ? `Pay with ${provider}` : `About ${provider}`} <ArrowUpRight size={14} aria-hidden="true" />
-                      </a>
                     )}
                   </section>
                 ))}
               </div>
-            </article>
+            </section>
 
-            <article className={styles.card}>
-              <header className={styles.cardHeader}>
-                <WalletCards size={19} strokeWidth={1.65} aria-hidden="true" />
-                <h3>Creator platforms</h3>
+            <section className={styles.method} id="other-platforms" aria-labelledby="platforms-title" data-reveal="slide left" data-reveal-step="1">
+              <header className={styles.methodHeading}>
+                <WalletCards size={22} strokeWidth={1.55} aria-hidden="true" />
+                <h3 id="platforms-title">Other platforms</h3>
               </header>
-              <ul className={styles.platformList}>
-                {platforms.map(({ name, purpose, icon: Icon, url, guide }) => (
-                  <li key={name}>
-                    <a href={url ?? guide} className={styles.platform} aria-label={`${url ? "Support on" : "About"} ${name}`}>
-                      <Icon size={19} strokeWidth={1.65} aria-hidden="true" />
-                      <span><strong>{name}</strong><small>{purpose}</small></span>
-                      <span className={styles.platformAction}>{url ? "Support" : "Guide"} <ArrowUpRight size={14} aria-hidden="true" /></span>
-                    </a>
+              <ul className={styles.routeList}>
+                {platforms.map(({ name, purpose, url, guide }, index) => (
+                  <li className={styles.route} key={name} data-reveal="fade left" data-reveal-detail data-reveal-step={index || undefined}>
+                    <div className={styles.routeRow}>
+                      <div>
+                        <h4>{name}</h4>
+                        <p>{purpose}{!url && " · Checkout pending"}</p>
+                      </div>
+                      <a href={url ?? guide} className={styles.routeLink} aria-label={`${url ? "Support on" : "Read the guide for"} ${name}`}>
+                        {url ? "Support" : "Guide"} <ArrowUpRight size={14} aria-hidden="true" />
+                      </a>
+                    </div>
                   </li>
                 ))}
               </ul>
-            </article>
-
-            <article className={`${styles.card} ${styles.cryptoCard}`}>
-              <header className={styles.cardHeader}>
-                <Bitcoin size={19} strokeWidth={1.65} aria-hidden="true" />
-                <h3>Crypto</h3>
-              </header>
-              <div className={styles.cryptoBody}>
-                <p>{crypto ? "Use the asset and network shown at checkout." : "Crypto checkout is pending."}</p>
-                <a className={styles.textLink} href={crypto ?? "https://docs.btcpayserver.org/Apps/"}>
-                  {crypto ? "Open crypto checkout" : "About BTCPay Server"} <ArrowUpRight size={14} aria-hidden="true" />
-                </a>
-              </div>
-            </article>
+            </section>
           </div>
-          <Link className={styles.paymentTerms} href={legalDocuments.support.href}>Support and payment terms</Link>
         </section>
 
-        <footer className={styles.footer}>
-          <p>A star on GitHub helps people find Motion Bits.</p>
-          <a href={repository} className={styles.textLink}><Github size={16} aria-hidden="true" /> View the repository <ArrowUpRight size={14} aria-hidden="true" /></a>
+        <section className={styles.crypto} aria-labelledby="crypto-title" data-reveal="fade up">
+          <div className={styles.cryptoLabel}>
+            <Bitcoin size={20} strokeWidth={1.6} aria-hidden="true" />
+            <h2 id="crypto-title">Crypto</h2>
+          </div>
+          <p>{crypto ? "Use the asset and network shown at checkout." : "Crypto checkout is pending."}</p>
+          <a href={crypto ?? "https://docs.btcpayserver.org/Apps/"} className={styles.textLink}>
+            {crypto ? "Open crypto checkout" : "About BTCPay Server"} <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+        </section>
+
+        <footer className={styles.footer} data-reveal="fade up">
+          <a href={repository} className={styles.textLink}>
+            <Github size={16} aria-hidden="true" /> Star Motion Bits on GitHub <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+          <Link className={styles.terms} href={legalDocuments.support.href}>Support and payment terms</Link>
         </footer>
       </div>
-    </main>
+    </RevealMain>
   );
 }
