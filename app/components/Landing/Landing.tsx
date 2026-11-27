@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Check, Copy, Github, Play, RotateCcw } from "lucide-react";
 import LiquidFillButton from "../../animations/buttons/LiquidFillButton/LiquidFillButton";
 import AmbientBloom from "../../animations/components/AmbientBloom/AmbientBloom";
@@ -46,30 +46,47 @@ function useReducedMotion() {
   return reduced;
 }
 
-function BentoPreview({ name, category, className, reduced, playOnTileHover = true, children }: {
+type Reveal = `${"fade" | "wipe" | "slide"} ${"up" | "down" | "left" | "right"}`;
+
+function BentoPreview({ name, category, className, reduced, reveal, step, playOnTileHover = true, children }: {
   name: string;
   category: string;
   className: string;
   reduced: boolean;
+  reveal: Reveal;
+  step?: 1 | 2;
   playOnTileHover?: boolean;
   children: (playing: boolean) => ReactNode;
 }) {
   const [runs, setRuns] = useState(0);
+  const artRef = useRef<HTMLDivElement>(null);
+  const queuedHover = useRef(false);
   const action = runs ? "Replay" : "Play";
   const Icon = runs ? RotateCcw : Play;
-  const play = () => setRuns((count) => count + 1);
+  const play = () => {
+    queuedHover.current = false;
+    setRuns((count) => count + 1);
+  };
 
   return (
-    <figure className={className} onPointerEnter={playOnTileHover ? (event) => {
-      if (!reduced && event.pointerType === "mouse") play();
-    } : undefined}>
-      <div key={runs} className={styles.bentoArt} aria-hidden="true">
-        {children(runs > 0 && !reduced)}
+    <figure className={className} data-reveal={reveal} data-reveal-step={step}
+      onPointerEnter={(event) => {
+        if (!playOnTileHover || reduced || event.pointerType !== "mouse") return;
+        const state = artRef.current?.dataset.revealState;
+        if (state && state !== "settled") queuedHover.current = true;
+        else play();
+      }}
+      onPointerLeave={() => { queuedHover.current = false; }}>
+      <div ref={artRef} className={styles.bentoArt} aria-hidden="true" data-reveal="fade up" data-reveal-detail
+        onAnimationEnd={(event) => {
+          if (event.target === event.currentTarget && queuedHover.current && !reduced) play();
+        }}>
+        <Fragment key={runs}>{children(runs > 0 && !reduced)}</Fragment>
       </div>
       <figcaption className={styles.bentoCaption}>
-        <div className={styles.bentoLabel}><span>{name}</span><small>{category}</small></div>
+        <div className={styles.bentoLabel} data-reveal="fade right" data-reveal-detail data-reveal-step="1"><span>{name}</span><small>{category}</small></div>
         <button type="button" aria-label={`${action} ${name} preview`} title={`${action} preview`}
-          disabled={reduced} onClick={play}>
+          disabled={reduced} onClick={play} data-reveal="slide left" data-reveal-detail data-reveal-step="2">
           <Icon size={15} aria-hidden="true" />
         </button>
       </figcaption>
@@ -87,24 +104,90 @@ export default function Landing() {
   const copyTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reduced = useReducedMotion();
 
-  useEffect(() => {
-    if (reduced) return;
-    const elements = pageRef.current?.querySelectorAll<HTMLElement>("[data-reveal]");
-    if (!elements) return;
+  useLayoutEffect(() => {
+    const page = pageRef.current;
+    if (reduced || !page || typeof IntersectionObserver === "undefined" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const requiredHeight = (height: number) => Math.min(height * 0.4, window.innerHeight * 0.32);
+    const pending = new Map<HTMLElement, HTMLElement[]>();
+    const roots: HTMLElement[] = [];
+    for (const element of page.querySelectorAll<HTMLElement>("[data-reveal]")) {
+      if (element.dataset.revealState) continue;
+      const parent = element.parentElement?.closest<HTMLElement>("[data-reveal]");
+      const followups = parent && pending.get(parent);
+      if (followups) {
+        followups.push(element);
+        pending.set(element, []);
+        continue;
+      }
+
+      const { top, bottom, height } = element.getBoundingClientRect();
+      if (bottom <= 0 || !height) continue;
+      const visibleHeight = Math.min(bottom, window.innerHeight) - Math.max(top, 0);
+      if (element.hasAttribute("data-intro") || visibleHeight < requiredHeight(height)) {
+        roots.push(element);
+        pending.set(element, []);
+      }
+    }
+
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        (entry.target as HTMLElement).dataset.visible = "true";
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
-    elements.forEach((element) => {
-      element.dataset.visible = element.getBoundingClientRect().top < window.innerHeight * 0.92 ? "true" : "false";
-      observer.observe(element);
-    });
+      for (const entry of entries) {
+        const element = entry.target as HTMLElement;
+        const state = element.dataset.revealState;
+        if (state === "settled") {
+          observer.unobserve(element);
+          continue;
+        }
+
+        const { top, bottom, height } = entry.boundingClientRect;
+        const visibleHeight = Math.min(bottom, window.innerHeight) - Math.max(top, 0);
+        if (state === "entered" && visibleHeight <= 0) element.dataset.revealState = "paused";
+        if ((state === "waiting" || state === "paused") && visibleHeight >= requiredHeight(height)) {
+          element.dataset.revealState = "entered";
+        }
+      }
+    }, { threshold: [0, 0.05, 0.1, 0.2, 0.3, 0.4] });
+
+    const settle = (element: HTMLElement) => {
+      const followups = pending.get(element);
+      if (!followups || element.dataset.revealState === "settled") return;
+      element.dataset.revealState = "settled";
+      observer.unobserve(element);
+      for (const child of followups) {
+        if (child.dataset.revealState === "waiting") observer.observe(child);
+      }
+    };
+
+    const finishReveal = (event: AnimationEvent) => {
+      if (!(event.target instanceof HTMLElement)) return;
+      const state = event.target.dataset.revealState;
+      if (state === "entered" || state === "paused") settle(event.target);
+    };
+    const revealFocused = (event: FocusEvent) => {
+      if (!(event.target instanceof Element)) return;
+      let element = event.target.closest<HTMLElement>("[data-reveal]");
+      while (element && page.contains(element)) {
+        settle(element);
+        element = element.parentElement?.closest<HTMLElement>("[data-reveal]") ?? null;
+      }
+    };
+
+    page.addEventListener("animationend", finishReveal);
+    page.addEventListener("focusin", revealFocused);
+    for (const element of pending.keys()) element.dataset.revealState = "waiting";
+    for (const element of roots) observer.observe(element);
+
     return () => {
       observer.disconnect();
-      elements.forEach((element) => { element.dataset.visible = "true"; });
+      page.removeEventListener("animationend", finishReveal);
+      page.removeEventListener("focusin", revealFocused);
+      for (const element of pending.keys()) {
+        if (element.dataset.revealState === "waiting") delete element.dataset.revealState;
+        if (element.dataset.revealState === "entered" || element.dataset.revealState === "paused") {
+          element.dataset.revealState = "settled";
+        }
+      }
     };
   }, [reduced]);
 
@@ -128,17 +211,20 @@ export default function Landing() {
       <div className={styles.pageAtmosphere} aria-hidden="true" />
       <main id="main" tabIndex={-1}>
         <section className={styles.hero} aria-labelledby="hero-title">
-          <div className={styles.heroCopy} data-cursor-quiet>
-            <h1 id="hero-title">Motion<br /><span>in pieces<span className={styles.titlePeriod}>.</span></span></h1>
-            <p className={styles.heroDescription}>Open source React animations for text, buttons, and interfaces.</p>
-            <Link className={styles.primaryButton} href="/collections">Browse components</Link>
+          <div className={styles.heroCopy} data-cursor-quiet data-intro data-reveal="slide up">
+            <h1 id="hero-title">
+              <span className={styles.titleLine}>Motion</span>{" "}
+              <span className={styles.titleLine} data-reveal="wipe up" data-reveal-detail>in pieces<span className={styles.titlePeriod}>.</span></span>
+            </h1>
+            <p className={styles.heroDescription} data-reveal="fade down" data-reveal-detail data-reveal-step="1">Open source React animations for text, buttons, and interfaces.</p>
+            <Link className={styles.primaryButton} href="/collections" data-reveal="slide right" data-reveal-detail data-reveal-step="2">Browse components</Link>
           </div>
 
           <div className={styles.heroStage} data-cursor-quiet>
             <MotionSculpture accent={accent} light={light} />
-            <p className={styles.comingSoon}>Animated 3D <span>Components coming soon</span></p>
-            <div className={styles.inspector} role="group" aria-label="Sculpture appearance">
-              <div className={styles.colorControl}>
+            <p className={styles.comingSoon} data-intro data-reveal="fade left" data-reveal-step="1">Animated 3D <span>Components coming soon</span></p>
+            <div className={styles.inspector} role="group" aria-label="Sculpture appearance" data-intro data-reveal="slide up" data-reveal-step="2">
+              <div className={styles.colorControl} data-reveal="fade right" data-reveal-detail>
                 <span>Accent</span>
                 <div className={styles.swatches} role="group" aria-label="Sculpture accent color">
                   {colors.map((color, index) => (
@@ -149,7 +235,7 @@ export default function Landing() {
                   ))}
                 </div>
               </div>
-              <label className={styles.lightControl}>
+              <label className={styles.lightControl} data-reveal="fade left" data-reveal-detail data-reveal-step="1">
                 <span>Studio light <output>{light.toFixed(1)}</output></span>
                 <input aria-label="Studio light brightness" type="range" min="0.6" max="1.6" step="0.1"
                   value={light} onChange={(event) => setLight(Number(event.target.value))} />
@@ -159,49 +245,67 @@ export default function Landing() {
         </section>
 
         <section className={styles.showcase} id="explore" aria-labelledby="explore-title">
-          <h2 id="explore-title">Component previews</h2>
-          <p>{reduced ? "Static previews with reduced motion enabled." : "Hover a demo or press play."}</p>
+          <header className={styles.showcaseHeader} data-reveal="fade up">
+            <h2 id="explore-title">Component previews</h2>
+            <p data-reveal="fade right" data-reveal-detail>{reduced ? "Static previews with reduced motion enabled." : "Hover a demo or press play."}</p>
+          </header>
           <div className={styles.bento}>
-            <BentoPreview name="Gradient Flow" category="Text" className={styles.gradientDemo} reduced={reduced}>
+            <BentoPreview name="Gradient Flow" category="Text" className={styles.gradientDemo} reduced={reduced} reveal="wipe right">
               {(playing) => <div className={styles.flowWord}><GradientFlow playing={playing} speed={2.4}>flow.</GradientFlow></div>}
             </BentoPreview>
-            <BentoPreview name="Liquid Fill Button" category="Buttons" className={styles.liquidDemo} reduced={reduced} playOnTileHover={false}>
+            <BentoPreview name="Liquid Fill Button" category="Buttons" className={styles.liquidDemo} reduced={reduced} reveal="slide down" step={1} playOnTileHover={false}>
               {(playing) => <LiquidFillButton playing={playing} reducedMotion={reduced} />}
             </BentoPreview>
-            <BentoPreview name="Ambient Bloom" category="Components" className={styles.bloomDemo} reduced={reduced}>
+            <BentoPreview name="Ambient Bloom" category="Components" className={styles.bloomDemo} reduced={reduced} reveal="fade left" step={2}>
               {(playing) => <AmbientBloom playing={playing} />}
             </BentoPreview>
-            <BentoPreview name="Spotlight Card" category="Components" className={styles.spotlightDemo} reduced={reduced}>
+            <BentoPreview name="Spotlight Card" category="Components" className={styles.spotlightDemo} reduced={reduced} reveal="fade right">
               {(playing) => <SpotlightCard playing={playing} />}
             </BentoPreview>
-            <BentoPreview name="Blur Text" category="Text" className={styles.blurDemo} reduced={reduced}>
+            <BentoPreview name="Blur Text" category="Text" className={styles.blurDemo} reduced={reduced} reveal="slide left" step={1}>
               {(playing) => <div className={styles.blurWord}><BlurText playing={playing}>hello, world.</BlurText></div>}
             </BentoPreview>
-            <BentoPreview name="Ludwig Hover" category="Components" className={styles.ludwigDemo} reduced={reduced}>
+            <BentoPreview name="Ludwig Hover" category="Components" className={styles.ludwigDemo} reduced={reduced} reveal="wipe left" step={2}>
               {(playing) => <LudwigHover playing={playing} />}
             </BentoPreview>
           </div>
         </section>
 
-        <section className={styles.workflow} id="how-it-works" aria-labelledby="workflow-title" data-reveal>
-          <div className={styles.workflowCopy}><h2 id="workflow-title">Use a component</h2><p>Copy the source from Collections and import it into your React app.</p></div>
-          <div className={styles.codeWindow}>
-            <div className={styles.windowBar}><span>Example.tsx</span><button type="button" onClick={copyCode} aria-label="Copy usage example">{copyState === "copied" ? <Check size={14} /> : <Copy size={14} />}<span aria-live="polite">{copyState === "copied" ? "Copied" : copyState === "failed" ? "Select code" : "Copy"}</span></button></div>
-            <div className={styles.codePreview}><span key={codeReplay} className={styles.codePreviewText}>Make it move<span>.</span></span><button type="button" aria-label="Replay text animation" onClick={() => setCodeReplay((value) => value + 1)}><RotateCcw size={14} /></button></div>
-            <pre className={styles.code}><code><span className={styles.codeLine}><span className={styles.syntaxPurple}>import</span> BlurText <span className={styles.syntaxPurple}>from</span> <span className={styles.syntaxGreen}>{'"./components/BlurText"'}</span>;</span><span className={styles.codeLine}>{" "}</span><span className={styles.codeLine}><span className={styles.syntaxPurple}>export default function</span> <span className={styles.syntaxBlue}>Hello</span>() {"{"}</span><span className={styles.codeLine}>{"  "}<span className={styles.syntaxPurple}>return</span> (</span><span className={styles.codeLine}>{"    "}<span className={styles.syntaxGreen}>{"<BlurText>"}</span></span><span className={styles.codeLine}>{"      Make it move."}</span><span className={styles.codeLine}>{"    "}<span className={styles.syntaxGreen}>{"</BlurText>"}</span></span><span className={styles.codeLine}>{"  );"}</span><span className={styles.codeLine}>{"}"}</span></code></pre>
-            <div className={styles.codeWindowFooter}><Link href="/collections#blur-text">Get Blur Text</Link></div>
+        <section className={styles.workflow} id="how-it-works" aria-labelledby="workflow-title">
+          <div className={styles.workflowCopy} data-reveal="slide right">
+            <h2 id="workflow-title">Use a component</h2>
+            <p data-reveal="fade up" data-reveal-detail>Copy the source from Collections and import it into your React app.</p>
+          </div>
+          <div className={styles.codeWindow} data-reveal="wipe down" data-reveal-step="1">
+            <div className={styles.windowBar}>
+              <span>Example.tsx</span>
+              <button type="button" onClick={copyCode} aria-label="Copy usage example" data-reveal="fade left" data-reveal-detail>
+                {copyState === "copied" ? <Check size={14} /> : <Copy size={14} />}
+                <span aria-live="polite">{copyState === "copied" ? "Copied" : copyState === "failed" ? "Select code" : "Copy"}</span>
+              </button>
+            </div>
+            <div className={styles.codePreview}>
+              <span className={styles.codePreviewText} data-reveal="blur up" data-reveal-step="1" data-reveal-state={codeReplay ? "settled" : undefined}>
+                <span key={codeReplay} className={styles.codePreviewLine} data-replay={codeReplay > 0 || undefined}>Make it move<span>.</span></span>
+              </span>
+              <button type="button" aria-label="Replay text animation" onClick={() => setCodeReplay((value) => value + 1)}
+                data-reveal="fade left" data-reveal-detail data-reveal-step="2"><RotateCcw size={14} /></button>
+            </div>
+            <pre className={styles.code} data-reveal="wipe right" data-reveal-detail data-reveal-step="2"><code><span className={styles.codeLine}><span className={styles.syntaxPurple}>import</span> BlurText <span className={styles.syntaxPurple}>from</span> <span className={styles.syntaxGreen}>{'"./components/BlurText"'}</span>;</span><span className={styles.codeLine}>{" "}</span><span className={styles.codeLine}><span className={styles.syntaxPurple}>export default function</span> <span className={styles.syntaxBlue}>Hello</span>() {"{"}</span><span className={styles.codeLine}>{"  "}<span className={styles.syntaxPurple}>return</span> (</span><span className={styles.codeLine}>{"    "}<span className={styles.syntaxGreen}>{"<BlurText>"}</span></span><span className={styles.codeLine}>{"      Make it move."}</span><span className={styles.codeLine}>{"    "}<span className={styles.syntaxGreen}>{"</BlurText>"}</span></span><span className={styles.codeLine}>{"  );"}</span><span className={styles.codeLine}>{"}"}</span></code></pre>
+            <div className={styles.codeWindowFooter} data-reveal="slide up" data-reveal-detail data-reveal-step="3"><Link href="/collections#blur-text">Get Blur Text</Link></div>
           </div>
         </section>
 
-        <section className={styles.openSource} id="open-source" aria-labelledby="open-source-title" data-reveal>
+        <section className={styles.openSource} id="open-source" aria-labelledby="open-source-title" data-reveal="fade up">
           <div className={styles.openSourceGlow} aria-hidden="true" />
           <div className={styles.openSourceBody}>
             <div>
-              <h2 id="open-source-title">Open source</h2>
-              <p>Free to use, modify, and share under the MIT license.</p>
-              <a href={repository} target="_blank" rel="noreferrer" className={styles.githubButton}><Github size={17} /> View source</a>
+              <h2 id="open-source-title" data-reveal="wipe up" data-reveal-detail>Open source</h2>
+              <p data-reveal="fade right" data-reveal-detail data-reveal-step="1">Free to use, modify, and share under the MIT license.</p>
+              <a href={repository} target="_blank" rel="noreferrer" className={styles.githubButton}
+                data-reveal="slide up" data-reveal-detail data-reveal-step="2"><Github size={17} /> View source</a>
             </div>
-            <div className={styles.sourceArtwork} aria-hidden="true">
+            <div className={styles.sourceArtwork} data-reveal="slide up" data-reveal-detail data-reveal-step="1" aria-hidden="true">
               <div className={styles.sourceOrbits}><i /><i /><i /></div>
               <div className={styles.sourceEmblem}><Github size={46} strokeWidth={1.35} /></div>
             </div>
