@@ -113,6 +113,26 @@
 }
 .sculpture[data-ready="true"] .sculptureCanvas { opacity: 1; }
 .sculptureCanvas:focus-visible { outline-offset: -.375rem !important; border-radius: .75rem; }
+.sculptureReplay {
+  position: absolute;
+  z-index: 2;
+  bottom: .375rem;
+  left: clamp(.75rem, 3vw, 2.25rem);
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 2.75rem;
+  padding-inline: .625rem;
+  border: 1px solid transparent;
+  border-radius: .5rem;
+  background: transparent;
+  color: #aaa69d;
+  font-size: .75rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 180ms, border-color 180ms, color 180ms;
+}
+.sculptureReplay:is(:hover, :focus-visible) { border-color: #ffffff20; background: #18181b; color: #eeeae1; }
 .artifactFallback { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); pointer-events: none; }
 .artifactFallback small { font-size: .875rem; }
 
@@ -255,7 +275,7 @@
   padding-inline: .14em .24em;
   font: italic clamp(3.375rem, 8vw, 7rem)/1.12 var(--font-instrument-serif), Georgia, serif;
 }
-.magneticDemo { background: radial-gradient(ellipse at center, #262a23, #141615 76%); }
+.liquidDemo { background: radial-gradient(ellipse at 50% 68%, #26363a, #121619 76%); }
 .bloomDemo { background: linear-gradient(140deg, #19161e, #13131b); }
 .ludwigDemo { background: radial-gradient(ellipse at 50% 72%, #252c3a, #12151b 76%); }
 .ludwigDemo .bentoArt { container-type: size; }

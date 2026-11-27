@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { RotateCcw } from "lucide-react";
 import {
   ACESFilmicToneMapping, AmbientLight, Box3, DirectionalLight,
   OrthographicCamera, PCFShadowMap, PlaneGeometry, Mesh,
@@ -10,15 +11,18 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { createMechanicalSkull } from "./MechanicalSkull";
 import { createMetalEnvironment } from "./metalStudio";
 import { loadSkullAnatomy, type SkullAnatomy } from "./skullAnatomy";
+import { sampleSkullPerformance, skullPerformanceDuration } from "./skullPerformance";
 import styles from "./Landing.module.css";
 
 type Props = { accent: string; light: number };
 const initialYaw = -0.47;
+const restPose = sampleSkullPerformance(0);
 
 export default function MotionSculpture({ accent, light }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const settings = useRef({ accent, light });
   const invalidate = useRef<(() => void) | null>(null);
+  const replay = useRef<(() => void) | null>(null);
   const [ready, setReady] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const [contextVersion, setContextVersion] = useState(0);
@@ -83,6 +87,7 @@ export default function MotionSculpture({ accent, light }: Props) {
     pmrem.dispose();
 
     const artifact = createMechanicalSkull(anatomy, metalEnvironment.texture);
+    artifact.setPose(restPose);
     scene.add(artifact.root);
     const bounds = new Box3().setFromObject(artifact.root);
     const size = bounds.getSize(new Vector3());
@@ -123,7 +128,7 @@ export default function MotionSculpture({ accent, light }: Props) {
     scene.add(floor);
 
     let frame = 0;
-    let visible = true;
+    let visible = false;
     let lost = false;
     let firstFrame = true;
     let currentAccent = "";
@@ -131,11 +136,34 @@ export default function MotionSculpture({ accent, light }: Props) {
     let downX = 0;
     let downY = 0;
     const rotation = { x: 0, y: initialYaw };
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let playing = !motionPreference.matches;
+    let elapsed = -0.35; // Let the canvas appear before the optic makes its first move.
+    let previousTimestamp: number | null = null;
 
-    // Render only when the view, lighting, or viewport changes. There is no idle animation.
-    const render = () => {
+    const stopPerformance = () => {
+      playing = false;
+      previousTimestamp = null;
+    };
+    const suspendFrame = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      previousTimestamp = null;
+    };
+    const requestRender = () => {
+      if (!frame && visible && !document.hidden && !lost) frame = requestAnimationFrame(render);
+    };
+    function render(timestamp: number) {
       frame = 0;
       if (lost || !visible || document.hidden) return;
+      if (playing) {
+        if (previousTimestamp !== null) {
+          elapsed = Math.min(skullPerformanceDuration, elapsed + (timestamp - previousTimestamp) / 1000);
+        }
+        previousTimestamp = timestamp;
+        artifact.setPose(sampleSkullPerformance(elapsed));
+        if (elapsed === skullPerformanceDuration) stopPerformance();
+      }
       const config = settings.current;
       if (currentAccent !== config.accent) {
         accentRim.color.set(config.accent);
@@ -153,10 +181,8 @@ export default function MotionSculpture({ accent, light }: Props) {
         setUnavailable(false);
         firstFrame = false;
       }
-    };
-    const requestRender = () => {
-      if (!frame && visible && !document.hidden && !lost) frame = requestAnimationFrame(render);
-    };
+      if (playing) requestRender();
+    }
     invalidate.current = requestRender;
 
     const resize = () => {
@@ -182,6 +208,7 @@ export default function MotionSculpture({ accent, light }: Props) {
     };
     const down = (event: PointerEvent) => {
       if (event.button !== 0 || dragging !== null) return;
+      stopPerformance();
       dragging = event.pointerId;
       downX = event.clientX;
       downY = event.clientY;
@@ -195,13 +222,21 @@ export default function MotionSculpture({ accent, light }: Props) {
       canvas.style.cursor = "grab";
     };
     const reset = () => {
+      stopPerformance();
       rotation.x = 0;
       rotation.y = initialYaw;
+      artifact.setPose(restPose);
       requestRender();
+    };
+    replay.current = () => {
+      reset();
+      elapsed = 0;
+      playing = true;
     };
     const keydown = (event: KeyboardEvent) => {
       if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home"].includes(event.key)) return;
       event.preventDefault();
+      stopPerformance();
       if (event.key === "ArrowLeft") rotation.y -= 0.15;
       if (event.key === "ArrowRight") rotation.y += 0.15;
       if (event.key === "ArrowUp") rotation.x = Math.max(-0.32, rotation.x - 0.1);
@@ -213,13 +248,19 @@ export default function MotionSculpture({ accent, light }: Props) {
       if (dragging !== null && canvas.hasPointerCapture(dragging)) canvas.releasePointerCapture(dragging);
       dragging = null;
       canvas.style.cursor = "grab";
-      if (!document.hidden) requestRender();
+      if (document.hidden) suspendFrame();
+      else requestRender();
+    };
+    const changeMotionPreference = (event: MediaQueryListEvent) => {
+      if (!event.matches || !playing) return;
+      stopPerformance();
+      artifact.setPose(restPose);
+      requestRender();
     };
     const contextLost = (event: Event) => {
       event.preventDefault();
       lost = true;
-      cancelAnimationFrame(frame);
-      frame = 0;
+      suspendFrame();
       setReady(false);
       setUnavailable(true);
     };
@@ -228,6 +269,7 @@ export default function MotionSculpture({ accent, light }: Props) {
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
       if (visible) requestRender();
+      else suspendFrame();
     });
     resizeObserver.observe(canvas);
     intersectionObserver.observe(canvas);
@@ -241,11 +283,13 @@ export default function MotionSculpture({ accent, light }: Props) {
     canvas.addEventListener("webglcontextlost", contextLost);
     canvas.addEventListener("webglcontextrestored", contextRestored);
     document.addEventListener("visibilitychange", visibility);
+    motionPreference.addEventListener("change", changeMotionPreference);
     resize();
 
     return () => {
-      cancelAnimationFrame(frame);
+      suspendFrame();
       invalidate.current = null;
+      replay.current = null;
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       canvas.removeEventListener("pointermove", move);
@@ -258,6 +302,7 @@ export default function MotionSculpture({ accent, light }: Props) {
       canvas.removeEventListener("webglcontextlost", contextLost);
       canvas.removeEventListener("webglcontextrestored", contextRestored);
       document.removeEventListener("visibilitychange", visibility);
+      motionPreference.removeEventListener("change", changeMotionPreference);
       artifact.dispose();
       floorGeometry.dispose();
       floorMaterial.dispose();
@@ -279,6 +324,17 @@ export default function MotionSculpture({ accent, light }: Props) {
         role="img"
         aria-label="Mechanical skull with a monocle, exposed gears, fangs, and an open jaw on a pedestal. Drag or use arrow keys to inspect. Press Home to reset the view."
       />
+      {ready && (
+        <button
+          type="button"
+          className={styles.sculptureReplay}
+          onClick={() => replay.current?.()}
+          aria-label="Replay skull animation"
+        >
+          <RotateCcw size={14} aria-hidden="true" />
+          Replay
+        </button>
+      )}
     </div>
   );
 }

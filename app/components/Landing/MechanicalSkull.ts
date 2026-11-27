@@ -6,6 +6,7 @@ import {
 } from "three";
 import type { SkullAnatomy } from "./skullAnatomy";
 import { createBoneMaterial } from "./boneMaterial";
+import { jawTravel, type SkullPose } from "./skullPerformance";
 
 type Point = readonly [number, number, number];
 type Point2 = readonly [number, number];
@@ -95,13 +96,15 @@ function weatheredMaterial({ color, metalness, roughness, grain, erosion = 0, en
   return material;
 }
 
-/** All pivots are deliberately named and independent; nothing in this factory animates. */
+/** Build the sculpture and its pose controls. */
 export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: Texture) {
   const root = new Group();
   root.name = "mechanical-skull";
   const head = new Group();
   head.name = "cranium";
   root.add(head);
+  const neck = new Vector3(0, 0.08, -0.65);
+  const rotatedNeck = new Vector3();
   const jaw = new Group();
   jaw.name = "jaw-pivot";
   jaw.position.set(...anatomy.hinge);
@@ -114,7 +117,11 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
   const jawParts = new Group();
   jawParts.position.copy(jaw.position).multiplyScalar(-1);
   jawSeat.add(jawParts);
-  const gears: Group[] = [];
+  jawSeat.updateMatrix();
+  jawParts.updateMatrix();
+  const jawMount = new Matrix4().multiplyMatrices(jawSeat.matrix, jawParts.matrix);
+  const jawToHead = new Matrix4();
+  const updateJawDrives: ((drive: number) => void)[] = [];
 
   const bone = createBoneMaterial();
   const steel = weatheredMaterial({
@@ -227,7 +234,6 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     assembly.name = name;
     assembly.position.set(...at);
     parent.add(assembly);
-    gears.push(assembly);
     const gearModule = options.module ?? radius / (teeth / 2 + 1);
     const pitch = gearModule * teeth / 2;
     const tip = pitch + gearModule;
@@ -288,6 +294,13 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     follower.rotation.z = contact + Math.PI + ((contact - driver.rotation.z) * drivingTeeth - Math.PI) / drivenTeeth;
   }
 
+  function gearTrain(...wheels: { wheel: Group; ratio: number }[]) {
+    const phased = wheels.map(({ wheel, ratio }) => ({ wheel, ratio, rest: wheel.rotation.z }));
+    return (turn: number) => {
+      for (const { wheel, ratio, rest } of phased) wheel.rotation.z = rest + turn * ratio;
+    };
+  }
+
   // The bone's baked cavity shading keeps the hardware and sockets readable
   // without shadow-map artifacts where their surfaces meet.
   mesh(head, "ct-cranium-and-maxilla", anatomy.cranium, bone).receiveShadow = false;
@@ -329,36 +342,48 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
   const glassSeat = apertureBone + 0.052;
   const barrelFace = Math.max(rimBone + 0.056, glassSeat + 0.108);
   const focusDepth = barrelFace - 0.192;
+  const focusTeeth = 72;
+  const focusRotor = new Group();
+  focusRotor.name = "focus-rotor";
+  focusRotor.position.z = focusDepth;
+  monocle.add(focusRotor);
+  const opticalCell = new Group();
+  opticalCell.name = "optical-gimbal";
+  opticalCell.position.z = glassSeat + 0.024;
+  monocle.add(opticalCell);
 
   turnedProfile(monocle, "beveled-lens-barrel", [
-    [0.319, -0.076], [0.419, -0.076], [0.439, -0.054], [0.443, focusDepth],
+    [0.338, -0.076], [0.419, -0.076], [0.439, -0.054], [0.443, focusDepth],
     [0.448, barrelFace - 0.098], [0.463, barrelFace - 0.078], [0.463, barrelFace - 0.022],
     [0.448, barrelFace - 0.006], [0.432, barrelFace], [0.386, barrelFace],
-    [0.371, barrelFace - 0.012], [0.342, glassSeat + 0.018], [0.319, glassSeat + 0.012],
-    [0.319, -0.076],
+    [0.371, barrelFace - 0.012], [0.348, glassSeat + 0.018], [0.338, glassSeat + 0.012],
+    [0.338, -0.076],
   ], machinedSteel);
   const focusRing = new Shape();
-  for (let i = 0; i < 72 * 4; i++) {
-    const angle = i / (72 * 4) * Math.PI * 2;
+  for (let i = 0; i < focusTeeth * 4; i++) {
+    const angle = i / (focusTeeth * 4) * Math.PI * 2;
     const radius = i % 4 === 1 || i % 4 === 2 ? 0.476 : 0.455;
     if (i === 0) focusRing.moveTo(radius, 0);
     else focusRing.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
   }
   focusRing.closePath();
   hole(focusRing, 0, 0, 0.435);
-  mesh(monocle, "knurled-focus-ring", extrude(focusRing, 0.076, 0.003), [darkSteel, steel], [0, 0, focusDepth]);
-  ring(monocle, "focus-ring-seam", [0, 0, focusDepth + 0.082], 0.448, 0.004, edge);
+  mesh(focusRotor, "knurled-focus-ring", extrude(focusRing, 0.076, 0.003), [darkSteel, steel]);
+  ring(focusRotor, "focus-ring-seam", [0, 0, 0.082], 0.448, 0.004, edge);
   ring(monocle, "barrel-rear-gasket", [0, 0, -0.063], 0.421, 0.014, recess);
-  ring(monocle, "lens-retainer", [0, 0, glassSeat + 0.027], 0.328, 0.009, darkSteel);
-  disc(monocle, "dark-lens-backing", [0, 0, glassSeat - 0.024], 0.323, 0.017, recess);
-  const glass = turnedProfile(monocle, "ground-optical-glass", [
-    [0, glassSeat], [0.294, glassSeat], [0.322, glassSeat + 0.004],
-    [0.323, glassSeat + 0.018], [0.315, glassSeat + 0.024], [0.27, glassSeat + 0.033],
-    [0.20, glassSeat + 0.040], [0.12, glassSeat + 0.045], [0, glassSeat + 0.047],
+  ring(opticalCell, "lens-retainer", [0, 0, 0.003], 0.328, 0.009, darkSteel);
+  disc(monocle, "dark-lens-backing", [0, 0, glassSeat - 0.046], 0.334, 0.012, recess);
+  const glass = turnedProfile(opticalCell, "ground-optical-glass", [
+    [0, -0.024], [0.294, -0.024], [0.322, -0.020],
+    [0.323, -0.006], [0.315, 0], [0.27, 0.009],
+    [0.20, 0.016], [0.12, 0.021], [0, 0.023],
   ], lensMaterial);
   glass.castShadow = false;
-  gear(monocle, "lens-adjustment-upper", [-0.27, 0.45, -0.015], 0.13, 18, 0.05, 0);
-  gear(monocle, "lens-adjustment-outer", [-0.46, 0.27, -0.025], 0.15, 20, 0.045, 4);
+  const opticModule = Math.hypot(0.19, 0.18) / 19;
+  const opticDriver = gear(monocle, "lens-adjustment-outer", [-0.46, 0.27, -0.025], 0.15, 20, 0.045, 4, { module: opticModule });
+  const opticFollower = gear(monocle, "lens-adjustment-upper", [-0.27, 0.45, -0.015], 0.13, 18, 0.05, 0, { module: opticModule });
+  phaseGear(opticDriver, opticFollower, 20, 18);
+  const turnOpticGears = gearTrain({ wheel: opticDriver, ratio: 1 }, { wheel: opticFollower, ratio: -20 / 18 });
   disc(monocle, "focus-knob", [-0.47, -0.04, 0.015], 0.075, 0.12, edge);
   ring(monocle, "focus-knob-groove", [-0.47, -0.04, 0.08], 0.044, 0.012, recess);
   bolt(monocle, [0.133, -0.42, -0.023], undefined, 0.6);
@@ -434,7 +459,12 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
   }
 
   const jawVertices = anatomy.mandible.getAttribute("position");
-  jawParts.updateWorldMatrix(true, false);
+  // Fit the cheek covers over the mandible's full keyed sweep.
+  const jawSweep = [jawTravel.closed, 0, jawTravel.open].map((angle) =>
+    new Matrix4().makeRotationX(angle).setPosition(jaw.position).multiply(jawMount)
+  );
+  jawToHead.copy(jawSweep[1]);
+  const pistonUp = new Vector3(0, 1, 0);
   for (const side of [-1, 1]) {
     const transmission = new Group();
     transmission.name = `jaw-transmission-${side}`;
@@ -446,8 +476,11 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     transmission.updateWorldMatrix(true, false);
     const toDrive = transmission.matrixWorld.clone().invert();
     let seatDepth = -0.055;
-    const jawToDrive = toDrive.clone().multiply(jawParts.matrixWorld);
-    for (const [vertices, transform] of [[skullVertices, toDrive], [jawVertices, jawToDrive]] as const) {
+    const clearanceSamples = [
+      [skullVertices, toDrive] as const,
+      ...jawSweep.map((pose) => [jawVertices, toDrive.clone().multiply(pose)] as const),
+    ];
+    for (const [vertices, transform] of clearanceSamples) {
       for (let i = 0; i < vertices.count; i++) {
         sample.fromBufferAttribute(vertices, i).applyMatrix4(transform);
         const inIdler = (sample.x - idlerCenter[0]) ** 2 + (sample.y - idlerCenter[1]) ** 2 <= 0.149 ** 2;
@@ -473,6 +506,9 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     main.rotation.z = 0.18;
     phaseGear(main, driven, 36, 24);
     phaseGear(driven, idler, 24, 12);
+    const turnJawGears = gearTrain(
+      { wheel: main, ratio: 1 }, { wheel: driven, ratio: -36 / 24 }, { wheel: idler, ratio: 36 / 12 },
+    );
     disc(transmission, "idler-mounting-boss", [...idlerCenter, -0.008], 0.105, 0.059, darkSteel);
     bolt(transmission, [...axle, 0.101], undefined, 0.67);
     bolt(transmission, [...idlerCenter, 0.091], undefined, 0.48);
@@ -485,7 +521,8 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     const crankPivot = transmission.localToWorld(new Vector3(...axle, -0.43));
     const pullTop = new Vector3(side * 0.365, -0.357, 0.113);
     const pullFoot: Point = [side * 0.172, -1.161, 0.453];
-    const pullBottom = jawParts.localToWorld(new Vector3(...pullFoot));
+    const pullAnchor = new Vector3(...pullFoot);
+    const pullBottom = pullAnchor.clone().applyMatrix4(jawToHead);
     const crankShoulder = crankPivot.clone().lerp(pullTop, 0.56).add(new Vector3(0, -0.057, -0.03));
     tube(head, "inboard-bell-crank", [crankPivot, crankShoulder, pullTop].map(pointFromVector), 0.048, darkSteel);
     orb(head, "pull-top-eye", pointFromVector(pullTop), [0.064, 0.065, 0.061], steel);
@@ -498,38 +535,67 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
       [0.055, 0.49], [0.063, 0.51], [0.063, 0.57], [0.05, 0.60], [0.029, 0.60],
     ].map(([radius, travel]) => new Vector2(radius, travel * stroke));
     const sleeve = mesh(head, "inboard-pull-cylinder", new LatheGeometry(sleeveProfile, 32), darkSteel, pointFromVector(pullTop));
-    sleeve.quaternion.setFromUnitVectors(new Vector3(0, 1, 0), pullAxis.normalize());
-    const shaftStart = pullTop.clone().lerp(pullBottom, 0.52);
-    rod(head, "inboard-draw-rod", pointFromVector(shaftStart), pointFromVector(pullBottom), 0.025, edge);
+    const shaftHalf = stroke * 0.285;
+    const drawRod = mesh(head, "inboard-draw-rod", new CylinderGeometry(0.025, 0.025, shaftHalf * 2, 12), edge);
     orb(jawParts, "inner-jaw-clevis", pullFoot, [0.064, 0.059, 0.058], darkSteel);
     bolt(jawParts, [pullFoot[0] + side * 0.052, pullFoot[1], pullFoot[2]], new Vector3(side, 0, 0), 0.64);
 
-    // A short, pierced tie joins the bottom of the gear case to the chin casting.
+    // The chin tie slides in a straight line between its two pinned ends.
     const tieStart = transmission.localToWorld(new Vector3(...idlerCenter, 0.024));
     const lugY = 0.032;
     const lugX = side * 0.409;
     const jawLug: Point = [lugX, chinHeight + lugY, chinDepth(lugX, lugY) + 0.032];
-    const tieEnd = jawParts.localToWorld(new Vector3(...jawLug));
+    const tieAnchor = new Vector3(...jawLug);
+    const tieEnd = tieAnchor.clone().applyMatrix4(jawToHead);
     const tieAxis = tieEnd.clone().sub(tieStart);
     const length = tieAxis.length();
-    tieAxis.normalize();
-    const tieNormal = new Vector3(side, 0, 0.52);
-    tieNormal.addScaledVector(tieAxis, -tieAxis.dot(tieNormal)).normalize();
-    const tieUp = tieNormal.clone().cross(tieAxis);
+    const tieFace = new Vector3(side, 0, 0.52);
+    const tieNormal = new Vector3();
+    const tieUp = new Vector3();
+    const tieBasis = new Matrix4();
+    const guideLength = length * 0.66;
     const tie = new Shape();
     tie.moveTo(0, 0.073);
-    tie.bezierCurveTo(length * 0.27, 0.053, length * 0.68, 0.037, length, 0.055);
-    tie.bezierCurveTo(length + 0.074, 0.055, length + 0.074, -0.055, length, -0.055);
-    tie.bezierCurveTo(length * 0.68, -0.037, length * 0.27, -0.053, 0, -0.073);
+    tie.bezierCurveTo(guideLength * 0.3, 0.061, guideLength * 0.82, 0.049, guideLength, 0.049);
+    tie.quadraticCurveTo(guideLength + 0.029, 0, guideLength, -0.049);
+    tie.bezierCurveTo(guideLength * 0.82, -0.049, guideLength * 0.3, -0.061, 0, -0.073);
     tie.bezierCurveTo(-0.094, -0.073, -0.094, 0.073, 0, 0.073);
     tie.closePath();
     hole(tie, 0, 0, 0.037, false);
-    hole(tie, length, 0, 0.029, false);
     const link = mesh(head, "forged-chin-tie", extrude(tie, 0.038, 0.008), [steel, darkSteel], pointFromVector(tieStart));
-    link.quaternion.setFromRotationMatrix(new Matrix4().makeBasis(tieAxis, tieUp, tieNormal));
-    const tiePin = tieEnd.clone().addScaledVector(tieNormal, 0.043);
-    rod(head, "chin-tie-pin", pointFromVector(tieEnd), pointFromVector(tiePin), 0.028, machinedSteel);
-    bolt(head, pointFromVector(tiePin), tieNormal, 0.71);
+    const tongue = new Shape();
+    tongue.moveTo(-length * 0.67, 0.029);
+    tongue.quadraticCurveTo(-0.10, 0.029, 0, 0.055);
+    tongue.bezierCurveTo(0.074, 0.055, 0.074, -0.055, 0, -0.055);
+    tongue.quadraticCurveTo(-0.10, -0.029, -length * 0.67, -0.029);
+    tongue.closePath();
+    hole(tongue, 0, 0, 0.029, false);
+    const slider = mesh(head, "chin-tie-slider", extrude(tongue, 0.026, 0.006), [machinedSteel, darkSteel]);
+    const pin = disc(head, "chin-tie-pin", [0, 0, 0], 0.028, 0.066, machinedSteel);
+    const pinCap = bolt(head, [0, 0, 0], undefined, 0.71);
+
+    const updateDrive = (turn: number) => {
+      turnJawGears(turn);
+      pullBottom.copy(pullAnchor).applyMatrix4(jawToHead);
+      pullAxis.subVectors(pullBottom, pullTop).normalize();
+      sleeve.quaternion.setFromUnitVectors(pistonUp, pullAxis);
+      drawRod.position.copy(pullBottom).addScaledVector(pullAxis, -shaftHalf);
+      drawRod.quaternion.copy(sleeve.quaternion);
+
+      tieEnd.copy(tieAnchor).applyMatrix4(jawToHead);
+      tieAxis.subVectors(tieEnd, tieStart).normalize();
+      tieNormal.copy(tieFace).addScaledVector(tieAxis, -tieFace.dot(tieAxis)).normalize();
+      tieUp.crossVectors(tieNormal, tieAxis);
+      link.quaternion.setFromRotationMatrix(tieBasis.makeBasis(tieAxis, tieUp, tieNormal));
+      slider.position.copy(tieEnd).addScaledVector(tieNormal, -0.025);
+      slider.quaternion.copy(link.quaternion);
+      pin.position.copy(tieEnd).addScaledVector(tieNormal, 0.003);
+      pin.quaternion.copy(link.quaternion);
+      pinCap.position.copy(tieEnd).addScaledVector(tieNormal, 0.038);
+      pinCap.quaternion.copy(link.quaternion);
+    };
+    updateDrive(0);
+    updateJawDrives.push(updateDrive);
   }
 
   // A curved casting wraps the jaw. The back of each vent is recessed and dark.
@@ -683,6 +749,9 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
   const tailGear = gear(service, "temple-idler", [...tailSpindle, 0.01], 0.158, 17, 0.031, 0, { ...templeOptions, bore: 0.32 });
   phaseGear(rearGear, frontGear, 27, 25);
   phaseGear(frontGear, tailGear, 25, 17);
+  const turnTempleGears = gearTrain(
+    { wheel: rearGear, ratio: 1 }, { wheel: frontGear, ratio: -27 / 25 }, { wheel: tailGear, ratio: 27 / 17 },
+  );
   mesh(service, "pierced-temple-cover", extrude(cover, 0.04, 0.012), steel, [0, 0, 0.07]);
   for (const point of [[-0.47, -0.26, 0.125], [0.43, -0.24, 0.125], [-0.35, 0.35, 0.125], [0.24, 0.39, 0.125]] as Point[]) bolt(service, point, undefined, 0.8);
 
@@ -708,13 +777,13 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     rod(head, "crown-service-cap", pointFromVector(stemTop), pointFromVector(end), radius * 1.22, edge);
   }
   for (let i = 0; i < 3; i++) {
-    const angle = -0.77 + i * 0.062;
-    orb(monocle, "optical-index", [Math.cos(angle) * 0.419, Math.sin(angle) * 0.419, barrelFace + 0.002], [0.006, 0.006, 0.004], accent);
+    const angle = (i - 9 + 0.375) / focusTeeth * Math.PI * 2;
+    orb(focusRotor, "optical-index", [Math.cos(angle) * 0.468, Math.sin(angle) * 0.468, 0.076], [0.005, 0.005, 0.004], accent);
   }
 
   const pedestal = new Group();
   pedestal.name = "turned-display-plinth";
-  pedestal.position.z = -0.65;
+  pedestal.position.z = neck.z;
   root.add(pedestal);
   const profile = [
     [0, -2.17], [0.83, -2.17], [0.94, -2.14], [0.97, -2.08],
@@ -731,7 +800,19 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
 
   return {
     root,
-    parts: { head, jaw, monocle, gears, pedestal },
+    setPose(pose: SkullPose) {
+      head.rotation.set(pose.pitch, pose.yaw, pose.roll, "YXZ");
+      head.position.copy(neck).sub(rotatedNeck.copy(neck).applyQuaternion(head.quaternion));
+      jaw.rotation.x = pose.jaw;
+      jaw.updateMatrix();
+      jawToHead.multiplyMatrices(jaw.matrix, jawMount);
+      for (const updateDrive of updateJawDrives) updateDrive(pose.jawDrive);
+      focusRotor.rotation.z = pose.focus;
+      opticalCell.rotation.set(pose.scopePitch, pose.scopeYaw, 0, "YXZ");
+      turnOpticGears(-pose.focus * 2.45);
+      turnTempleGears(pose.focus * 1.68);
+      accent.emissiveIntensity = 0.25 + 0.37 * pose.opticalLight;
+    },
     setAccent(value: string) {
       accent.color.set(value);
       accent.emissive.copy(new Color(value));

@@ -4,7 +4,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Check, Copy, Github, Play, RotateCcw } from "lucide-react";
-import MagneticFieldButton from "../../animations/buttons/MagneticFieldButton/MagneticFieldButton";
+import LiquidFillButton from "../../animations/buttons/LiquidFillButton/LiquidFillButton";
 import AmbientBloom from "../../animations/components/AmbientBloom/AmbientBloom";
 import LudwigHover from "../../animations/components/LudwigHover/LudwigHover";
 import SpotlightCard from "../../animations/components/SpotlightCard/SpotlightCard";
@@ -46,11 +46,12 @@ function useReducedMotion() {
   return reduced;
 }
 
-function BentoPreview({ name, category, className, reduced, children }: {
+function BentoPreview({ name, category, className, reduced, playOnTileHover = true, children }: {
   name: string;
   category: string;
   className: string;
   reduced: boolean;
+  playOnTileHover?: boolean;
   children: (playing: boolean) => ReactNode;
 }) {
   const [runs, setRuns] = useState(0);
@@ -59,9 +60,9 @@ function BentoPreview({ name, category, className, reduced, children }: {
   const play = () => setRuns((count) => count + 1);
 
   return (
-    <figure className={className} onPointerEnter={(event) => {
+    <figure className={className} onPointerEnter={playOnTileHover ? (event) => {
       if (!reduced && event.pointerType === "mouse") play();
-    }}>
+    } : undefined}>
       <div key={runs} className={styles.bentoArt} aria-hidden="true">
         {children(runs > 0 && !reduced)}
       </div>
@@ -135,7 +136,7 @@ export default function Landing() {
 
           <div className={styles.heroStage} data-cursor-quiet>
             <MotionSculpture accent={accent} light={light} />
-            <p className={styles.comingSoon}>Animated 3D <span>Coming Soon</span></p>
+            <p className={styles.comingSoon}>Animated 3D <span>Components coming soon</span></p>
             <div className={styles.inspector} role="group" aria-label="Sculpture appearance">
               <div className={styles.colorControl}>
                 <span>Accent</span>
@@ -159,13 +160,13 @@ export default function Landing() {
 
         <section className={styles.showcase} id="explore" aria-labelledby="explore-title">
           <h2 id="explore-title">Component previews</h2>
-          <p>{reduced ? "Static previews with reduced motion enabled." : "Hover over a tile or press play."}</p>
+          <p>{reduced ? "Static previews with reduced motion enabled." : "Hover a demo or press play."}</p>
           <div className={styles.bento}>
             <BentoPreview name="Gradient Flow" category="Text" className={styles.gradientDemo} reduced={reduced}>
               {(playing) => <div className={styles.flowWord}><GradientFlow playing={playing} speed={2.4}>flow.</GradientFlow></div>}
             </BentoPreview>
-            <BentoPreview name="Magnetic Field Button" category="Buttons" className={styles.magneticDemo} reduced={reduced}>
-              {(playing) => <MagneticFieldButton playing={playing} />}
+            <BentoPreview name="Liquid Fill Button" category="Buttons" className={styles.liquidDemo} reduced={reduced} playOnTileHover={false}>
+              {(playing) => <LiquidFillButton playing={playing} reducedMotion={reduced} />}
             </BentoPreview>
             <BentoPreview name="Ambient Bloom" category="Components" className={styles.bloomDemo} reduced={reduced}>
               {(playing) => <AmbientBloom playing={playing} />}
