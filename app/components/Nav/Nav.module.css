@@ -36,7 +36,7 @@
 .brandLight { font-weight: 450; }
 .brandPeriod { color: var(--accent); }
 .brandSymbol { display: inline-flex; align-items: center; gap: 2px; transform: skewX(-16deg); }
-.brandSymbol i { width: 4px; height: 14px; border-radius: 1px; background: var(--accent); }
+.brandSymbol i { width: 4px; height: 14px; border-radius: 1px; background: linear-gradient(125deg, #fff8, transparent 40%, #10141245 53%, #fff5) var(--accent); box-shadow: inset 1px 0 #ffffff40; }
 .brandSymbol i:first-child { height: 9px; opacity: .54; }
 .brandSymbol i:last-child { height: 19px; }
 
@@ -53,9 +53,10 @@
 .nav a:hover, .nav a[aria-current="page"], .githubLink:hover { color: #f0eee8; }
 .nav a[aria-current="page"]::after {
   position: absolute;
-  inset: auto 0 0;
-  height: 1px;
-  background: var(--accent);
+  inset: auto 0 -3px;
+  height: 8px;
+  background: url("/details/pave-line.svg") center / 20px 10px repeat-x;
+  filter: drop-shadow(0 0 1px var(--accent));
   content: "";
 }
 

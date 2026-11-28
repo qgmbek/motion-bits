@@ -328,7 +328,7 @@ export default function MotionSculpture({ accent, light }: Props) {
         className={styles.sculptureCanvas}
         tabIndex={0}
         role="img"
-        aria-label="Mechanical skull with a monocle, exposed gears, fangs, and an open jaw on a pedestal. Drag or use arrow keys to inspect. Press Home to reset the view."
+        aria-label="Mechanical skull with a crystal-set monocle, jeweled armor, exposed gears, fangs, and an open jaw on a pedestal. Drag or use arrow keys to inspect. Press Home to reset the view."
       />
       {ready && !isPlaying && (
         <button

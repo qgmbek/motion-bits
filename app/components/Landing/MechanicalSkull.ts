@@ -7,6 +7,7 @@ import {
 import type { SkullAnatomy } from "./skullAnatomy";
 import { createBoneMaterial } from "./boneMaterial";
 import { jawTravel, type SkullPose } from "./skullPerformance";
+import { createCrystalSettings } from "./crystalSettings";
 
 type Point = readonly [number, number, number];
 type Point2 = readonly [number, number];
@@ -152,6 +153,7 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
   const seam = new MeshStandardMaterial({ color: 0x8a9698, metalness: 0.25, roughness: 0.7 });
   const accent = new MeshStandardMaterial({ color: 0xc0d6d9, emissive: 0x8ebec5, emissiveIntensity: 0.25, metalness: 0.6, roughness: 0.32 });
   const materials: Material[] = [bone, steel, darkSteel, machinedSteel, leather, enamel, edge, recess, lensMaterial, seam, accent];
+  const crystals = createCrystalSettings(metalEnvironment);
   const sphere = new SphereGeometry(1, 28, 20);
   const boltGeometry = new CylinderGeometry(0.035, 0.035, 0.023, 6);
   boltGeometry.rotateX(Math.PI / 2);
@@ -360,6 +362,15 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     [0.371, barrelFace - 0.012], [0.348, glassSeat + 0.018], [0.338, glassSeat + 0.012],
     [0.338, -0.076],
   ], machinedSteel);
+  // Seat the stones inside the existing front annulus, clear of the glass and
+  // moving focus teeth. The metalwork keeps its original profile.
+  crystals.add(monocle, "pave-monocle-bezel", Array.from({ length: 44 }, (_, i) => {
+    const angle = i / 44 * Math.PI * 2;
+    return {
+      position: new Vector3(Math.cos(angle) * .409, Math.sin(angle) * .409, barrelFace + .003),
+      accented: i % 11 === 0,
+    };
+  }), .0195);
   const focusRing = new Shape();
   for (let i = 0; i < focusTeeth * 4; i++) {
     const angle = i / (focusTeeth * 4) * Math.PI * 2;
@@ -676,6 +687,10 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
   patch("frontal-armor", 0.30, 1.28, -0.68, -0.045, steel);
   patch("parietal-armor", 0.28, 1.23, -1.48, -0.72, darkSteel);
   patch("rear-armor", 0.32, 1.32, -2.32, -1.53, steel);
+  crystals.add(head, "frontal-armor-crystal-inlay", Array.from({ length: 18 }, (_, i) => {
+    const point = skullPoint(.47 + i * .035, -.46 + Math.sin(i / 17 * Math.PI) * .045, .024);
+    return { position: new Vector3(...point), normal: skullNormal(point), accented: i === 0 || i === 17 };
+  }), .0175);
   for (const phi of [-0.10, -0.63, -0.78, -1.42, -1.60, -2.25]) {
     for (const theta of [0.43, 0.88, 1.18]) {
       const point = skullPoint(theta, phi, 0.044);
@@ -818,8 +833,10 @@ export function createMechanicalSkull(anatomy: SkullAnatomy, metalEnvironment: T
     setAccent(value: string) {
       accent.color.set(value);
       accent.emissive.copy(new Color(value));
+      crystals.setAccent(value);
     },
     dispose() {
+      crystals.dispose();
       const geometries = new Set<BufferGeometry>();
       root.traverse((object) => { if (object instanceof Mesh) geometries.add(object.geometry); });
       geometries.forEach((geometry) => geometry.dispose());
